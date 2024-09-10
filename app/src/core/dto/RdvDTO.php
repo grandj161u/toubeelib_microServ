@@ -12,6 +12,8 @@ class RdvDTO extends DTO
     protected string $idPatient;
     protected string $horaire;
     protected string $idSpecialite;
+    protected string $type;
+    protected string $statut;
 
     public function __construct(Rdv $r)
     {
@@ -20,5 +22,7 @@ class RdvDTO extends DTO
         $this->idPatient = $r->idPatient;
         $this->horaire = $r->horaire;
         $this->idSpecialite = $r->idSpecialite;
+        $this->type = $r->type;
+        $this->statut = $r->statut;
     }   
 }

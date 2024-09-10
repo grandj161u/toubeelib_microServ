@@ -11,13 +11,17 @@ class Rdv extends Entity
     protected string $idPatient;
     protected string $horaire;
     protected string $idSpecialite;
+    protected string $type;
+    protected string $statut;
 
-    public function __construct($praticien, $patient, $horaire, $specialite)
+    public function __construct($praticien, $patient, $horaire, $specialite, $type, $statut)
     {
         $this->idPraticien = $praticien;
         $this->idPatient = $patient;
         $this->horaire = $horaire;
         $this->idSpecialite = $specialite;
+        $this->type = $type;
+        $this->statut = $statut;
     }
 
     public function toDTO() : RdvDTO {
