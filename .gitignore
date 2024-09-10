@@ -1,4 +1,3 @@
 app/vendor
-*.env
 *.log
 *.ini
