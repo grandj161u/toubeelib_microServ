@@ -2,6 +2,7 @@
 
 namespace toubeelib\core\dto;
 
+use DateTimeImmutable;
 use toubeelib\core\domain\entities\rdv\Rdv;
 use toubeelib\core\dto\DTO;
 
@@ -10,7 +11,7 @@ class RdvDTO extends DTO
     protected string $ID;
     protected string $idPraticien;
     protected string $idPatient;
-    protected string $horaire;
+    protected DateTimeImmutable $horaire;
     protected string $idSpecialite;
     protected string $type;
     protected string $statut;
