@@ -2,6 +2,7 @@
 
 namespace toubeelib\core\domain\entities\rdv;
 
+use DateTimeImmutable;
 use toubeelib\core\domain\entities\Entity;
 use toubeelib\core\dto\RdvDTO;
 
@@ -9,7 +10,7 @@ class Rdv extends Entity
 {
     protected string $idPraticien;
     protected string $idPatient;
-    protected string $horaire;
+    protected DateTimeImmutable $horaire;
     protected string $idSpecialite;
     protected string $type;
     protected string $statut;
