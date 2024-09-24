@@ -36,6 +36,18 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         return $rdv;
     }
 
+    public function modifierRdv(string $id, string|null $specialite, string|null $idPatient): Rdv{
+        $rdv = $this->rdvs[$id] ??
+            throw new RepositoryEntityNotFoundException("Rdv $id not found");
 
-  
+        if($specialite){
+            $rdv->__set('idSpecialite',$specialite);
+
+        }
+        if($idPatient){
+            $rdv->__set('idPatient',$idPatient);
+        }
+
+        return $rdv;
+    }
 }

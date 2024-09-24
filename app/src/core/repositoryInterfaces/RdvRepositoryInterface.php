@@ -11,4 +11,6 @@ interface RdvRepositoryInterface
     public function getRdvById(string $id): Rdv;
     // public function getRdvByPraticienId(string $id): array;
     // public function getRdvByPatientId(string $id): array;
+
+    public function modifierRdv(string $id, string|null $specialite, string|null $idPatient): Rdv;
 }

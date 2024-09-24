@@ -11,6 +11,15 @@ abstract class Entity
         return property_exists($this, $name) ? $this->$name : throw new \Exception(static::class . ": Property $name does not exist");
     }
 
+    public function __set($name, $value): void
+    {
+        if (property_exists($this, $name)) {
+            $this->$name = $value;
+        } else {
+            throw new \Exception(static::class . ": Property $name does not exist");
+        }
+    }
+
     public function setID(string $ID): void
     {
         $this->ID = $ID;
