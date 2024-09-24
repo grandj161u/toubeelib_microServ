@@ -1,11 +1,16 @@
 <?php
 
-use Faker\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use toubeelib\application\actions\ConsulterRdvAction;
+use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\core\services\rdv\ServiceRdv;
+use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
+use toubeelib\infrastructure\repositories\ArrayRdvRepository;
+use toubeelib\core\services\praticien\ServicePraticien;
+
 
 return [
 
@@ -14,7 +19,19 @@ return [
     },
 
     ServiceRdvInterface::class => function (ContainerInterface $c) {
-        return new ServiceRdv($c->get(ServicePraticienInterface::class), 
-                                            $c->get(RdvRepositoryInterface::class));
+        return new ServiceRdv($c->get(RdvRepositoryInterface::class));
+    },
+
+    RdvRepositoryInterface::class => function (ContainerInterface $c) {
+        return new ArrayRdvRepository();
+    },
+
+    ServicePraticienInterface::class => function (ContainerInterface $c) {
+        return new ServicePraticien($c->get(PraticienRepositoryInterface::class));
+    },
+
+    PraticienRepositoryInterface::class => function (ContainerInterface $c) {
+        return new ArrayPraticienRepository();
     }
+
 ];

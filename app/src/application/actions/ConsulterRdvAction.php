@@ -5,6 +5,7 @@ namespace toubeelib\application\actions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
+use toubeelib\application\renderer\JsonRenderer;
 
 class ConsulterRdvAction extends AbstractAction {
 
@@ -19,8 +20,18 @@ class ConsulterRdvAction extends AbstractAction {
 
         try {
             $rdv = $this->serviceRdv->getRdvById($id);
-            $rs->getBody()->write(json_encode($rdv));
-            return $rs->withHeader('Content-Type', 'application/json')->withStatus(200);
+
+            $data = [
+                "id" => $rdv->ID,
+                "idPraticien" => $rdv->idPraticien,
+                "idPatient" => $rdv->idPatient,
+                "date" => $rdv->horaire,
+                "idSpecialite" => $rdv->idSpecialite,
+                "type" => $rdv->type,
+                "statut" => $rdv->statut
+            ];
+
+            return JsonRenderer::render($rs, 200, $data);
         } catch (\Exception $e) {
             $rs->getBody()->write($e->getMessage());
             return $rs->withStatus(404);
