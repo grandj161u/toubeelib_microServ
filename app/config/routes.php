@@ -8,6 +8,8 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->get('/', \toubeelib\application\actions\HomeAction::class);
 
+    $app->get('/Rdvs/{id}', \toubeelib\application\actions\ConsulterRdvAction::class);
+
 
     return $app;
 };
