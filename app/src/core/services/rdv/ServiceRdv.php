@@ -2,7 +2,6 @@
 
 namespace toubeelib\core\services\rdv;
 
-use toubeelib\core\domain\entities\rdv\Rdv;
 use toubeelib\core\dto\RdvDto;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
@@ -22,7 +21,7 @@ class ServiceRdv implements ServiceRdvInterface {
             $rdv = $this->rdvRepository->getRdvById($id);
             return new RdvDTO($rdv);
         } catch(RepositoryEntityNotFoundException $e) {
-            throw new ServiceRdvInvalidDataException('invalid rdv ID');
+            throw new ServiceRdvNotFoundException("Rdv ID $id not found" );
         }
     }
 
