@@ -19,23 +19,17 @@ class ConsulterRdvAction extends AbstractAction {
         $id = $args["id"];
 
         try {
-            $rdv = $this->serviceRdv->getRdvById($id);
-
-            $data = [
-                "id" => $rdv->ID,
-                "idPraticien" => $rdv->idPraticien,
-                "idPatient" => $rdv->idPatient,
-                "date" => $rdv->horaire,
-                "idSpecialite" => $rdv->idSpecialite,
-                "type" => $rdv->type,
-                "statut" => $rdv->statut
-            ];
-
-            return JsonRenderer::render($rs, 200, $data);
+            $rdv_DTO = $this->serviceRdv->getRdvById($id);
         } catch (\Exception $e) {
             $rs->getBody()->write($e->getMessage());
             return $rs->withStatus(404);
         }
+
+        $data = [
+            'rdv' => $rdv_DTO
+        ];
+
+        return JsonRenderer::render($rs, 200, $data);
 
     }
 }

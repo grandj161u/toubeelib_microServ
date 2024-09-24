@@ -26,6 +26,6 @@ class Rdv extends Entity
     }
 
     public function toDTO() : RdvDTO {
-        return new RdvDTO($this);
+        return new RdvDTO($this->ID, $this->idPraticien, $this->idPatient, $this->horaire, $this->idSpecialite, $this->type, $this->statut);
     }
 }

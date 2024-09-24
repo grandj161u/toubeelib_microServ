@@ -19,7 +19,10 @@ class ServiceRdv implements ServiceRdvInterface {
     public function getRdvById(string $id): RdvDTO{
         try{
             $rdv = $this->rdvRepository->getRdvById($id);
-            return new RdvDTO($rdv);
+            // return new RdvDTO($rdv);
+            $rdvDTO = $rdv->toDTO();
+            // print_r($rdvDTO);
+            return $rdvDTO;
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServiceRdvNotFoundException("Rdv ID $id not found" );
         }
