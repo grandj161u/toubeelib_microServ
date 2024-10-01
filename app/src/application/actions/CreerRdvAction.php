@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
 
-class ModifierRdvAction extends AbstractAction {
+class CreerRdvAction extends AbstractAction {
 
     protected ServiceRdvInterface $serviceRdv;
 
@@ -16,23 +16,27 @@ class ModifierRdvAction extends AbstractAction {
     }
 
     public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
-        $id = $args["id"];
 
         try {
-            $idSpecialite = $rq->getParsedBody()["idSpecialite"] ?? null;
+            $idPraticien = $rq->getParsedBody()["idPraticien"] ?? null;
             $idPatient = $rq->getParsedBody()["idPatient"] ?? null;
-            
-            $rdv_DTO = $this->serviceRdv->modifierRdv($id, $idSpecialite, $idPatient);
+            $horaireData = $rq->getParsedBody()["horaire"] ?? null;
+            $idSpecialite = $rq->getParsedBody()["idSpecialite"] ?? null;            
+            $type = $rq->getParsedBody()["type"] ?? null;
+            $statut = $rq->getParsedBody()["statut"] ?? null;
+
+            $horaire = new \DateTimeImmutable($horaireData['date'], new \DateTimeZone($horaireData['timezone']));
+
+            $rdv_DTO = $this->serviceRdv->creerRdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
+
+
         } catch (\Exception $e) {
             $rs->getBody()->write($e->getMessage());
             return $rs->withStatus(404);
         }
 
-        $data = [
-            'rdv' => $rdv_DTO
-        ];
 
-        return JsonRenderer::render($rs, 200, $data);
+        return JsonRenderer::render($rs, 200);
 
     }
 }

@@ -12,6 +12,8 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->patch('/Rdvs/{id}', \toubeelib\application\actions\ModifierRdvAction::class);
 
+    $app->post('/Rdvs', \toubeelib\application\actions\CreerRdvAction::class);
+
 
     return $app;
 };
