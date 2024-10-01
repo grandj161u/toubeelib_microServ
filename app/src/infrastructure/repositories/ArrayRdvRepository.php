@@ -19,8 +19,10 @@ class ArrayRdvRepository implements RdvRepositoryInterface
             $r2->setID('r2');
             $r3 = new Rdv('p2', 'pa1', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:30'), 'A', '4', 'en attente');
             $r3->setID('r3');
+            $r4 = new Rdv('p2', 'pa2', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:30'), 'C', '3', 'confirmer');
+            $r4->setID('r4');
 
-        $this->rdvs  = ['r1'=> $r1, 'r2'=>$r2, 'r3'=> $r3 ];
+        $this->rdvs  = ['r1'=> $r1, 'r2'=>$r2, 'r3'=> $r3, 'r4'=> $r4];
     }
 
     public function save(Rdv $rdv): string {
@@ -59,5 +61,15 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         $ID = $this->save($rdv);
         print_r($rdv);
         return $this->rdvs[$ID];
+    }
+
+    public function getRdvByPatient(string $id): array{
+        $rdvs = [];
+        foreach($this->rdvs as $rdv){
+            if($rdv->__get('idPatient') === $id){
+                $rdvs[] = $rdv;
+            }
+        }
+        return $rdvs;
     }
 }

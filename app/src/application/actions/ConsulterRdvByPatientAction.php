@@ -8,7 +8,7 @@ use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
 
-class ConsulterRdvAction extends AbstractAction {
+class ConsulterRdvByPatientAction extends AbstractAction {
 
     protected ServiceRdvInterface $serviceRdv;
 
@@ -17,10 +17,10 @@ class ConsulterRdvAction extends AbstractAction {
     }
 
     public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
-        $id = $args["id"];
+        $id = $args["idPatient"];
 
         try {
-            $rdv_DTO = $this->serviceRdv->getRdvById($id);
+            $rdv_DTO = $this->serviceRdv->getRdvByPatient($id);
         } catch (ServiceRdvNotFoundException $e) {
             $data = [
                  'message' => $e->getMessage(),

@@ -22,9 +22,7 @@ class ServiceRdv implements ServiceRdvInterface {
     public function getRdvById(string $id): RdvDTO{
         try{
             $rdv = $this->rdvRepository->getRdvById($id);
-            // return new RdvDTO($rdv);
             $rdvDTO = $rdv->toDTO();
-            // print_r($rdvDTO);
             return $rdvDTO;
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServiceRdvNotFoundException("Rdv ID $id not found" );
@@ -41,6 +39,14 @@ class ServiceRdv implements ServiceRdvInterface {
         }
     }
 
+    public function getRdvByPatient(string $id): array{
+        $rdvs = $this->rdvRepository->getRdvByPatient($id);
+        $rdvsDTO = [];
+        foreach($rdvs as $rdv){
+            $rdvsDTO[] = $rdv->toDTO();
+        }
+        return $rdvsDTO;
+    }
 
     public function creerRdv(string $idPraticien, string $idPatient, \DateTimeImmutable $horaire, string $idSpecialite, string $type, string $statut){
         try{
