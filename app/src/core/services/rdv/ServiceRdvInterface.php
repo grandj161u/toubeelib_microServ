@@ -10,4 +10,5 @@ interface ServiceRdvInterface{
 
     public function modifierRdv(String $id, ?String $specialite, ?String $idPatient): RdvDTO;
 
+    public function getRdvByPatient(String $id): array;
 }
