@@ -16,6 +16,8 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->post('/Rdvs', \toubeelib\application\actions\CreerRdvAction::class);
 
+    $app->delete('/Rdvs/{id}', \toubeelib\application\actions\AnnulerRdvAction::class);
+
 
     return $app;
 };

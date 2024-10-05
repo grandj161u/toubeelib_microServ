@@ -16,4 +16,6 @@ interface RdvRepositoryInterface
     public function modifierRdv(string $id, string|null $idSpecialite, string|null $idPatient): Rdv;
 
     public function creerRdv(string $idPraticien, string $idPatient, \DateTimeImmutable $horaire, string $idSpecialite, string $type, string $statut): Rdv;
+
+    public function annulerRdv(string $id): Rdv;
 }

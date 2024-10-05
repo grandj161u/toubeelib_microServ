@@ -72,4 +72,12 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         }
         return $rdvs;
     }
+
+    public function annulerRdv(string $id): Rdv{
+        $rdv = $this->rdvs[$id] ??
+            throw new RepositoryEntityNotFoundException("Rdv $id not found");
+
+        $rdv->__set('statut', 'annuler');
+        return $rdv;
+    }
 }

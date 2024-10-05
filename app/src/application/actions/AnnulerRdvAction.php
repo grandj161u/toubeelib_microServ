@@ -2,13 +2,13 @@
 
 namespace toubeelib\application\actions;
 
+use toubeelib\core\services\rdv\ServiceRdvInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
 
-class ConsulterRdvAction extends AbstractAction {
+class AnnulerRdvAction extends AbstractAction {
 
     protected ServiceRdvInterface $serviceRdv;
 
@@ -16,11 +16,11 @@ class ConsulterRdvAction extends AbstractAction {
         $this->serviceRdv = $serviceRdv;
     }
 
-    public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
         $id = $args["id"];
 
-        try {
-            $rdv_DTO = $this->serviceRdv->getRdvById($id);
+        try{
+            $rdv_DTO = $this->serviceRdv->annulerRdv($id);
         } catch (ServiceRdvNotFoundException $e) {
             $data = [
                  'message' => $e->getMessage(),
@@ -54,7 +54,6 @@ class ConsulterRdvAction extends AbstractAction {
             ]
         ];
 
-        return JsonRenderer::render($rs, 200, $data);
-
+        return JsonRenderer::render($rs, 202, $data);
     }
 }

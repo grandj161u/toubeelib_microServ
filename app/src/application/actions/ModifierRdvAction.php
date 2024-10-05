@@ -55,7 +55,8 @@ class ModifierRdvAction extends AbstractAction {
             'rdv' => $rdv_DTO,
             'links' => [
                 'self' => [ 'href' => '/Rdvs/' . $id ], 
-                'modifier' => [ 'href' => '/Rdvs/' . $id ]
+                'modifier' => [ 'href' => '/Rdvs/' . $id ],
+                'annuler' => [ 'href' => '/Rdvs/' . $id ],
             ]
         ];
 

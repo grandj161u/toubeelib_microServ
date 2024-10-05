@@ -13,5 +13,7 @@ interface ServiceRdvInterface{
 
     public function creerRdv(String $idPraticien, String $idPatient, DateTimeImmutable $horaire, String $idSpecialite, String $type, String $statut);
 
+    public function annulerRdv(String $id): RdvDTO;
+
     public function getRdvByPatient(String $id): array;
 }

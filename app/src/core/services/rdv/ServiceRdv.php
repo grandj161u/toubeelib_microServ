@@ -74,4 +74,19 @@ class ServiceRdv implements ServiceRdvInterface {
         }
     }
 
+    public function annulerRdv(string $id): RdvDTO{
+        try{
+
+            if($this->rdvRepository->getRdvById($id)->__get('statut') === 'annule'){
+                throw new \Exception("Le rendez-vous a déjà été annulé");
+            }
+            
+            $rdv = $this->rdvRepository->annulerRdv($id);
+            $rdvDTO = $rdv->toDTO();
+            return $rdvDTO;
+        } catch(RepositoryEntityNotFoundException $e) {
+            throw new ServiceRdvNotFoundException("Rdv ID not found" );
+        }
+    }
+
 }
