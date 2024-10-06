@@ -14,6 +14,10 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->get('/Rdvs/patient/{idPatient}', \toubeelib\application\actions\ConsulterRdvByPatientAction::class);
 
+    $app->post('/Rdvs', \toubeelib\application\actions\CreerRdvAction::class);
+
+    $app->delete('/Rdvs/{id}', \toubeelib\application\actions\AnnulerRdvAction::class);
+
 
     return $app;
 };

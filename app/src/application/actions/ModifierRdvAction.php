@@ -20,10 +20,10 @@ class ModifierRdvAction extends AbstractAction {
         $id = $args["id"];
 
         try {
-            $specialite = $rq->getParsedBody()["specialite"] ?? null;
+            $idSpecialite = $rq->getParsedBody()["idSpecialite"] ?? null;
             $idPatient = $rq->getParsedBody()["idPatient"] ?? null;
             
-            $rdv_DTO = $this->serviceRdv->modifierRdv($id, $specialite, $idPatient);
+            $rdv_DTO = $this->serviceRdv->modifierRdv($id, $idSpecialite, $idPatient);
         } catch (ServiceRdvNotFoundException $e) {
            $data = [
                 'message' => $e->getMessage(),
@@ -34,6 +34,9 @@ class ModifierRdvAction extends AbstractAction {
                     'line' => $e->getLine()
                 ]
             ];
+            $rdv_DTO = $this->serviceRdv->modifierRdv($id, $idSpecialite, $idPatient);
+        } catch (\Exception $e) {
+            $rs->getBody()->write($e->getMessage());
             return $rs->withStatus(404);
         } catch (\Exception  $e) {
             $data = [
@@ -52,7 +55,8 @@ class ModifierRdvAction extends AbstractAction {
             'rdv' => $rdv_DTO,
             'links' => [
                 'self' => [ 'href' => '/Rdvs/' . $id ], 
-                'modifier' => [ 'href' => '/Rdvs/' . $id ]
+                'modifier' => [ 'href' => '/Rdvs/' . $id ],
+                'annuler' => [ 'href' => '/Rdvs/' . $id ],
             ]
         ];
 

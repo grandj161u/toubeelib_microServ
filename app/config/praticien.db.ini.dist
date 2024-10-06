@@ -1,0 +1,7 @@
+driver=pgsql
+username=root
+password=r00t
+host=sql.db
+database=prati.db
+charset=utf8
+collation=utf8_unicode_ci

@@ -8,6 +8,7 @@ use toubeelib\core\dto\InputPraticienDTO;
 use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\dto\SpecialiteDTO;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
+use toubeelib\core\repositoryInterfaces\RepositoryDatabaseErrorException;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 
 class ServicePraticien implements ServicePraticienInterface
@@ -34,7 +35,9 @@ class ServicePraticien implements ServicePraticienInterface
             return new PraticienDTO($praticien);
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServicePraticienInvalidDataException('invalid Praticien ID');
-        }
+        } catch(RepositoryDatabaseErrorException $e) {
+            throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
+        } 
     }
 
     public function getSpecialiteById(string $id): SpecialiteDTO
@@ -44,6 +47,8 @@ class ServicePraticien implements ServicePraticienInterface
             return $specialite->toDTO();
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServicePraticienInvalidDataException('invalid Specialite ID');
-        }
+        } catch(RepositoryDatabaseErrorException $e) {
+            throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
+        } 
     }
 }

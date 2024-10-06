@@ -4,6 +4,7 @@ namespace toubeelib\infrastructure\repositories;
 
 use Ramsey\Uuid\Uuid;
 use toubeelib\core\domain\entities\rdv\Rdv;
+use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 
@@ -26,7 +27,8 @@ class ArrayRdvRepository implements RdvRepositoryInterface
 
     public function save(Rdv $rdv): string {
         $ID = Uuid::uuid4()->toString();
-        $rdv->setID($ID);
+        // $rdv->setID($ID);
+        $rdv->setID('r4');
         $this->rdvs[$ID] = $rdv;
         return $ID;
     }
@@ -38,12 +40,12 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         return $rdv;
     }
 
-    public function modifierRdv(string $id, string|null $specialite, string|null $idPatient): Rdv{
+    public function modifierRdv(string $id, string|null $idSpecialite, string|null $idPatient): Rdv{
         $rdv = $this->rdvs[$id] ??
             throw new RepositoryEntityNotFoundException("Rdv $id not found");
 
-        if($specialite){
-            $rdv->__set('idSpecialite',$specialite);
+        if($idSpecialite){
+            $rdv->__set('idSpecialite',$idSpecialite);
 
         }
         if($idPatient){
@@ -51,6 +53,14 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         }
 
         return $rdv;
+    }
+
+    public function creerRdv(string $idPraticien, string $idPatient, \DateTimeImmutable $horaire, string $idSpecialite, string $type, string $statut): Rdv{
+        $rdv = new Rdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
+        
+        $ID = $this->save($rdv);
+        print_r($rdv);
+        return $this->rdvs[$ID];
     }
 
     public function getRdvByPatient(string $id): array{
@@ -61,5 +71,13 @@ class ArrayRdvRepository implements RdvRepositoryInterface
             }
         }
         return $rdvs;
+    }
+
+    public function annulerRdv(string $id): Rdv{
+        $rdv = $this->rdvs[$id] ??
+            throw new RepositoryEntityNotFoundException("Rdv $id not found");
+
+        $rdv->__set('statut', 'annuler');
+        return $rdv;
     }
 }

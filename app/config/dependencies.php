@@ -3,6 +3,7 @@
 use Psr\Container\ContainerInterface;
 use toubeelib\application\actions\ConsulterRdvAction;
 use toubeelib\application\actions\ConsulterRdvByPatientAction;
+use toubeelib\application\actions\CreerRdvAction;
 use toubeelib\application\actions\ModifierRdvAction;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
@@ -36,8 +37,14 @@ return [
         return new ModifierRdvAction($c->get(ServiceRdvInterface::class));
     },
 
+    CreerRdvAction::class => function (ContainerInterface $c) {
+        return new CreerRdvAction($c->get(ServiceRdvInterface::class));
+    },
+
     ServiceRdvInterface::class => function (ContainerInterface $c) {
-        return new ServiceRdv($c->get(RdvRepositoryInterface::class));
+        return new ServiceRdv(
+        $c->get(RdvRepositoryInterface::class), 
+        $c->get(ServicePraticienInterface::class));
     },
 
     RdvRepositoryInterface::class => function (ContainerInterface $c) {
