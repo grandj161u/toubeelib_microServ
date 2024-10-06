@@ -16,6 +16,14 @@ use toubeelib\core\services\praticien\ServicePraticien;
 
 return [
 
+    'praticien.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file(__DIR__ . '/praticien.db.ini');
+        $dsn = "{config['driver']}:host={config['host']};dbname={config['database']}";
+        $user = $config['user'];
+        $password = $config['password'];
+        return new PDO($dsn, $user, $password);
+    },
+
     ConsulterRdvByPatientAction::class => function (ContainerInterface $c) {
         return new ConsulterRdvByPatientAction($c->get(ServiceRdvInterface::class));
     },
