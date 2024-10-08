@@ -15,9 +15,9 @@ class ArrayRdvRepository implements RdvRepositoryInterface
     public function __construct() {
             $r1 = new Rdv('p1', 'pa1', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:00'), 'A', '1', 'confirmer');
             $r1->setID('r1');
-            $r2 = new Rdv('p1', 'pa1', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:00'), 'A', '5', 'a payer');
+            $r2 = new Rdv('p1', 'pa1', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:00'), 'A', '5', 'a_payer');
             $r2->setID('r2');
-            $r3 = new Rdv('p2', 'pa1', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:30'), 'A', '4', 'en attente');
+            $r3 = new Rdv('p2', 'pa1', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:30'), 'A', '4', 'en_attente');
             $r3->setID('r3');
             $r4 = new Rdv('p2', 'pa2', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:30'), 'C', '3', 'confirmer');
             $r4->setID('r4');
