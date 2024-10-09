@@ -10,17 +10,33 @@ use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\core\services\rdv\ServiceRdv;
-use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
-use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 use toubeelib\core\services\praticien\ServicePraticien;
+use toubeelib\infrastructure\repositories\PDOPraticienRepository;
+use toubeelib\infrastructure\repositories\PDORdvRepository;
 
 
 return [
 
     'praticien.pdo' => function (ContainerInterface $c) {
         $config = parse_ini_file(__DIR__ . '/praticien.db.ini');
-        $dsn = "{config['driver']}:host={config['host']};dbname={config['database']}";
-        $user = $config['user'];
+        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $user = $config['username'];
+        $password = $config['password'];
+        return new PDO($dsn, $user, $password);
+    },
+
+    'patient.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file(__DIR__ . '/patient.db.ini');
+        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $user = $config['username'];
+        $password = $config['password'];
+        return new PDO($dsn, $user, $password);
+    },
+
+    'rdv.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file(__DIR__ . '/rdv.db.ini');
+        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $user = $config['username'];
         $password = $config['password'];
         return new PDO($dsn, $user, $password);
     },
@@ -48,7 +64,7 @@ return [
     },
 
     RdvRepositoryInterface::class => function (ContainerInterface $c) {
-        return new ArrayRdvRepository();
+        return new PDORdvRepository($c->get('rdv.pdo'));
     },
 
     ServicePraticienInterface::class => function (ContainerInterface $c) {
@@ -56,7 +72,7 @@ return [
     },
 
     PraticienRepositoryInterface::class => function (ContainerInterface $c) {
-        return new ArrayPraticienRepository();
+        return new PDOPraticienRepository($c->get('praticien.pdo'));
     }
 
 ];
