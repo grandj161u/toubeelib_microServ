@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
+use toubeelib\core\dto\InputRdvDTO;
 
 class CreerRdvAction extends AbstractAction {
 
@@ -27,7 +28,8 @@ class CreerRdvAction extends AbstractAction {
 
             $horaire = new \DateTimeImmutable($horaireData['date'], new \DateTimeZone($horaireData['timezone']));
 
-            $rdv_DTO = $this->serviceRdv->creerRdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
+            $inputRdvDTO = new InputRdvDTO($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
+            $rdv_DTO = $this->serviceRdv->creerRdv($inputRdvDTO);
 
 
         } catch (\Exception $e) {

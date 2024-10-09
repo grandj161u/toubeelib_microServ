@@ -7,6 +7,7 @@ use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
+use toubeelib\core\dto\InputRdvDTO;
 
 class ServiceRdv implements ServiceRdvInterface {
 
@@ -48,25 +49,25 @@ class ServiceRdv implements ServiceRdvInterface {
         return $rdvsDTO;
     }
 
-    public function creerRdv(string $idPraticien, string $idPatient, \DateTimeImmutable $horaire, string $idSpecialite, string $type, string $statut){
+    public function creerRdv(InputRdvDTO $inputRdvDTO): RdvDTO{
         try{
-            $praticien = $this->servicePraticien->getPraticienById($idPraticien);
+            $praticien = $this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien'));
             print_r($praticien);
 
-            $specialite = $this->servicePraticien->getSpecialiteById($idSpecialite);
+            $specialite = $this->servicePraticien->getSpecialiteById($inputRdvDTO->__get('idSpecialite'));
             print_r($specialite);
 
-            if($this->servicePraticien->getPraticienById($idPraticien));
+            if($this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien')));
 
             if($specialite->__get('label') !== $praticien->__get('specialite_label')){
                 throw new ServiceRdvNotFoundException("Specialite label doesn't match" );
             }
 
-            if($horaire < new \DateTimeImmutable('now')){
+            if($inputRdvDTO->__get('horaire') < new \DateTimeImmutable('now')){
                 throw new \Exception("La date et l'heure du rendez-vous ne peuvent pas être antérieures à la date et l'heure actuelles");
             }
 
-            $rdv = $this->rdvRepository->creerRdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
+            $rdv = $this->rdvRepository->creerRdv($inputRdvDTO->__get('idPraticien'), $inputRdvDTO->__get('idPatient'), $inputRdvDTO->__get('horaire'), $inputRdvDTO->__get('idSpecialite'), $inputRdvDTO->__get('type'), $inputRdvDTO->__get('statut'));
             $rdvDTO = $rdv->toDTO();
             return $rdvDTO;
         } catch(RepositoryEntityNotFoundException $e) {

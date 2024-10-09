@@ -2,6 +2,7 @@
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
+use toubeelib\application\middlewares\Cors;
 
 
 
@@ -12,10 +13,13 @@ $builder->addDefinitions(__DIR__ . '/dependencies.php');
 $c=$builder->build();
 $app = AppFactory::createFromContainer($c);
 
+$app->add(new Cors());
 
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
-$app->addErrorMiddleware($c->get('displayErrorDetails'), false, false)
+$app->addErrorMiddleware($c->get('displayErrorDetails'), false, false);
+
+
 //    ->getDefaultErrorHandler()
 //    ->forceContentType('application/json')
 ;
