@@ -2,6 +2,6 @@ driver=pgsql
 username=root
 password=root
 host=toubeelib.db
-database=prati.db
+database=pat.db
 charset=utf8
 collation=utf8_unicode_ci
