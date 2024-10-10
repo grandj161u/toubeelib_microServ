@@ -2,3 +2,4 @@ app/vendor
 *.log
 *.ini
 .DS_Store
+*.dist

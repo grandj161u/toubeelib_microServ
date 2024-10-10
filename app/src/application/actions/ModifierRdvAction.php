@@ -34,8 +34,6 @@ class ModifierRdvAction extends AbstractAction {
                     'line' => $e->getLine()
                 ]
             ];
-            $rdv_DTO = $this->serviceRdv->modifierRdv($id, $idSpecialite, $idPatient);
-        } catch (\Exception $e) {
             $rs->getBody()->write($e->getMessage());
             return $rs->withStatus(404);
         } catch (\Exception  $e) {
@@ -48,6 +46,7 @@ class ModifierRdvAction extends AbstractAction {
                     'line' => $e->getLine()
                 ]
             ];
+            $rs->getBody()->write($e->getMessage());
             return $rs->withStatus(400);
         }
 
