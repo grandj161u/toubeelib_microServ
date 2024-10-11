@@ -77,6 +77,13 @@ class PDORdvRepository implements RdvRepositoryInterface {
     }
 
     public function modifierRdv(string $id, string|null $idSpecialite, string|null $idPatient): Rdv {
+        // Utilisation de getRdbByPatient pour vérifier si le patient existe
+        try {
+            $this->getRdvByPatient($idPatient);
+        } catch(RepositoryEntityNotFoundException $e) {
+            throw new RepositoryEntityNotFoundException('Patient not found');
+        }
+
         $query = 'UPDATE rdv SET';
         if($idSpecialite === null && $idPatient != null) {
             $query .= ' id_patient = :id_patient where id = :id';
