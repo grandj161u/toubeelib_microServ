@@ -31,13 +31,9 @@ class ServiceRdv implements ServiceRdvInterface {
     }
 
     public function modifierRdv(string $id, string|null $idSpecialite, string|null $idPatient): RdvDTO{
-        try{
-            $rdv = $this->rdvRepository->modifierRdv($id, $idSpecialite, $idPatient);
-            $rdvDTO = $rdv->toDTO();
-            return $rdvDTO;
-        } catch(RepositoryEntityNotFoundException $e) {
-            throw new ServiceRdvNotFoundException("Rdv ID $id not found" );
-        }
+        $rdv = $this->rdvRepository->modifierRdv($id, $idSpecialite, $idPatient);
+        $rdvDTO = $rdv->toDTO();
+        return $rdvDTO;
     }
 
     public function getRdvByPatient(string $id): array{
