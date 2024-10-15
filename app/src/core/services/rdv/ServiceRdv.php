@@ -48,10 +48,8 @@ class ServiceRdv implements ServiceRdvInterface {
     public function creerRdv(InputRdvDTO $inputRdvDTO): RdvDTO{
         try{
             $praticien = $this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien'));
-            print_r($praticien);
 
             $specialite = $this->servicePraticien->getSpecialiteById($inputRdvDTO->__get('idSpecialite'));
-            print_r($specialite);
 
             if($this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien')));
 

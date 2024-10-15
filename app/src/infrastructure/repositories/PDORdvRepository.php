@@ -147,32 +147,6 @@ class PDORdvRepository implements RdvRepositoryInterface {
             throw new RepositoryDatabaseErrorException('Error while fetching patient');
         }
 
-        $query = 'SELECT * FROM praticien WHERE id = :id';
-        try {
-            $stmt = $this->pdoPraticien->prepare($query);
-            $stmt->bindParam(':id',$idPraticien, \PDO::PARAM_STR);
-            $stmt->execute();
-            $pra = $stmt->fetch();
-            if(!$pra){
-                throw new RepositoryEntityNotFoundException('Praticien not found');
-            }
-        } catch (\PDOException $e) {
-            throw new RepositoryDatabaseErrorException('Error while fetching praticien');
-        }
-
-        $query = 'SELECT * FROM specialite WHERE id = :id';
-        try {
-            $stmt = $this->pdoPraticien->prepare($query);
-            $stmt->bindParam(':id',$idSpecialite, \PDO::PARAM_STR);
-            $stmt->execute();
-            $spec = $stmt->fetch();
-            if(!$spec){
-                throw new RepositoryEntityNotFoundException('Specialite not found');
-            }
-        } catch (\PDOException $e) {
-            throw new RepositoryDatabaseErrorException('Error while fetching specialite');
-        }
-
         $rdv = new Rdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
         $rdv->setID(Uuid::uuid4()->toString());
         $this->save($rdv);
