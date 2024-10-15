@@ -31,7 +31,7 @@ class ConsulterRdvAction extends AbstractAction {
                      'line' => $e->getLine()
                  ]
              ];
-             return $rs->withStatus(404);
+             return JsonRenderer::render($rs, 404, $data);
          } catch (\Exception  $e) {
              $data = [
                  'message' => $e->getMessage(),
@@ -42,7 +42,7 @@ class ConsulterRdvAction extends AbstractAction {
                      'line' => $e->getLine()
                  ]
              ];
-             return $rs->withStatus(400);
+             return JsonRenderer::render($rs, 400, $data);
          }
 
         $data = [

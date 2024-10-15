@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\dto\InputRdvDTO;
+use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
 
 class CreerRdvAction extends AbstractAction {
 
@@ -32,10 +33,30 @@ class CreerRdvAction extends AbstractAction {
             $rdv_DTO = $this->serviceRdv->creerRdv($inputRdvDTO);
 
 
-        } catch (\Exception $e) {
-            $rs->getBody()->write($e->getMessage());
-            return $rs->withStatus(404);
-        }
+        } catch (ServiceRdvNotFoundException $e) {
+            $data = [
+                 'message' => $e->getMessage(),
+                 'exception' => [
+                     'type' => get_class($e),
+                     'code' => $e->getCode(),
+                     'file' => $e->getFile(),
+                     'line' => $e->getLine()
+                 ]
+             ];
+             return JsonRenderer::render($rs, 404, $data);
+         } catch (\Exception  $e) {
+            $data = [
+                'message' => $e->getMessage(),
+                'exception' => [
+                    'type' => get_class($e),
+                    'code' => $e->getCode(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ]
+            ];
+            
+            return JsonRenderer::render($rs, 400, $data);
+         }
 
 
         return JsonRenderer::render($rs, 200);

@@ -40,8 +40,7 @@ class ModifierRdvAction extends AbstractAction {
                     'line' => $e->getLine()
                 ]
             ];
-            $rs->getBody()->write($e->getMessage());
-            return $rs->withStatus(404);
+            return JsonRenderer::render($rs, 404, $data);
         } catch (\Exception  $e) {
             $data = [
                 'message' => $e->getMessage(),
@@ -52,8 +51,7 @@ class ModifierRdvAction extends AbstractAction {
                     'line' => $e->getLine()
                 ]
             ];
-            $rs->getBody()->write($e->getMessage());
-            return $rs->withStatus(400);
+            return JsonRenderer::render($rs, 400, $data);
         }
 
         $data = [
