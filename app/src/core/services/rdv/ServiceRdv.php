@@ -46,27 +46,23 @@ class ServiceRdv implements ServiceRdvInterface {
     }
 
     public function creerRdv(InputRdvDTO $inputRdvDTO): RdvDTO{
-        try{
-            $praticien = $this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien'));
+        $praticien = $this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien'));
 
-            $specialite = $this->servicePraticien->getSpecialiteById($inputRdvDTO->__get('idSpecialite'));
+        $specialite = $this->servicePraticien->getSpecialiteById($inputRdvDTO->__get('idSpecialite'));
 
-            if($this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien')));
+        if($this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien')));
 
-            if($specialite->__get('label') !== $praticien->__get('specialite_label')){
-                throw new ServiceRdvNotFoundException("Specialite label doesn't match" );
-            }
-
-            if($inputRdvDTO->__get('horaire') < new \DateTimeImmutable('now')){
-                throw new \Exception("La date et l'heure du rendez-vous ne peuvent pas être antérieures à la date et l'heure actuelles");
-            }
-
-            $rdv = $this->rdvRepository->creerRdv($inputRdvDTO->__get('idPraticien'), $inputRdvDTO->__get('idPatient'), $inputRdvDTO->__get('horaire'), $inputRdvDTO->__get('idSpecialite'), $inputRdvDTO->__get('type'), $inputRdvDTO->__get('statut'));
-            $rdvDTO = $rdv->toDTO();
-            return $rdvDTO;
-        } catch(RepositoryEntityNotFoundException $e) {
-            throw new ServiceRdvNotFoundException("Rdv ID not found" );
+        if($specialite->__get('label') !== $praticien->__get('specialite_label')){
+            throw new ServiceRdvNotFoundException("Specialite label doesn't match" );
         }
+
+        if($inputRdvDTO->__get('horaire') < new \DateTimeImmutable('now')){
+            throw new \Exception("La date et l'heure du rendez-vous ne peuvent pas être antérieures à la date et l'heure actuelles");
+        }
+
+        $rdv = $this->rdvRepository->creerRdv($inputRdvDTO->__get('idPraticien'), $inputRdvDTO->__get('idPatient'), $inputRdvDTO->__get('horaire'), $inputRdvDTO->__get('idSpecialite'), $inputRdvDTO->__get('type'), $inputRdvDTO->__get('statut'));
+        $rdvDTO = $rdv->toDTO();
+        return $rdvDTO;
     }
 
     public function annulerRdv(string $id): RdvDTO{
