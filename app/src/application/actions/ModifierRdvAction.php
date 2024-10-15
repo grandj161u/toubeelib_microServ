@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
+use toubeelib\core\dto\ModifyRdvDTO;
 
 class ModifierRdvAction extends AbstractAction {
 
@@ -22,8 +23,13 @@ class ModifierRdvAction extends AbstractAction {
         try {
             $idSpecialite = $rq->getParsedBody()["idSpecialite"] ?? null;
             $idPatient = $rq->getParsedBody()["idPatient"] ?? null;
+
+            $modify_RdvDTO = new ModifyRdvDTO($idPatient, $idSpecialite);
             
-            $rdv_DTO = $this->serviceRdv->modifierRdv($id, $idSpecialite, $idPatient);
+            print_r($modify_RdvDTO);
+
+
+            $rdv_DTO = $this->serviceRdv->modifierRdv($modify_RdvDTO, $id);
         } catch (ServiceRdvNotFoundException $e) {
            $data = [
                 'message' => $e->getMessage(),

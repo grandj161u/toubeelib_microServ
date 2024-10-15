@@ -29,7 +29,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface {
         } catch (\PDOException $e) {
             throw new RepositoryDatabaseErrorException('Error while fetching specialite');
         }
-        return new Specialite($specialite['ID'], $specialite['label'], $specialite['description']);
+        return new Specialite($specialite['id'], $specialite['label'], $specialite['description']);
     }
 
     public function save(Praticien $praticien): string {
@@ -66,7 +66,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface {
         $specialite = $this->getSpecialiteById($praticien['specialite_id']);
         $p = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel']);
         $p->setSpecialite($specialite);
-        $p->setID($praticien['ID']);
+        $p->setID($praticien['id']);
         return $p;
     }
 }
