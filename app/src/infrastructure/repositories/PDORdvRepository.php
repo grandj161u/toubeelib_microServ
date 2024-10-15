@@ -20,21 +20,21 @@ class PDORdvRepository implements RdvRepositoryInterface {
     }
 
     public function save(Rdv $rdv): string {
-        $query = 'INSERT INTO rdv (id, id_praticien, id_patient, id_spe, date, statut, type) VALUES (:id, :id_pra, :id_pat, :id_spec, :date, :statut, :type)';
+        $query = 'INSERT INTO rdv (id, id_praticien, id_patient, id_spe, date_rdv, statut, type_rdv) VALUES (:id, :id_pra, :id_pat, :id_spec, :date_rdv, :statut, :type_rdv)';
         try {
             $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindValue(':id', $rdv->getID(), \PDO::PARAM_STR);
             $stmt->bindValue(':id_pra', $rdv->__get('idPraticien'), \PDO::PARAM_STR);
             $stmt->bindValue(':id_pat', $rdv->__get('idPatient'), \PDO::PARAM_STR);
             $stmt->bindValue(':id_spec', $rdv->__get('idSpecialite'), \PDO::PARAM_STR);
-            $stmt->bindValue(':date', $rdv->__get('horaire')->format('Y-m-d H:i:s'), \PDO::PARAM_STR);
+            $stmt->bindValue(':date_rdv', $rdv->__get('horaire')->format('Y-m-d H:i:s'), \PDO::PARAM_STR);
             $stmt->bindValue(':statut', $rdv->__get('statut'), \PDO::PARAM_STR);
-            $stmt->bindValue(':type', $rdv->__get('type'), \PDO::PARAM_STR);
+            $stmt->bindValue(':type_rdv', $rdv->__get('type'), \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $e) {
-            throw new RepositoryDatabaseErrorException('Error while saving rdv$rdv');
+            throw new RepositoryDatabaseErrorException('Error while saving rdv $rdv ' . $e->getMessage());
         }
-        return $this->pdoRdv->lastInsertId();
+        return $rdv->getID();
     }
 
     public function getRdvById(string $id): Rdv {
@@ -50,7 +50,7 @@ class PDORdvRepository implements RdvRepositoryInterface {
         } catch (\PDOException $e) {
             throw new RepositoryDatabaseErrorException('Error while fetching rdv');
         }
-        $r = new Rdv($rdv['id_praticien'], $rdv['id_patient'], new \DateTimeImmutable($rdv['date']), $rdv['id_spe'], $rdv['type'], $rdv['statut']);
+        $r = new Rdv($rdv['id_praticien'], $rdv['id_patient'], new \DateTimeImmutable($rdv['date_rdv']), $rdv['id_spe'], $rdv['type_rdv'], $rdv['statut']);
         $r->setID($rdv['id']);
         return $r;
     }
@@ -70,7 +70,7 @@ class PDORdvRepository implements RdvRepositoryInterface {
         }
         $rdvsArray = [];
         foreach($rdvs as $rdv){
-            $r = new Rdv($rdv['id_praticien'], $rdv['id_patient'], new \DateTimeImmutable($rdv['date']), $rdv['id_spe'], $rdv['type'], $rdv['statut']);
+            $r = new Rdv($rdv['id_praticien'], $rdv['id_patient'], new \DateTimeImmutable($rdv['date_rdv']), $rdv['id_spe'], $rdv['type_rdv'], $rdv['statut']);
             $r->setID($rdv['id']);
             $rdvsArray[] = $r;
         }
@@ -149,6 +149,7 @@ class PDORdvRepository implements RdvRepositoryInterface {
 
         $rdv = new Rdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
         $rdv->setID(Uuid::uuid4()->toString());
+        print_r($rdv);
         $this->save($rdv);
         return $rdv;
     }
