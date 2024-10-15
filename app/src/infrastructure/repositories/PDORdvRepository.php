@@ -9,10 +9,12 @@ use toubeelib\core\domain\entities\rdv\Rdv;
 
 class PDORdvRepository implements RdvRepositoryInterface {
 
-    private \PDO $pdo;
+    private \PDO $pdoRdv;
+    private \PDO $pdoPatient;
 
-    public function __construct(\PDO $pdo){
-        $this->pdo = $pdo;
+    public function __construct(\PDO $pdoR, \PDO $pdoP){
+        $this->pdoRdv = $pdoR;
+        $this->pdoPatient = $pdoP;
     }
 
     public function save(Rdv $rdv): string {
@@ -21,7 +23,7 @@ class PDORdvRepository implements RdvRepositoryInterface {
             $rdv->setID(Uuid::uuid4()->toString());
         }
         try {
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindValue(':id', $rdv->getID(), \PDO::PARAM_STR);
             $stmt->bindValue(':id_pra', $rdv->__get('idPraticien'), \PDO::PARAM_STR);
             $stmt->bindValue(':id_pat', $rdv->__get('idPatient'), \PDO::PARAM_STR);
@@ -33,13 +35,13 @@ class PDORdvRepository implements RdvRepositoryInterface {
         } catch (\PDOException $e) {
             throw new RepositoryDatabaseErrorException('Error while saving rdv$rdv');
         }
-        return $this->pdo->lastInsertId();
+        return $this->pdoRdv->lastInsertId();
     }
 
     public function getRdvById(string $id): Rdv {
         $query = 'SELECT * FROM rdv WHERE id = :id';
         try {
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
             $stmt->execute();
             $rdv = $stmt->fetch();
@@ -57,7 +59,7 @@ class PDORdvRepository implements RdvRepositoryInterface {
     public function getRdvByPatient(string $id): array {
         $query = 'SELECT * FROM rdv WHERE id_patient = :id';
         try {
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
             $stmt->execute();
             $rdvs = $stmt->fetchAll();
@@ -77,11 +79,17 @@ class PDORdvRepository implements RdvRepositoryInterface {
     }
 
     public function modifierRdv(string $id, string|null $idSpecialite, string|null $idPatient): Rdv {
-        // Utilisation de getRdbByPatient pour vérifier si le patient existe
+        $query = 'SELECT * FROM patient WHERE id = :id';
         try {
-            $this->getRdvByPatient($idPatient);
-        } catch(RepositoryEntityNotFoundException $e) {
-            throw new RepositoryEntityNotFoundException('Patient not found');
+            $stmt = $this->pdoPatient->prepare($query);
+            $stmt->bindParam(':id',$idPatient, \PDO::PARAM_STR);
+            $stmt->execute();
+            $pa = $stmt->fetch();
+            if(!$pa){
+                throw new RepositoryEntityNotFoundException('Patient not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching rdv');
         }
 
         $query = 'UPDATE rdv SET';
@@ -95,7 +103,7 @@ class PDORdvRepository implements RdvRepositoryInterface {
             throw new RepositoryDatabaseErrorException('No data to update');
         }
         try {
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
             if($idSpecialite !== null){
                 $stmt->bindParam(':id_spe',$idSpecialite, \PDO::PARAM_STR);
@@ -120,7 +128,7 @@ class PDORdvRepository implements RdvRepositoryInterface {
     public function annulerRdv(string $id): Rdv {
         $query = 'UPDATE rdv SET statut = "annule" where id = :id';
         try {
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $e) {
