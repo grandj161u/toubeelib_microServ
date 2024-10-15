@@ -33,6 +33,20 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         return $ID;
     }
 
+    public function getRdvs(): array{
+        return $this->rdvs;
+    }
+
+    public function getRdvByPraticienId(string $id): array{
+        $rdvs = [];
+        foreach($this->rdvs as $rdv){
+            if($rdv->__get('idPraticien') === $id){
+                $rdvs[] = $rdv;
+            }
+        }
+        return $rdvs;
+    }
+
     public function getRdvById(string $id): Rdv{
         $rdv = $this->rdvs[$id] ??
             throw new RepositoryEntityNotFoundException("Rdv $id not found");

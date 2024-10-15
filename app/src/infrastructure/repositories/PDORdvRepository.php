@@ -37,6 +37,27 @@ class PDORdvRepository implements RdvRepositoryInterface {
         return $rdv->getID();
     }
 
+    public function getRdvs(): array {
+        $query = 'SELECT * FROM rdv';
+        try {
+            $stmt = $this->pdoRdv->prepare($query);
+            $stmt->execute();
+            $rdvs = $stmt->fetchAll();
+            if(!$rdvs){
+                throw new RepositoryEntityNotFoundException('Rdvs not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching rdvs');
+        }
+        $rdvsArray = [];
+        foreach($rdvs as $rdv){
+            $r = new Rdv($rdv['id_praticien'], $rdv['id_patient'], new \DateTimeImmutable($rdv['date_rdv']), $rdv['id_spe'], $rdv['type_rdv'], $rdv['statut']);
+            $r->setID($rdv['id']);
+            $rdvsArray[] = $r;
+        }
+        return $rdvsArray;
+    }
+
     public function getRdvById(string $id): Rdv {
         $query = 'SELECT * FROM rdv WHERE id = :id';
         try {
@@ -57,6 +78,28 @@ class PDORdvRepository implements RdvRepositoryInterface {
     
     public function getRdvByPatient(string $id): array {
         $query = 'SELECT * FROM rdv WHERE id_patient = :id';
+        try {
+            $stmt = $this->pdoRdv->prepare($query);
+            $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
+            $stmt->execute();
+            $rdvs = $stmt->fetchAll();
+            if(!$rdvs){
+                throw new RepositoryEntityNotFoundException('Rdvs not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching rdvs');
+        }
+        $rdvsArray = [];
+        foreach($rdvs as $rdv){
+            $r = new Rdv($rdv['id_praticien'], $rdv['id_patient'], new \DateTimeImmutable($rdv['date_rdv']), $rdv['id_spe'], $rdv['type_rdv'], $rdv['statut']);
+            $r->setID($rdv['id']);
+            $rdvsArray[] = $r;
+        }
+        return $rdvsArray;
+    }
+
+    public function getRdvByPraticienId(string $id): array {
+        $query = 'SELECT * FROM rdv WHERE id_praticien = :id';
         try {
             $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
