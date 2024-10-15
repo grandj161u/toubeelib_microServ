@@ -8,6 +8,7 @@ use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\dto\InputRdvDTO;
+use toubeelib\core\dto\ModifyRdvDTO;
 
 class ServiceRdv implements ServiceRdvInterface {
 
@@ -30,8 +31,8 @@ class ServiceRdv implements ServiceRdvInterface {
         }
     }
 
-    public function modifierRdv(string $id, string|null $idSpecialite, string|null $idPatient): RdvDTO{
-        $rdv = $this->rdvRepository->modifierRdv($id, $idSpecialite, $idPatient);
+    public function modifierRdv(ModifyRdvDTO $modifyRdvDTO, String $ID): RdvDTO{
+        $rdv = $this->rdvRepository->modifierRdv($ID, $modifyRdvDTO->__get('idSpecialite'), $modifyRdvDTO->__get('idPatient'));
         $rdvDTO = $rdv->toDTO();
         return $rdvDTO;
     }
