@@ -78,31 +78,34 @@ class PDORdvRepository implements RdvRepositoryInterface {
     }
 
     public function modifierRdv(string $id, string|null $idSpecialite, string|null $idPatient): Rdv {
-        $query = 'SELECT * FROM patient WHERE id = :id';
-        try {
-            $stmt = $this->pdoPatient->prepare($query);
-            $stmt->bindParam(':id',$idPatient, \PDO::PARAM_STR);
-            $stmt->execute();
-            $pa = $stmt->fetch();
-            if(!$pa){
-                throw new RepositoryEntityNotFoundException('Patient not found');
+        if($idPatient != null){
+            $query = 'SELECT * FROM patient WHERE id = :id';
+            try {
+                $stmt = $this->pdoPatient->prepare($query);
+                $stmt->bindParam(':id',$idPatient, \PDO::PARAM_STR);
+                $stmt->execute();
+                $pa = $stmt->fetch();
+                if(!$pa){
+                    throw new RepositoryEntityNotFoundException('Patient not found');
             }
-        } catch (\PDOException $e) {
-            throw new RepositoryDatabaseErrorException('Error while fetching rdv');
-        }
-
-        $query = 'SELECT * FROM specialite WHERE id = :id';
-        try {
-            $stmt = $this->pdoPraticien->prepare($query);
-            $stmt->bindParam(':id',$idSpecialite, \PDO::PARAM_STR);
-            $stmt->execute();
-            $spec = $stmt->fetch();
-            if(!$spec){
-                throw new RepositoryEntityNotFoundException('Specialite not found');
+            } catch (\PDOException $e) {
+                throw new RepositoryDatabaseErrorException('Error while fetching rdv');
             }
-        } catch (\PDOException $e) {
-            throw new RepositoryDatabaseErrorException('Error while fetching specialite');
         }
+        if($idSpecialite != null){
+            $query = 'SELECT * FROM specialite WHERE id = :id';
+            try {
+                $stmt = $this->pdoPraticien->prepare($query);
+                $stmt->bindParam(':id',$idSpecialite, \PDO::PARAM_STR);
+                $stmt->execute();
+                $spec = $stmt->fetch();
+                if(!$spec){
+                    throw new RepositoryEntityNotFoundException('Specialite not found');
+                }
+            } catch (\PDOException $e) {
+                throw new RepositoryDatabaseErrorException('Error while fetching specialite');
+            }
+        }   
 
         $query = 'UPDATE rdv SET';
         if($idSpecialite === null && $idPatient != null) {
