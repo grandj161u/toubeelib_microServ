@@ -11,17 +11,16 @@ class PDORdvRepository implements RdvRepositoryInterface {
 
     private \PDO $pdoRdv;
     private \PDO $pdoPatient;
+    private \PDO $pdoPraticien;
 
-    public function __construct(\PDO $pdoR, \PDO $pdoP){
+    public function __construct(\PDO $pdoR, \PDO $pdoPa, \PDO $pdoPra){
         $this->pdoRdv = $pdoR;
-        $this->pdoPatient = $pdoP;
+        $this->pdoPatient = $pdoPa;
+        $this->pdoPraticien = $pdoPra;
     }
 
     public function save(Rdv $rdv): string {
         $query = 'INSERT INTO rdv (id, id_praticien, id_patient, id_spe, date, statut, type) VALUES (:id, :id_pra, :id_pat, :id_spec, :date, :statut, :type)';
-        if($rdv->getID() === null){
-            $rdv->setID(Uuid::uuid4()->toString());
-        }
         try {
             $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindValue(':id', $rdv->getID(), \PDO::PARAM_STR);
@@ -119,6 +118,45 @@ class PDORdvRepository implements RdvRepositoryInterface {
     }
 
     public function creerRdv(string $idPraticien, string $idPatient, \DateTimeImmutable $horaire, string $idSpecialite, string $type, string $statut): Rdv {
+        $query = 'SELECT * FROM patient WHERE id = :id';
+        try {
+            $stmt = $this->pdoPatient->prepare($query);
+            $stmt->bindParam(':id',$idPatient, \PDO::PARAM_STR);
+            $stmt->execute();
+            $pa = $stmt->fetch();
+            if(!$pa){
+                throw new RepositoryEntityNotFoundException('Patient not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching patient');
+        }
+
+        $query = 'SELECT * FROM praticien WHERE id = :id';
+        try {
+            $stmt = $this->pdoPraticien->prepare($query);
+            $stmt->bindParam(':id',$idPraticien, \PDO::PARAM_STR);
+            $stmt->execute();
+            $pra = $stmt->fetch();
+            if(!$pra){
+                throw new RepositoryEntityNotFoundException('Praticien not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching praticien');
+        }
+
+        $query = 'SELECT * FROM specialite WHERE id = :id';
+        try {
+            $stmt = $this->pdoPraticien->prepare($query);
+            $stmt->bindParam(':id',$idSpecialite, \PDO::PARAM_STR);
+            $stmt->execute();
+            $spec = $stmt->fetch();
+            if(!$spec){
+                throw new RepositoryEntityNotFoundException('Specialite not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching specialite');
+        }
+        
         $rdv = new Rdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
         $rdv->setID(Uuid::uuid4()->toString());
         $this->save($rdv);
