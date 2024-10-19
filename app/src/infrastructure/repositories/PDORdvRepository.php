@@ -198,13 +198,13 @@ class PDORdvRepository implements RdvRepositoryInterface {
     }
 
     public function annulerRdv(string $id): Rdv {
-        $query = 'UPDATE rdv SET statut = "annule" where id = :id';
+        $query = "UPDATE rdv SET statut = 'annule' where id = :id";
         try {
             $stmt = $this->pdoRdv->prepare($query);
             $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $e) {
-            throw new RepositoryDatabaseErrorException('Error while updating rdv');
+            throw new RepositoryDatabaseErrorException($e->getMessage());
         }
         return $this->getRdvById($id);
     }
