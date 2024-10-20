@@ -18,10 +18,10 @@ class DispoByPraticien extends AbstractAction {
 
     public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
         $id = $args["idPraticien"];
-        $dateDebut = new \DateTimeImmutable($args["dateDebut"]);
-        $dateFin = new \DateTimeImmutable($args["dateFin"]);
 
         try {
+            $dateDebut = new \DateTimeImmutable($args["dateDebut"]);
+            $dateFin = new \DateTimeImmutable($args["dateFin"]);
             $tabDispo = $this->serviceRdv->getDisponibiliterPraticien($id, $dateDebut, $dateFin);
         } catch (ServiceRdvNotFoundException $e) {
             $data = [
