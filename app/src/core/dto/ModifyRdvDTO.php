@@ -28,7 +28,6 @@ class ModifyRdvDTO extends DTO
             $specialite = htmlspecialchars($idSpecialite, ENT_QUOTES, 'UTF-8');
         }
 
-        // Si toutes les validations passent, on assigne les valeurs
         $this->idPatient = $patient;
         $this->idSpecialite = $specialite;
     }

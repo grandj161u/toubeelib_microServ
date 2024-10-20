@@ -14,7 +14,6 @@ class GererCycleRdvDTO extends DTO
             throw new InvalidArgumentException("Le statut du RDV ne peut pas être annuler de cette manière.");
         }
 
-        // Validation du statut (par exemple, vérification d'une valeur dans une liste prédéfinie)
         $validStatus = ['honorer', 'non_honorer', 'payer'];
         if (!in_array($statut, $validStatus, true)) {
             throw new InvalidArgumentException("Le statut du RDV n'est pas valide.");

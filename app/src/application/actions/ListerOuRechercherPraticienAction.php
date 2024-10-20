@@ -18,10 +18,8 @@ class ListerOuRechercherPraticienAction extends AbstractAction {
 
     public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
 
-        // Récupérer les paramètres de l'URL
         $queryParams = $rq->getQueryParams();
-    
-        // Récupérer un paramètre spécifique (idPraticien)
+
         $idPraticien = $queryParams['idPraticien'] ?? null;
 
         try {
