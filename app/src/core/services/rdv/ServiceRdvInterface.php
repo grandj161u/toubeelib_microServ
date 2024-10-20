@@ -19,4 +19,5 @@ interface ServiceRdvInterface{
     public function getRdvByPraticienId(string $id): array;
     public function getDisponibiliterPraticien(string $idPraticien, DateTimeImmutable $dateDebut, DateTimeImmutable $dateFin): array;
     public function GererCycleRdv(GererCycleRdvDTO $gererCycleRdvDTO, string $ID): RdvDTO;
+    public function getPlanningPraticien(string $idPraticien, DateTimeImmutable $dateDebut, DateTimeImmutable $dateFin): array;
 }

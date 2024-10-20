@@ -144,7 +144,11 @@ class ServiceRdv implements ServiceRdvInterface {
         try{
         $rdvs = $this->rdvRepository->getRdvByPraticienId($idPraticien);
         } catch(RepositoryEntityNotFoundException $e) {
-            $rdvs = [];
+            if($this->servicePraticien->getPraticienById($idPraticien)){
+                $rdvs = [];
+            }else {
+                throw new ServiceRdvNotFoundException("Praticien ID not found" );
+            }
         }
         
         $tabHorairePossible = [];
@@ -170,7 +174,7 @@ class ServiceRdv implements ServiceRdvInterface {
         
         if (!empty($rdvs)) {
             foreach ($rdvs as $rdv) {
-                if($rdv->__get('statut') !== 'annule'){
+                if($rdv->__get('statut') !== 'annuler'){
                     $tabHorairePrise[] = $rdv->__get('horaire')->format('Y-m-d H:i');
                 }
             }
@@ -186,6 +190,36 @@ class ServiceRdv implements ServiceRdvInterface {
         }
     
         return array_values($disponibilites);
+    }
+
+    public function getPlanningPraticien(string $idPraticien, DateTimeImmutable $dateDebut, DateTimeImmutable $dateFin): array {
+        
+        try {
+            $rdvs = $this->rdvRepository->getRdvByPraticienId($idPraticien);
+        } catch (RepositoryEntityNotFoundException $e) {
+            if($this->servicePraticien->getPraticienById($idPraticien)){
+                $rdvs = [];
+            }else {
+                throw new ServiceRdvNotFoundException("Praticien ID not found" );
+            }
+        }
+    
+        $planning = [];
+    
+        
+        foreach ($rdvs as $rdv) {
+            $horaireRdv = $rdv->__get('horaire'); 
+            
+            if ($horaireRdv >= $dateDebut && $horaireRdv <= $dateFin && $rdv->__get('statut') !== 'annuler') {
+                $planning[] = [
+                    'horaire' => $horaireRdv->format('Y-m-d H:i'),
+                    'specialitée' => $this->servicePraticien->getSpecialiteById($rdv->__get('idSpecialite'))->__get('label'),
+                    'type' => $rdv->__get('type'),
+                ];
+            }
+        }
+    
+        return $planning;
     }
 
 }

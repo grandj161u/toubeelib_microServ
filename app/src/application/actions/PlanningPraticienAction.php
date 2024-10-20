@@ -8,7 +8,7 @@ use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
 
-class DispoByPraticienAction extends AbstractAction {
+class PlanningPraticienAction extends AbstractAction {
 
     protected ServiceRdvInterface $serviceRdv;
 
@@ -22,7 +22,7 @@ class DispoByPraticienAction extends AbstractAction {
         try {
             $dateDebut = new \DateTimeImmutable($args["dateDebut"]);
             $dateFin = new \DateTimeImmutable($args["dateFin"]);
-            $tabDispo = $this->serviceRdv->getDisponibiliterPraticien($id, $dateDebut, $dateFin);
+            $tabDispo = $this->serviceRdv->getPlanningPraticien($id, $dateDebut, $dateFin);
         } catch (ServiceRdvNotFoundException $e) {
             $data = [
                  'message' => $e->getMessage(),
@@ -48,9 +48,9 @@ class DispoByPraticienAction extends AbstractAction {
          }
 
         $data = [
-            'disponibilités' => $tabDispo,
+            'planning' => $tabDispo,
             'links' => [
-                'self' => [ 'href' => '/DispoPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"] ],
+                'self' => [ 'href' => '/PlanningPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"] ],
             ]
         ];
 

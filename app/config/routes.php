@@ -21,9 +21,11 @@ return function( \Slim\App $app):\Slim\App {
     // l'url s'utilise de cette manière : /DispoPraticien/{idPraticien}/2024-10-19/2024-10-20 et si vous voulez rajouter l'heure : /DispoPraticien/{idPraticien}/2024-10-19 16:00/2024-10-20 18:00
     $app->get('/DispoPraticien/{idPraticien}/{dateDebut}/{dateFin}', \toubeelib\application\actions\DispoByPraticienAction::class);
 
+    // l'url s'utilise de cette manière : /PlanningPraticien/{idPraticien}/2024-10-19/2024-10-20 et si vous voulez rajouter l'heure : /PlanningPraticien/{idPraticien}/2024-10-19 16:00/2024-10-20 18:00
+    $app->get('/PlanningPraticien/{idPraticien}/{dateDebut}/{dateFin}', \toubeelib\application\actions\PlanningPraticienAction::class);
+
     // l'url s'utilise de cette manière : /Praticiens?idPraticien=p1 ou /Praticiens
     $app->get('/Praticiens', \toubeelib\application\actions\ListerOuRechercherPraticienAction::class);
-
 
     return $app;
 };

@@ -34,7 +34,7 @@ class InputRdvDTO extends DTO
         }
 
         // Validation du type de RDV (par exemple, vérification d'une valeur dans une liste prédéfinie)
-        $validTypes = ['1', '2', '3', '4', '5'];
+        $validTypes = ['presentiel', 'teleconsultation'];
         if (!in_array($type, $validTypes, true)) {
             throw new InvalidArgumentException("Le type de RDV n'est pas valide.");
         }
