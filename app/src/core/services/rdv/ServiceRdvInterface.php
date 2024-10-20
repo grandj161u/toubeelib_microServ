@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\dto\ModifyRdvDTO;
+use toubeelib\core\dto\GererCycleRdvDTO;
 
 interface ServiceRdvInterface{
 
@@ -16,6 +17,6 @@ interface ServiceRdvInterface{
     public function annulerRdv(String $id): RdvDTO;
     public function getRdvByPatient(String $id): array;
     public function getRdvByPraticienId(string $id): array;
-
     public function getDisponibiliterPraticien(string $idPraticien, DateTimeImmutable $dateDebut, DateTimeImmutable $dateFin): array;
+    public function GererCycleRdv(GererCycleRdvDTO $gererCycleRdvDTO, string $ID): RdvDTO;
 }

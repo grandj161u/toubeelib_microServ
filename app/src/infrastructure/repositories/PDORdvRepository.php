@@ -208,4 +208,17 @@ class PDORdvRepository implements RdvRepositoryInterface {
         }
         return $this->getRdvById($id);
     }
+
+    public function GererCycleRdv(string $id, string $statut): Rdv {
+        $query = "UPDATE rdv SET statut = :statut where id = :id";
+        try {
+            $stmt = $this->pdoRdv->prepare($query);
+            $stmt->bindParam(':id',$id, \PDO::PARAM_STR);
+            $stmt->bindParam(':statut',$statut, \PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException($e->getMessage());
+        }
+        return $this->getRdvById($id);
+    }
 }

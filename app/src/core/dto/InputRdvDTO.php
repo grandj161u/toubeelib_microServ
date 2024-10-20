@@ -40,7 +40,7 @@ class InputRdvDTO extends DTO
         }
 
         // Validation du statut (par exemple, vérification d'une valeur dans une liste prédéfinie)
-        $validStatus = ['en_attente', 'confirmer', 'annule', 'a_payer'];
+        $validStatus = ['honorer', 'non_honorer', 'annuler', 'payer'];
         if (!in_array($statut, $validStatus, true)) {
             throw new InvalidArgumentException("Le statut du RDV n'est pas valide.");
         }

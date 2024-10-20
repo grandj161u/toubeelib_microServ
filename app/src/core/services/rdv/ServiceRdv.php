@@ -10,6 +10,7 @@ use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\ModifyRdvDTO;
+use toubeelib\core\dto\GererCycleRdvDTO;
 use DateTimeImmutable;
 
 class ServiceRdv implements ServiceRdvInterface {
@@ -44,6 +45,12 @@ class ServiceRdv implements ServiceRdvInterface {
 
     public function modifierRdv(ModifyRdvDTO $modifyRdvDTO, String $ID): RdvDTO{
         $rdv = $this->rdvRepository->modifierRdv($ID, $modifyRdvDTO->__get('idSpecialite'), $modifyRdvDTO->__get('idPatient'));
+        $rdvDTO = $rdv->toDTO();
+        return $rdvDTO;
+    }
+
+    public function GererCycleRdv(GererCycleRdvDTO $gererCycleRdvDTO, string $ID): RdvDTO{
+        $rdv = $this->rdvRepository->GererCycleRdv($ID, $gererCycleRdvDTO->__get('statut'));
         $rdvDTO = $rdv->toDTO();
         return $rdvDTO;
     }
@@ -120,7 +127,7 @@ class ServiceRdv implements ServiceRdvInterface {
     public function annulerRdv(string $id): RdvDTO{
         try{
 
-            if($this->rdvRepository->getRdvById($id)->__get('statut') === 'annule'){
+            if($this->rdvRepository->getRdvById($id)->__get('statut') === 'annuler'){
                 throw new \Exception("Le rendez-vous a déjà été annulé");
             }
             
