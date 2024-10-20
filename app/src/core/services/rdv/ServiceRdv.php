@@ -80,8 +80,8 @@ class ServiceRdv implements ServiceRdvInterface {
 
         if($this->servicePraticien->getPraticienById($inputRdvDTO->__get('idPraticien')));
 
-        if($specialite->__get('label') !== $praticien->__get('specialite_label')){
-            throw new ServiceRdvNotFoundException("Specialite label doesn't match" );
+        if($specialite->__get('label') !== $praticien->__get('specialite')->__get('label')){
+            throw new ServiceRdvNotFoundException("Specialite doesn't match" );
         }
 
         $horaire = $inputRdvDTO->__get('horaire');

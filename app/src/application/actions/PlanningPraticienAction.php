@@ -51,6 +51,7 @@ class PlanningPraticienAction extends AbstractAction {
             'planning' => $tabDispo,
             'links' => [
                 'self' => [ 'href' => '/PlanningPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"] ],
+                'disponibilités' => [ '/DispoPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"] ],
             ]
         ];
 

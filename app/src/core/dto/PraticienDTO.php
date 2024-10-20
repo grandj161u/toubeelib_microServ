@@ -4,6 +4,7 @@ namespace toubeelib\core\dto;
 
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\dto\DTO;
+use toubeelib\core\domain\entities\praticien\Specialite;
 
 class PraticienDTO extends DTO
 {
@@ -12,7 +13,7 @@ class PraticienDTO extends DTO
     protected string $prenom;
     protected string $adresse;
     protected string $tel;
-    protected string $specialite_label;
+    protected Specialite $specialite;
 
     public function __construct(Praticien $p)
     {
@@ -21,7 +22,7 @@ class PraticienDTO extends DTO
         $this->prenom = $p->prenom;
         $this->adresse = $p->adresse;
         $this->tel = $p->tel;
-        $this->specialite_label = $p->specialite->label;
+        $this->specialite = $p->specialite;
     }
 
 

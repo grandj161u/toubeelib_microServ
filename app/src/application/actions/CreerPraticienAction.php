@@ -4,36 +4,32 @@ namespace toubeelib\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\core\services\rdv\ServiceRdvInterface;
+use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\dto\InputRdvDTO;
-use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
+use toubeelib\core\dto\InputPraticienDTO;
+use toubeelib\core\services\praticien\ServicePraticienInternalErrorException;
 
-class CreerRdvAction extends AbstractAction {
+class CreerPraticienAction extends AbstractAction {
 
-    protected ServiceRdvInterface $serviceRdv;
+    protected ServicePraticienInterface $servicePraticien;
 
-    public function __construct(ServiceRdvInterface $serviceRdv) {
-        $this->serviceRdv = $serviceRdv;
+    public function __construct(ServicePraticienInterface $servicePraticien) {
+        $this->servicePraticien = $servicePraticien;
     }
 
     public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
 
         try {
-            $idPraticien = $rq->getParsedBody()["idPraticien"] ?? null;
-            $idPatient = $rq->getParsedBody()["idPatient"] ?? null;
-            $horaireData = $rq->getParsedBody()["horaire"] ?? null;
-            $idSpecialite = $rq->getParsedBody()["idSpecialite"] ?? null;            
-            $type = $rq->getParsedBody()["type"] ?? null;
-            $statut = $rq->getParsedBody()["statut"] ?? null;
+            $nom = $rq->getParsedBody()["nom"] ?? null;
+            $prenom = $rq->getParsedBody()["prenom"] ?? null;
+            $tel = $rq->getParsedBody()["tel"] ?? null;
+            $adresse = $rq->getParsedBody()["adresse"] ?? null;
+            $specialite_id = $rq->getParsedBody()["specialite_id"] ?? null;
 
-            $horaire = new \DateTimeImmutable($horaireData['date'], new \DateTimeZone($horaireData['timezone']));
+            $inputPraticienDTO = new InputPraticienDTO($nom, $prenom, $tel, $adresse, $specialite_id);
+            $praticien_DTO = $this->servicePraticien->createPraticien($inputPraticienDTO);
 
-            $inputRdvDTO = new InputRdvDTO($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
-            $rdv_DTO = $this->serviceRdv->creerRdv($inputRdvDTO);
-
-
-        } catch (ServiceRdvNotFoundException $e) {
+        } catch (ServicePraticienInternalErrorException $e) {
             $data = [
                  'message' => $e->getMessage(),
                  'exception' => [
@@ -59,8 +55,9 @@ class CreerRdvAction extends AbstractAction {
          }
 
         $data = [
-            'rdv' => $rdv_DTO
+            'praticien' => $praticien_DTO
         ];
+
 
         return JsonRenderer::render($rs, 200, $data);
 

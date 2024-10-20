@@ -15,7 +15,6 @@ class InputRdvDTO extends DTO
     protected string $statut;
 
     public function __construct($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut) {
-        // Validation des identifiants de praticien et de patient (par exemple, alphanumériques)
         if (!is_string($idPraticien) || !ctype_alnum($idPraticien)) {
             throw new InvalidArgumentException("L'idPraticien doit être une chaîne alphanumérique.");
         }
@@ -28,18 +27,16 @@ class InputRdvDTO extends DTO
             throw new InvalidArgumentException("L'horaire doit être une instance de DateTimeImmutable.");
         }
 
-        // Validation de l'identifiant de la spécialité
+        // Validation de la spécialité
         if (!is_string($idSpecialite) || !ctype_alnum($idSpecialite)) {
             throw new InvalidArgumentException("L'idSpecialite doit être une chaîne alphanumérique.");
         }
 
-        // Validation du type de RDV (par exemple, vérification d'une valeur dans une liste prédéfinie)
-        $validTypes = ['presentiel', 'teleconsultation'];
+          $validTypes = ['presentiel', 'teleconsultation'];
         if (!in_array($type, $validTypes, true)) {
             throw new InvalidArgumentException("Le type de RDV n'est pas valide.");
         }
 
-        // Validation du statut (par exemple, vérification d'une valeur dans une liste prédéfinie)
         $validStatus = ['honorer', 'non_honorer', 'annuler', 'payer'];
         if (!in_array($statut, $validStatus, true)) {
             throw new InvalidArgumentException("Le statut du RDV n'est pas valide.");

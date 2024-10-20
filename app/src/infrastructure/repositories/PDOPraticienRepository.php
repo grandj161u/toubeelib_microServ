@@ -33,7 +33,21 @@ class PDOPraticienRepository implements PraticienRepositoryInterface {
     }
 
     public function save(Praticien $praticien): string {
-        $query = 'INSERT INTO praticien (ID, nom, prenom, specialite_id) VALUES (:ID, :nom, :prenom, :specialite_id)';
+        $query = 'SELECT * FROM specialite WHERE id = :id';
+        $specialiteId = $praticien->__get('specialite')->getID();
+        try {
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':id',$specialiteId, \PDO::PARAM_STR);
+            $stmt->execute();
+            $pa = $stmt->fetch();
+            if(!$pa){
+                throw new RepositoryEntityNotFoundException('Specialite not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching specialite');
+        }
+
+        $query = 'INSERT INTO praticien (ID, nom, prenom, tel, adresse, specialite_id) VALUES (:ID, :nom, :prenom, :tel, :adresse, :specialite_id)';
         if($praticien->getID() === null){
             $praticien->setID(Uuid::uuid4()->toString());
         }
@@ -42,12 +56,14 @@ class PDOPraticienRepository implements PraticienRepositoryInterface {
             $stmt->bindValue(':ID', $praticien->getID(), \PDO::PARAM_STR);
             $stmt->bindValue(':nom', $praticien->__get('nom'), \PDO::PARAM_STR);
             $stmt->bindValue(':prenom', $praticien->__get('prenom'), \PDO::PARAM_STR);
+            $stmt->bindValue(':tel', $praticien->__get('tel'), \PDO::PARAM_STR);
+            $stmt->bindValue(':adresse', $praticien->__get('adresse'), \PDO::PARAM_STR);
             $stmt->bindValue(':specialite_id', $praticien->__get('specialite')->getID(), \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $e) {
             throw new RepositoryDatabaseErrorException('Error while saving praticien');
         }
-        return $this->pdo->lastInsertId();
+        return $praticien->getID();
     }
 
     public function getPraticienById(string $id): Praticien {

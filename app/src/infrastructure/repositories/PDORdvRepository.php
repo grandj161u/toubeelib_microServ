@@ -192,7 +192,6 @@ class PDORdvRepository implements RdvRepositoryInterface {
 
         $rdv = new Rdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
         $rdv->setID(Uuid::uuid4()->toString());
-        print_r($rdv);
         $this->save($rdv);
         return $rdv;
     }

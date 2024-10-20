@@ -73,7 +73,6 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         $rdv = new Rdv($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
         
         $ID = $this->save($rdv);
-        print_r($rdv);
         return $this->rdvs[$ID];
     }
 

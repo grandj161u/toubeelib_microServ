@@ -16,6 +16,8 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->post('/Rdvs', \toubeelib\application\actions\CreerRdvAction::class);
 
+    $app->post('/Praticiens', \toubeelib\application\actions\CreerPraticienAction::class);
+
     $app->delete('/Rdvs/{id}', \toubeelib\application\actions\AnnulerRdvAction::class);
 
     // l'url s'utilise de cette manière : /DispoPraticien/{idPraticien}/2024-10-19/2024-10-20 et si vous voulez rajouter l'heure : /DispoPraticien/{idPraticien}/2024-10-19 16:00/2024-10-20 18:00

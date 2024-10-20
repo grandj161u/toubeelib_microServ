@@ -9,16 +9,16 @@ class Praticien extends Entity
 {
     protected string $nom;
     protected string $prenom;
-    protected string $adresse;
     protected string $tel;
-    protected ?Specialite $specialite = null; // version simplifiée : une seule spécialité
+    protected string $adresse;
+    protected ?Specialite $specialite = null;
 
-    public function __construct(string $nom, string $prenom, string $adresse, string $tel)
+    public function __construct(string $nom, string $prenom, string $tel, string $adresse)
     {
         $this->nom = $nom;
         $this->prenom = $prenom;
-        $this->adresse = $adresse;
         $this->tel = $tel;
+        $this->adresse = $adresse;
     }
 
 

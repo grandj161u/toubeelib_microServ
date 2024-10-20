@@ -51,6 +51,7 @@ class DispoByPraticienAction extends AbstractAction {
             'disponibilités' => $tabDispo,
             'links' => [
                 'self' => [ 'href' => '/DispoPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"] ],
+                'planning' => [ 'href' => '/PlanningPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"] ]
             ]
         ];
 

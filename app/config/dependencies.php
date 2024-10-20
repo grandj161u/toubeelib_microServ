@@ -16,6 +16,8 @@ use toubeelib\infrastructure\repositories\PDORdvRepository;
 use toubeelib\application\actions\ListerOuRechercherPraticienAction;
 use toubeelib\application\actions\DispoByPraticienAction;
 use toubeelib\application\actions\AnnulerRdvAction;
+use toubeelib\application\actions\PlanningPraticienAction;
+use toubeelib\application\actions\CreerPraticienAction;
 
 
 return [
@@ -70,6 +72,14 @@ return [
 
     AnnulerRdvAction::class => function (ContainerInterface $c) {
         return new AnnulerRdvAction($c->get(ServiceRdvInterface::class));
+    },
+
+    PlanningPraticienAction::class => function (ContainerInterface $c) {
+        return new PlanningPraticienAction($c->get(ServiceRdvInterface::class));
+    },
+
+    CreerPraticienAction::class => function (ContainerInterface $c) {
+        return new CreerPraticienAction($c->get(ServicePraticienInterface::class));
     },
 
     ServiceRdvInterface::class => function (ContainerInterface $c) {
