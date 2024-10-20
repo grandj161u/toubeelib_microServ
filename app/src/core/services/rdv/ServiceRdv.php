@@ -77,34 +77,42 @@ class ServiceRdv implements ServiceRdvInterface {
             throw new ServiceRdvNotFoundException("Specialite label doesn't match" );
         }
 
-        if($inputRdvDTO->__get('horaire') < new \DateTimeImmutable('now')){
+        $horaire = $inputRdvDTO->__get('horaire');
+
+        if($horaire < new DateTimeImmutable('now')){
             throw new \Exception("La date et l'heure du rendez-vous ne peuvent pas être antérieures à la date et l'heure actuelles");
         }
 
-        if($inputRdvDTO->__get('horaire')->format('H') < 8 || $inputRdvDTO->__get('horaire')->format('H') > 18){
+        if($horaire->format('H') < 8 || $horaire->format('H') > 18){
             throw new \Exception("L'heure du rendez-vous doit être comprise entre 8h et 18h");
         }
 
-        // // on vérifie que le rendez-vous n'est pas déjà pris et qu'il n'est pas compris dans un créneau de 30 minutes
-        // $rdvs = $this->getRdvByPraticienId($inputRdvDTO->__get('idPraticien'));
-        // $inputHoraire = $inputRdvDTO->__get('horaire');
-        // foreach($rdvs as $rdv){
-        //     $rdvHoraire = $rdv->__get('horaire');
+        $dateDebut = new DateTimeImmutable($horaire->format('Y-m-d 08:00'));
+        $dateFin = new DateTimeImmutable($horaire->format('Y-m-d 18:00'));
 
-        //     if($rdvHoraire->format('Y-m-d H:i:s') === $inputHoraire->format('Y-m-d H:i:s')){
-        //         throw new \Exception("Le rendez-vous est déjà pris");
-        //     }
-            
-        //     $startWindow = $rdvHoraire->sub(new DateInterval('PT30M'));
-        //     $endWindow = $rdvHoraire->add(new DateInterval('PT30M'));
-            
-    
-        //     if ($inputHoraire >= $startWindow && $inputHoraire <= $endWindow) {
-        //         throw new \Exception("Le rendez-vous est compris dans un créneau de 30 minutes d'un autre rendez-vous");
-        //     }  
-        // }
+        $disponibilites = $this->getDisponibiliterPraticien($inputRdvDTO->__get('idPraticien'), $dateDebut, $dateFin);  
 
-        $rdv = $this->rdvRepository->creerRdv($inputRdvDTO->__get('idPraticien'), $inputRdvDTO->__get('idPatient'), $inputRdvDTO->__get('horaire'), $inputRdvDTO->__get('idSpecialite'), $inputRdvDTO->__get('type'), $inputRdvDTO->__get('statut'));
+        $horaireChoisi = $horaire->format('Y-m-d H:i');
+        $dispoTrouvee = false;
+
+        foreach ($disponibilites as $dispo) {
+            if ($dispo->format('Y-m-d H:i') === $horaireChoisi) {
+                $dispoTrouvee = true;
+                break;
+            }
+        }
+
+        if (!$dispoTrouvee) {
+            throw new \Exception("Le praticien n'est pas disponible à cet horaire");
+        }
+
+        $rdv = $this->rdvRepository->creerRdv(
+        $inputRdvDTO->__get('idPraticien'), 
+        $inputRdvDTO->__get('idPatient'),
+        $horaire, 
+        $inputRdvDTO->__get('idSpecialite'), 
+        $inputRdvDTO->__get('type'), 
+        $inputRdvDTO->__get('statut'));
         $rdvDTO = $rdv->toDTO();
         return $rdvDTO;
     }
@@ -125,16 +133,21 @@ class ServiceRdv implements ServiceRdvInterface {
     }
 
     public function getDisponibiliterPraticien(string $idPraticien, DateTimeImmutable $dateDebut, DateTimeImmutable $dateFin): array {
+
+        try{
         $rdvs = $this->rdvRepository->getRdvByPraticienId($idPraticien);
+        } catch(RepositoryEntityNotFoundException $e) {
+            $rdvs = [];
+        }
         
         $tabHorairePossible = [];
 
-        //si la l'horaire de début commence avant 8h, on la fixe à 8h
+        //si l'horaire de début commence avant 8h, on la fixe à 8h
         if($dateDebut->format('H') < 8){
             $dateDebut = new DateTimeImmutable($dateDebut->format('Y-m-d 08:00'));
         }
 
-        //si la l'horaire de fin commence après 18h, on la fixe à 18h
+        //si l'horaire de fin commence après 18h, on la fixe à 18h
         if($dateFin->format('H') > 18){
             $dateFin = new DateTimeImmutable($dateFin->format('Y-m-d 18:00'));
         }
@@ -147,9 +160,11 @@ class ServiceRdv implements ServiceRdvInterface {
         }
 
         $tabHorairePrise = [];
-    
-        foreach ($rdvs as $rdv) {
-            $tabHorairePrise[] = $rdv->__get('horaire')->format('Y-m-d H:i');
+        
+        if (!empty($rdvs)) {
+            foreach ($rdvs as $rdv) {
+                $tabHorairePrise[] = $rdv->__get('horaire')->format('Y-m-d H:i');
+            }
         }
 
         $disponibilites = array_diff($tabHorairePossible, $tabHorairePrise);
