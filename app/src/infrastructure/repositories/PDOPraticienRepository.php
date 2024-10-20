@@ -69,4 +69,27 @@ class PDOPraticienRepository implements PraticienRepositoryInterface {
         $p->setID($praticien['id']);
         return $p;
     }
+
+    public function getAllPraticien(): array {
+        $query = 'SELECT * FROM praticien';
+        try {
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $praticiens = $stmt->fetchAll();
+            if(!$praticiens){
+                throw new RepositoryEntityNotFoundException('Praticiens not found');
+            }
+        } catch (\PDOException $e) {
+            throw new RepositoryDatabaseErrorException('Error while fetching praticiens');
+        }
+        $praticiensArray = [];
+        foreach($praticiens as $praticien){
+            $specialite = $this->getSpecialiteById($praticien['specialite_id']);
+            $p = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel']);
+            $p->setSpecialite($specialite);
+            $p->setID($praticien['id']);
+            $praticiensArray[] = $p;
+        }
+        return $praticiensArray;
+    }
 }

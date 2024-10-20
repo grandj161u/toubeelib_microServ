@@ -51,4 +51,18 @@ class ServicePraticien implements ServicePraticienInterface
             throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
         } 
     }
+
+    public function getAllPraticien(): array
+    {
+        try{
+            $praticiens = $this->praticienRepository->getAllPraticien();
+            $praticiensDTO = [];
+                foreach($praticiens as $praticien){
+                    $praticiensDTO[] = $praticien->toDTO();
+                }
+            return $praticiensDTO;
+        } catch(RepositoryDatabaseErrorException $e) {
+            throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
+        } 
+    }
 }

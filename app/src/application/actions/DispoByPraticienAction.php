@@ -8,7 +8,7 @@ use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
 
-class DispoByPraticien extends AbstractAction {
+class DispoByPraticienAction extends AbstractAction {
 
     protected ServiceRdvInterface $serviceRdv;
 
