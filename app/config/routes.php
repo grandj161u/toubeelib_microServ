@@ -10,7 +10,7 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->get('/Rdvs/{id}', \toubeelib\application\actions\ConsulterRdvAction::class);
 
-    $app->patch('/Rdvs/{id}', \toubeelib\application\actions\ModifierRdvAction::class);
+    $app->patch('/Rdvs/{id}', \toubeelib\application\actions\ModifierOuGererCycleRdvAction::class);
 
     $app->get('/Rdvs/patient/{idPatient}', \toubeelib\application\actions\ConsulterRdvByPatientAction::class);
 
