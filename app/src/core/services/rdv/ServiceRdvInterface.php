@@ -16,4 +16,6 @@ interface ServiceRdvInterface{
     public function annulerRdv(String $id): RdvDTO;
     public function getRdvByPatient(String $id): array;
     public function getRdvByPraticienId(string $id): array;
+
+    public function getDisponibiliterPraticien(string $idPraticien, DateTimeImmutable $dateDebut, DateTimeImmutable $dateFin): array;
 }

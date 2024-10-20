@@ -18,6 +18,8 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->delete('/Rdvs/{id}', \toubeelib\application\actions\AnnulerRdvAction::class);
 
+    $app->get('/DispoPraticien/{idPraticien}/{dateDebut}/{dateFin}', \toubeelib\application\actions\DispoByPraticien::class);
+
 
     return $app;
 };

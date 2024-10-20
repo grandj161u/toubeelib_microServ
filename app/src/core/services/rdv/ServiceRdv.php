@@ -10,6 +10,7 @@ use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\ModifyRdvDTO;
+use DateTimeImmutable;
 
 class ServiceRdv implements ServiceRdvInterface {
 
@@ -84,24 +85,24 @@ class ServiceRdv implements ServiceRdvInterface {
             throw new \Exception("L'heure du rendez-vous doit être comprise entre 8h et 18h");
         }
 
-        // on vérifie que le rendez-vous n'est pas déjà pris et qu'il n'est pas compris dans un créneau de 30 minutes
-        $rdvs = $this->getRdvByPraticienId($inputRdvDTO->__get('idPraticien'));
-        $inputHoraire = $inputRdvDTO->__get('horaire');
-        foreach($rdvs as $rdv){
-            $rdvHoraire = $rdv->__get('horaire');
+        // // on vérifie que le rendez-vous n'est pas déjà pris et qu'il n'est pas compris dans un créneau de 30 minutes
+        // $rdvs = $this->getRdvByPraticienId($inputRdvDTO->__get('idPraticien'));
+        // $inputHoraire = $inputRdvDTO->__get('horaire');
+        // foreach($rdvs as $rdv){
+        //     $rdvHoraire = $rdv->__get('horaire');
 
-            if($rdvHoraire->format('Y-m-d H:i:s') === $inputHoraire->format('Y-m-d H:i:s')){
-                throw new \Exception("Le rendez-vous est déjà pris");
-            }
+        //     if($rdvHoraire->format('Y-m-d H:i:s') === $inputHoraire->format('Y-m-d H:i:s')){
+        //         throw new \Exception("Le rendez-vous est déjà pris");
+        //     }
             
-            $startWindow = $rdvHoraire->sub(new DateInterval('PT30M'));
-            $endWindow = $rdvHoraire->add(new DateInterval('PT30M'));
+        //     $startWindow = $rdvHoraire->sub(new DateInterval('PT30M'));
+        //     $endWindow = $rdvHoraire->add(new DateInterval('PT30M'));
             
     
-            if ($inputHoraire >= $startWindow && $inputHoraire <= $endWindow) {
-                throw new \Exception("Le rendez-vous est compris dans un créneau de 30 minutes d'un autre rendez-vous");
-            }  
-        }
+        //     if ($inputHoraire >= $startWindow && $inputHoraire <= $endWindow) {
+        //         throw new \Exception("Le rendez-vous est compris dans un créneau de 30 minutes d'un autre rendez-vous");
+        //     }  
+        // }
 
         $rdv = $this->rdvRepository->creerRdv($inputRdvDTO->__get('idPraticien'), $inputRdvDTO->__get('idPatient'), $inputRdvDTO->__get('horaire'), $inputRdvDTO->__get('idSpecialite'), $inputRdvDTO->__get('type'), $inputRdvDTO->__get('statut'));
         $rdvDTO = $rdv->toDTO();
@@ -121,6 +122,46 @@ class ServiceRdv implements ServiceRdvInterface {
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServiceRdvNotFoundException("Rdv ID not found" );
         }
+    }
+
+    public function getDisponibiliterPraticien(string $idPraticien, DateTimeImmutable $dateDebut, DateTimeImmutable $dateFin): array {
+        $rdvs = $this->rdvRepository->getRdvByPraticienId($idPraticien);
+        
+        $tabHorairePossible = [];
+
+        //si la l'horaire de début commence avant 8h, on la fixe à 8h
+        if($dateDebut->format('H') < 8){
+            $dateDebut = new DateTimeImmutable($dateDebut->format('Y-m-d 08:00'));
+        }
+
+        //si la l'horaire de fin commence après 18h, on la fixe à 18h
+        if($dateFin->format('H') > 18){
+            $dateFin = new DateTimeImmutable($dateFin->format('Y-m-d 18:00'));
+        }
+        $startTime = $dateDebut;
+        $endTime = $dateFin;
+    
+        while ($startTime <= $endTime) {
+            $tabHorairePossible[] = $startTime->format('Y-m-d H:i');
+            $startTime = $startTime->add(new DateInterval('PT30M'));
+        }
+
+        $tabHorairePrise = [];
+    
+        foreach ($rdvs as $rdv) {
+            $tabHorairePrise[] = $rdv->__get('horaire')->format('Y-m-d H:i');
+        }
+
+        $disponibilites = array_diff($tabHorairePossible, $tabHorairePrise);
+
+        foreach($disponibilites as $key => $dispo){
+            $disponibilites[$key] = new DateTimeImmutable($dispo);
+            if($disponibilites[$key]->format('H') < 8 || $disponibilites[$key]->format('H') >= 18){
+                unset($disponibilites[$key]);
+            }
+        }
+    
+        return array_values($disponibilites);
     }
 
 }
