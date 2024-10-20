@@ -163,7 +163,9 @@ class ServiceRdv implements ServiceRdvInterface {
         
         if (!empty($rdvs)) {
             foreach ($rdvs as $rdv) {
-                $tabHorairePrise[] = $rdv->__get('horaire')->format('Y-m-d H:i');
+                if($rdv->__get('statut') !== 'annule'){
+                    $tabHorairePrise[] = $rdv->__get('horaire')->format('Y-m-d H:i');
+                }
             }
         }
 
