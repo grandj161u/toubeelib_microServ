@@ -18,7 +18,14 @@ use toubeelib\application\actions\DispoByPraticienAction;
 use toubeelib\application\actions\AnnulerRdvAction;
 use toubeelib\application\actions\PlanningPraticienAction;
 use toubeelib\application\actions\CreerPraticienAction;
-
+use toubeelib\application\actions\SignInAction;
+use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
+use toubeelib\core\services\auth\ServiceAuthInterface;
+use toubeelib\infrastructure\repositories\PDOAuthRepository;
+use toubeelib\core\services\auth\ServiceAuth;
+use toubeelib\application\providers\auth\JWTManager;
+use toubeelib\application\providers\auth\JWTAuthProvider;
+use toubeelib\application\actions\RefreshAction;
 
 return [
 
@@ -40,6 +47,14 @@ return [
 
     'rdv.pdo' => function (ContainerInterface $c) {
         $config = parse_ini_file(__DIR__ . '/rdv.db.ini');
+        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $user = $config['username'];
+        $password = $config['password'];
+        return new PDO($dsn, $user, $password);
+    },
+
+    'auth.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file(__DIR__ . '/auth.db.ini');
         $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
         $user = $config['username'];
         $password = $config['password'];
@@ -98,6 +113,31 @@ return [
 
     PraticienRepositoryInterface::class => function (ContainerInterface $c) {
         return new PDOPraticienRepository($c->get('praticien.pdo'));
-    }
+    },
 
+    AuthRepositoryInterface::class => function (ContainerInterface $c) {
+        return new PDOAuthRepository($c->get('auth.pdo'));
+    },
+
+    ServiceAuthInterface::class => function (ContainerInterface $c) {
+        return new ServiceAuth(
+            $c->get(AuthRepositoryInterface::class),
+            $c->get(JWTManager::class));
+    },
+
+    JWTAuthProvider::class => function (ContainerInterface $c) {
+        return new JWTAuthProvider($c->get(ServiceAuth::class),$c->get(JWTManager::class));
+    },
+
+    JWTManager::class => function (ContainerInterface $c) {
+        return new JWTManager(getenv('JWT_SECRET_KEY'),'HS512');
+    },
+
+    SignInAction::class => function (ContainerInterface $c) {
+        return new SignInAction($c->get(JWTAuthProvider::class));
+    },
+
+    RefreshAction::class => function (ContainerInterface $c) {
+        return new RefreshAction($c->get(JWTAuthProvider::class));
+    },
 ];

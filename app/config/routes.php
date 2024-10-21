@@ -29,5 +29,9 @@ return function( \Slim\App $app):\Slim\App {
     // l'url s'utilise de cette manière : /Praticiens?idPraticien=p1 ou /Praticiens
     $app->get('/Praticiens', \toubeelib\application\actions\ListerOuRechercherPraticienAction::class);
 
+    $app->post('/users/signin', \toubeelib\application\actions\SignInAction::class);
+
+    $app->post('/refresh', \toubeelib\application\actions\RefreshAction::class);
+
     return $app;
 };
