@@ -26,6 +26,7 @@ use toubeelib\core\services\auth\ServiceAuth;
 use toubeelib\application\providers\auth\JWTManager;
 use toubeelib\application\providers\auth\JWTAuthProvider;
 use toubeelib\application\actions\RefreshAction;
+use toubeelib\application\middlewares\AuthMiddleware;
 
 return [
 
@@ -140,4 +141,8 @@ return [
     RefreshAction::class => function (ContainerInterface $c) {
         return new RefreshAction($c->get(JWTAuthProvider::class));
     },
+
+    AuthMiddleware::class => function (ContainerInterface $c) {
+        return new AuthMiddleware($c->get(JWTAuthProvider::class));
+    }
 ];

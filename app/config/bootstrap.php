@@ -2,6 +2,7 @@
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
+use toubeelib\application\middlewares\AuthMiddleware;
 use toubeelib\application\middlewares\Cors;
 
 
@@ -14,6 +15,7 @@ $c=$builder->build();
 $app = AppFactory::createFromContainer($c);
 
 $app->add(new Cors());
+//$app->add(AuthMiddleware::class);
 
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
