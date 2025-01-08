@@ -54,6 +54,8 @@ services:
     volumes:
       - ./apiGateway:/var/php
     working_dir: /var/php
+    depends_on:
+      - api.toubeelib
     command: php -S 0.0.0.0:8080 -t /var/php/public
     
     
