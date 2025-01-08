@@ -1,4 +1,5 @@
 app/vendor
+apiGateway/vendor
 *.log
 *.ini
 .DS_Store
