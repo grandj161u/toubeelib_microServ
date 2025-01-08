@@ -5,7 +5,7 @@ namespace gateway_tblb\application\actions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class HomeAction extends AbstractAction
+class HomeAction extends AbstractGatewayAction
 {
 
 
