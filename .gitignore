@@ -1,5 +1,6 @@
 app/vendor
 apiGateway/vendor
+app-praticiens/vendor
 *.log
 *.ini
 .DS_Store

@@ -23,6 +23,25 @@ services:
       - toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+
+  # service api.praticien : api pour la partie praticien de toubeelib
+  #
+  api.praticien:
+    build:
+      context: build
+      dockerfile: Dockerfile_Principal
+    env_file: ./toubeelib.env
+    ports:
+      - 2080:80
+    volumes:
+      - ./app-praticiens:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      - toubeelib.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
     # service toubeelib.db : base de données postgresql
   toubeelib.db:
     image: 'postgres:latest'

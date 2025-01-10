@@ -13,12 +13,18 @@ return
 
         'guzzle.client.api' => function (ContainerInterface $c) {
             return new \GuzzleHttp\Client([
-                'base_uri' => $c->get('settings')['toubeelib.praticiens.api']
+                'base_uri' => $c->get('settings')['toubeelib.api']
+            ]);
+        },
+
+        'guzzle.client.praticien' => function (ContainerInterface $c) {
+            return new \GuzzleHttp\Client([
+                'base_uri' => $c->get('settings')['praticien.api']
             ]);
         },
 
         GatewayListePraticienAction::class => function (ContainerInterface $c) {
-            return new GatewayListePraticienAction($c->get('guzzle.client.api'));
+            return new GatewayListePraticienAction($c->get('guzzle.client.praticien'));
         },
 
         HomeAction::class => function (ContainerInterface $c) {
@@ -26,6 +32,6 @@ return
         },
 
         GatewayPraticienByIdAction::class => function (ContainerInterface $c) {
-            return new GatewayPraticienByIdAction(($c->get('guzzle.client.api')));
+            return new GatewayPraticienByIdAction(($c->get('guzzle.client.praticien')));
         }
     ];
