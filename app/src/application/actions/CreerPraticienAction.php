@@ -9,15 +9,18 @@ use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\dto\InputPraticienDTO;
 use toubeelib\core\services\praticien\ServicePraticienInternalErrorException;
 
-class CreerPraticienAction extends AbstractAction {
+class CreerPraticienAction extends AbstractAction
+{
 
     protected ServicePraticienInterface $servicePraticien;
 
-    public function __construct(ServicePraticienInterface $servicePraticien) {
+    public function __construct(ServicePraticienInterface $servicePraticien)
+    {
         $this->servicePraticien = $servicePraticien;
     }
 
-    public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
+    {
 
         try {
             $nom = $rq->getParsedBody()["nom"] ?? null;
@@ -28,19 +31,7 @@ class CreerPraticienAction extends AbstractAction {
 
             $inputPraticienDTO = new InputPraticienDTO($nom, $prenom, $tel, $adresse, $specialite_id);
             $praticien_DTO = $this->servicePraticien->createPraticien($inputPraticienDTO);
-
         } catch (ServicePraticienInternalErrorException $e) {
-            $data = [
-                 'message' => $e->getMessage(),
-                 'exception' => [
-                     'type' => get_class($e),
-                     'code' => $e->getCode(),
-                     'file' => $e->getFile(),
-                     'line' => $e->getLine()
-                 ]
-             ];
-             return JsonRenderer::render($rs, 404, $data);
-         } catch (\Exception  $e) {
             $data = [
                 'message' => $e->getMessage(),
                 'exception' => [
@@ -50,9 +41,20 @@ class CreerPraticienAction extends AbstractAction {
                     'line' => $e->getLine()
                 ]
             ];
-            
+            return JsonRenderer::render($rs, 500, $data);
+        } catch (\Exception  $e) {
+            $data = [
+                'message' => $e->getMessage(),
+                'exception' => [
+                    'type' => get_class($e),
+                    'code' => $e->getCode(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ]
+            ];
+
             return JsonRenderer::render($rs, 400, $data);
-         }
+        }
 
         $data = [
             'praticien' => $praticien_DTO
@@ -60,6 +62,5 @@ class CreerPraticienAction extends AbstractAction {
 
 
         return JsonRenderer::render($rs, 200, $data);
-
     }
 }

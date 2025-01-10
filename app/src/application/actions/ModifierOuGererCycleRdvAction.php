@@ -6,9 +6,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\rdv\ServiceRdvInterface;
 use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
 use toubeelib\core\dto\ModifyRdvDTO;
 use toubeelib\core\dto\GererCycleRdvDTO;
+use toubeelib\core\services\rdv\ServiceRdvInternalErrorException;
 
 class ModifierOuGererCycleRdvAction extends AbstractAction
 {
@@ -42,7 +42,7 @@ class ModifierOuGererCycleRdvAction extends AbstractAction
 
                 $rdv_DTO = $this->serviceRdv->modifierRdv($modify_RdvDTO, $id);
             }
-        } catch (ServiceRdvNotFoundException $e) {
+        } catch (ServiceRdvInternalErrorException $e) {
             $data = [
                 'message' => $e->getMessage(),
                 'exception' => [
@@ -52,7 +52,7 @@ class ModifierOuGererCycleRdvAction extends AbstractAction
                     'line' => $e->getLine()
                 ]
             ];
-            return JsonRenderer::render($rs, 404, $data);
+            return JsonRenderer::render($rs, 500, $data);
         } catch (\Exception  $e) {
             $data = [
                 'message' => $e->getMessage(),
