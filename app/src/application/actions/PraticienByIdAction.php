@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
+use toubeelib\core\services\praticien\ServicePraticienNotFoundException;
 
 class PraticienByIdAction extends AbstractAction
 {
@@ -29,7 +29,7 @@ class PraticienByIdAction extends AbstractAction
 
         try {
             $prat_DTO = $this->servicePrat->getPraticienById($idPraticien);
-        } catch (ServiceRdvNotFoundException $e) {
+        } catch (ServicePraticienNotFoundException $e) {
             $data = [
                 'message' => $e->getMessage(),
                 'exception' => [

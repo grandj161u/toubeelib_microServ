@@ -28,11 +28,11 @@ class ServicePraticien implements ServicePraticienInterface
             $id = $this->praticienRepository->save($praticien);
             $praticien->setID($id);
             return new PraticienDTO($praticien);
-        } catch(NestedValidationException $e) {
+        } catch (NestedValidationException $e) {
             throw new ServicePraticienInvalidDataException('invalid Praticien data');
-        } catch(RepositoryDatabaseErrorException $e) {
+        } catch (RepositoryDatabaseErrorException $e) {
             throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
-        }    
+        }
     }
 
     public function getPraticienById(string $id): PraticienDTO
@@ -40,11 +40,11 @@ class ServicePraticien implements ServicePraticienInterface
         try {
             $praticien = $this->praticienRepository->getPraticienById($id);
             return new PraticienDTO($praticien);
-        } catch(RepositoryEntityNotFoundException $e) {
-            throw new ServicePraticienInvalidDataException('invalid Praticien ID');
-        } catch(RepositoryDatabaseErrorException $e) {
+        } catch (RepositoryEntityNotFoundException $e) {
+            throw new ServicePraticienNotFoundException('invalid Praticien ID');
+        } catch (RepositoryDatabaseErrorException $e) {
             throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
-        } 
+        }
     }
 
     public function getSpecialiteById(string $id): SpecialiteDTO
@@ -52,24 +52,24 @@ class ServicePraticien implements ServicePraticienInterface
         try {
             $specialite = $this->praticienRepository->getSpecialiteById($id);
             return $specialite->toDTO();
-        } catch(RepositoryEntityNotFoundException $e) {
-            throw new ServicePraticienInvalidDataException('invalid Specialite ID');
-        } catch(RepositoryDatabaseErrorException $e) {
+        } catch (RepositoryEntityNotFoundException $e) {
+            throw new ServicePraticienNotFoundException('invalid Specialite ID');
+        } catch (RepositoryDatabaseErrorException $e) {
             throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
-        } 
+        }
     }
 
     public function getAllPraticien(): array
     {
-        try{
+        try {
             $praticiens = $this->praticienRepository->getAllPraticien();
             $praticiensDTO = [];
-                foreach($praticiens as $praticien){
-                    $praticiensDTO[] = $praticien->toDTO();
-                }
+            foreach ($praticiens as $praticien) {
+                $praticiensDTO[] = $praticien->toDTO();
+            }
             return $praticiensDTO;
-        } catch(RepositoryDatabaseErrorException $e) {
+        } catch (RepositoryDatabaseErrorException $e) {
             throw new ServicePraticienInternalErrorException('Service internal Error' . $e->getMessage());
-        } 
+        }
     }
 }
