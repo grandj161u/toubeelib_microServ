@@ -10,7 +10,7 @@ class GatewayListePraticienAction extends AbstractGatewayAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $response = $this->remote->request('GET', 'Praticiens');
+        $response = $this->remote->request('GET', 'praticiens');
         $body = $response->getBody()->getContents();
 
         $rs->getBody()->write($body);
