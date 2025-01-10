@@ -48,9 +48,9 @@ class ConsulterRdvByPatientAction extends AbstractAction {
         $data = [
             'rdv' => $rdv_DTO,
             'links' => [
-                'self' => [ 'href' => '/Rdvs/' . $id ], 
-                'modifer' => [ 'href' => '/Rdvs/' . $id ],
-                'annuler' => [ 'href' => '/Rdvs/' . $id ],
+                'self' => [ 'href' => '/rdvs/' . $id ], 
+                'modifer' => [ 'href' => '/rdvs/' . $id ],
+                'annuler' => [ 'href' => '/rdvs/' . $id ],
             ]
         ];
 
