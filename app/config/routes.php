@@ -13,7 +13,7 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->patch('/rdvs/{id}', \toubeelib\application\actions\ModifierOuGererCycleRdvAction::class);
 
-    $app->get('/rdvs/patient/{idPatient}', \toubeelib\application\actions\ConsulterRdvByPatientAction::class);
+    $app->get('/patients/{idPatient}/rdvs', \toubeelib\application\actions\ConsulterRdvByPatientAction::class);
 
     $app->post('/rdvs', \toubeelib\application\actions\CreerRdvAction::class);
 
