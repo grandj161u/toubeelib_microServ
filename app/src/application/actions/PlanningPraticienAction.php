@@ -55,7 +55,8 @@ class PlanningPraticienAction extends AbstractAction
         $data = [
             'planning' => $tabDispo,
             'links' => [
-                'self' => ['href' => '/praticens/' . $id . '/rdvs'],
+                'self' => ['href' => '/praticens/' . $id . '/rdvs?debut=' . $dateDebut->format('Y-m-d') . '&fin=' . $dateFin->format('Y-m-d')],
+                'disponibilités' => ['href' => '/praticiens/' . $id . '/dispos?debut=' . $dateDebut->format('Y-m-d') . '&fin=' . $dateFin->format('Y-m-d')]
             ]
         ];
 

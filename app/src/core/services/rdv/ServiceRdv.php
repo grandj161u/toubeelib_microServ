@@ -165,16 +165,6 @@ class ServiceRdv implements ServiceRdvInterface
 
         $tabHorairePossible = [];
 
-        //si l'horaire de début commence avant 8h, on la fixe à 8h
-        if ($dateDebut->format('H') < 8) {
-            $dateDebut = new DateTimeImmutable($dateDebut->format('Y-m-d 08:00'));
-        }
-
-        //si l'horaire de fin commence après 18h, on la fixe à 18h
-        if ($dateFin->format('H') > 18) {
-            $dateFin = new DateTimeImmutable($dateFin->format('Y-m-d 18:00'));
-        }
-
         $startTime = $dateDebut;
         $endTime = $dateFin;
 
