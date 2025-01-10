@@ -9,7 +9,7 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/', \gateway_tblb\application\actions\HomeAction::class);
 
-    $app->get('/Praticiens', \gateway_tblb\application\actions\GatewayListePraticienAction::class);
+    $app->get('/praticiens', \gateway_tblb\application\actions\GatewayListePraticienAction::class);
 
     return $app;
 };
