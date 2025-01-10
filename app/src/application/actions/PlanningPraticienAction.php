@@ -21,10 +21,12 @@ class PlanningPraticienAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         $id = $args["idPraticien"];
+        $dateDebutParam = $rq->getQueryParams()["debut"] ?? null;
+        $dateFinParam = $rq->getQueryParams()["fin"] ?? new \DateTimeImmutable('now');
 
         try {
-            $dateDebut = new \DateTimeImmutable($args["dateDebut"]);
-            $dateFin = new \DateTimeImmutable($args["dateFin"]);
+            $dateDebut = $dateDebutParam ? new \DateTimeImmutable($dateDebutParam) : $dateFinParam->sub(new \DateInterval('P7D'));
+            $dateFin = $dateFinParam instanceof \DateTimeImmutable ? $dateFinParam : new \DateTimeImmutable($dateFinParam);
             $tabDispo = $this->serviceRdv->getPlanningPraticien($id, $dateDebut, $dateFin);
         } catch (ServiceRdvNotFoundException $e) {
             $data = [
@@ -53,8 +55,7 @@ class PlanningPraticienAction extends AbstractAction
         $data = [
             'planning' => $tabDispo,
             'links' => [
-                'self' => ['href' => '/PlanningPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"]],
-                'disponibilités' => ['/DispoPraticien/' . $id . '/' . $args["dateDebut"] . '/' . $args["dateFin"]],
+                'self' => ['href' => '/praticens/' . $id . '/rdvs'],
             ]
         ];
 
