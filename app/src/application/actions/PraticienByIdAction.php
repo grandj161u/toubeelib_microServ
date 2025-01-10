@@ -56,7 +56,7 @@ class PraticienByIdAction extends AbstractAction
         $data = [
             'praticien' => $prat_DTO,
             'links' => [
-                'self' => ['href' => '/Praticiens?idPraticien=' . $idPraticien],
+                'self' => ['href' => '/praticiens/' . $idPraticien],
             ]
         ];
 
