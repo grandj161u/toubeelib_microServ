@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-
 return function (\Slim\App $app): \Slim\App {
 
     $app->get('/', \gateway_tblb\application\actions\HomeAction::class);
 
     $app->get('/praticiens', \gateway_tblb\application\actions\GatewayListePraticienAction::class);
+
+    $app->get('/praticiens/{idPraticien}', \gateway_tblb\application\actions\GatewayPraticienByIdAction::class);
 
     return $app;
 };

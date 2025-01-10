@@ -50,7 +50,7 @@ class ListerPraticiensAction extends AbstractAction
         $data = [
             'praticiens' => $prat_DTO,
             'links' => [
-                'self' => ['href' => '/Praticiens'],
+                'self' => ['href' => '/praticiens'],
             ]
         ];
 

@@ -10,15 +10,18 @@ use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
 use toubeelib\core\dto\ModifyRdvDTO;
 use toubeelib\core\dto\GererCycleRdvDTO;
 
-class ModifierOuGererCycleRdvAction extends AbstractAction {
+class ModifierOuGererCycleRdvAction extends AbstractAction
+{
 
     protected ServiceRdvInterface $serviceRdv;
 
-    public function __construct(ServiceRdvInterface $serviceRdv) {
+    public function __construct(ServiceRdvInterface $serviceRdv)
+    {
         $this->serviceRdv = $serviceRdv;
     }
 
-    public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
+    {
         $id = $args["id"];
         $body = $rq->getParsedBody();
 
@@ -40,7 +43,7 @@ class ModifierOuGererCycleRdvAction extends AbstractAction {
                 $rdv_DTO = $this->serviceRdv->modifierRdv($modify_RdvDTO, $id);
             }
         } catch (ServiceRdvNotFoundException $e) {
-           $data = [
+            $data = [
                 'message' => $e->getMessage(),
                 'exception' => [
                     'type' => get_class($e),
@@ -66,9 +69,9 @@ class ModifierOuGererCycleRdvAction extends AbstractAction {
         $data = [
             'rdv' => $rdv_DTO,
             'links' => [
-                'self' => [ 'href' => '/Rdvs/' . $id ], 
-                'modifier' => [ 'href' => '/Rdvs/' . $id ],
-                'annuler' => [ 'href' => '/Rdvs/' . $id ],
+                'self' => ['href' => '/rdvs/' . $id],
+                'modifier' => ['href' => '/rdvs/' . $id],
+                'annuler' => ['href' => '/rdvs/' . $id],
             ]
         ];
 
