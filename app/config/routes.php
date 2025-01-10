@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-return function( \Slim\App $app):\Slim\App {
+return function (\Slim\App $app): \Slim\App {
 
     $app->get('/', \toubeelib\application\actions\HomeAction::class);
 
@@ -26,8 +27,9 @@ return function( \Slim\App $app):\Slim\App {
     // l'url s'utilise de cette manière : /PlanningPraticien/{idPraticien}/2024-10-19/2024-10-20 et si vous voulez rajouter l'heure : /PlanningPraticien/{idPraticien}/2024-10-19 16:00/2024-10-20 18:00
     $app->get('/PlanningPraticien/{idPraticien}/{dateDebut}/{dateFin}', \toubeelib\application\actions\PlanningPraticienAction::class);
 
-    // l'url s'utilise de cette manière : /Praticiens?idPraticien=p1 ou /Praticiens
-    $app->get('/praticiens', \toubeelib\application\actions\ListerOuRechercherPraticienAction::class);
+    $app->get('/praticiens', \toubeelib\application\actions\ListerPraticiensAction::class);
+
+    $app->get('/praticiens/{idPraticien}', \toubeelib\application\actions\PraticienByIdAction::class);
 
     $app->post('/users/signin', \toubeelib\application\actions\SignInAction::class);
 
