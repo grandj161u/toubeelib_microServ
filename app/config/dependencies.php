@@ -18,6 +18,8 @@ use toubeelib\application\actions\DispoByPraticienAction;
 use toubeelib\application\actions\AnnulerRdvAction;
 use toubeelib\application\actions\PlanningPraticienAction;
 use toubeelib\application\actions\CreerPraticienAction;
+use toubeelib\application\actions\ListerPraticiensAction;
+use toubeelib\application\actions\PraticienByIdAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
 use toubeelib\core\services\auth\ServiceAuthInterface;
@@ -27,6 +29,7 @@ use toubeelib\application\providers\auth\JWTManager;
 use toubeelib\application\providers\auth\JWTAuthProvider;
 use toubeelib\application\actions\RefreshAction;
 use toubeelib\application\middlewares\AuthMiddleware;
+use toubeelib\core\domain\entities\praticien\Praticien;
 
 return [
 
@@ -78,8 +81,12 @@ return [
         return new CreerRdvAction($c->get(ServiceRdvInterface::class));
     },
 
-    ListerOuRechercherPraticienAction::class => function (ContainerInterface $c) {
-        return new ListerOuRechercherPraticienAction($c->get(ServicePraticienInterface::class));
+    ListerPraticiensAction::class => function (ContainerInterface $c) {
+        return new ListerPraticiensAction($c->get(ServicePraticienInterface::class));
+    },
+
+    PraticienByIdAction::class => function (ContainerInterface $c) {
+        return new PraticienByIdAction($c->get(ServicePraticienInterface::class));
     },
 
     DispoByPraticienAction::class => function (ContainerInterface $c) {
@@ -100,8 +107,9 @@ return [
 
     ServiceRdvInterface::class => function (ContainerInterface $c) {
         return new ServiceRdv(
-        $c->get(RdvRepositoryInterface::class), 
-        $c->get(ServicePraticienInterface::class));
+            $c->get(RdvRepositoryInterface::class),
+            $c->get(ServicePraticienInterface::class)
+        );
     },
 
     RdvRepositoryInterface::class => function (ContainerInterface $c) {
@@ -123,15 +131,16 @@ return [
     ServiceAuthInterface::class => function (ContainerInterface $c) {
         return new ServiceAuth(
             $c->get(AuthRepositoryInterface::class),
-            $c->get(JWTManager::class));
+            $c->get(JWTManager::class)
+        );
     },
 
     JWTAuthProvider::class => function (ContainerInterface $c) {
-        return new JWTAuthProvider($c->get(ServiceAuth::class),$c->get(JWTManager::class));
+        return new JWTAuthProvider($c->get(ServiceAuth::class), $c->get(JWTManager::class));
     },
 
     JWTManager::class => function (ContainerInterface $c) {
-        return new JWTManager(getenv('JWT_SECRET_KEY'),'HS512');
+        return new JWTManager(getenv('JWT_SECRET_KEY'), 'HS512');
     },
 
     SignInAction::class => function (ContainerInterface $c) {
