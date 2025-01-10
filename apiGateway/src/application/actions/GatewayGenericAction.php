@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace gateway_tblb\application\actions;
 
@@ -25,7 +25,7 @@ class GatewayGenericAction extends AbstractGatewayAction
         try {
             $response = $this->remote->request($method, $uri, $options);
         } catch (RequestException $e) {
-            match($e->getCode()) {
+            match ($e->getCode()) {
                 404 => throw new HttpNotFoundException($rq, "Resource not found"),
                 403 => throw new HttpForbiddenException($rq, "Access forbidden"),
                 400 => throw new HttpBadRequestException($rq, "Bad request"),

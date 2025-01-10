@@ -10,5 +10,7 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/praticiens/{idPraticien}', \gateway_tblb\application\actions\GatewayPraticienByIdAction::class);
 
+    $app->get('/praticiens/{idPraticien}/rdvs', \gateway_tblb\application\actions\GatewayPlanningPraticienAction::class);
+
     return $app;
 };
