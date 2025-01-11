@@ -7,7 +7,6 @@ services:
   # service api.toubeelib : api pour la prise de rdv
   #
   api.toubeelib:
-  #  image: 'canals/php:8.3-cli'
     build:
       context: build
       dockerfile: Dockerfile_Principal
@@ -42,7 +41,42 @@ services:
       - toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
-    # service toubeelib.db : base de données postgresql
+  # service api.rdv : api pour la partie rdv de toubeelib
+  #
+  api.rdv:
+    build:
+      context: build
+      dockerfile: Dockerfile_Principal
+    env_file: ./toubeelib.env
+    ports:
+      - 3080:80
+    volumes:
+      - ./app-rdv:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      - toubeelib.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  # gateway.toubeelib : api gateway pour toubeelib
+  #
+  gateway.toubeelib:
+    build:
+      context: build
+      dockerfile: Dockerfile_Gateway
+    ports:
+      - 1000:8080
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./apiGateway:/var/php
+    working_dir: /var/php
+    depends_on:
+      - api.toubeelib
+    command: php -S 0.0.0.0:8080 -t /var/php/public
+
+  # service toubeelib.db : base de données postgresql
   toubeelib.db:
     image: 'postgres:latest'
     env_file: ./toubeelibdb.env
@@ -61,21 +95,6 @@ services:
       - 8080:8080
     networks:
       - toubeelib.net
-
-  gateway.toubeelib:
-    build:
-      context: build
-      dockerfile: Dockerfile_Gateway
-    ports:
-      - 1000:8080
-    networks:
-      - toubeelib.net
-    volumes:
-      - ./apiGateway:/var/php
-    working_dir: /var/php
-    depends_on:
-      - api.toubeelib
-    command: php -S 0.0.0.0:8080 -t /var/php/public
     
     
 

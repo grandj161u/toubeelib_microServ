@@ -24,6 +24,12 @@ return
             ]);
         },
 
+        'guzzle.client.rdv' => function (ContainerInterface $c) {
+            return new \GuzzleHttp\Client([
+                'base_uri' => $c->get('settings')['rdv.api']
+            ]);
+        },
+
         GatewayListePraticienAction::class => function (ContainerInterface $c) {
             return new GatewayListePraticienAction($c->get('guzzle.client.praticien'));
         },
@@ -37,6 +43,6 @@ return
         },
 
         GatewayPlanningPraticienAction::class => function (ContainerInterface $c) {
-            return new GatewayPlanningPraticienAction($c->get('guzzle.client.api'));
+            return new GatewayPlanningPraticienAction($c->get('guzzle.client.rdv'));
         }
     ];
