@@ -1,9 +1,9 @@
 <?php
 
-namespace toubeelib\core\repositoryInterfaces;
+namespace api_rdv\core\repositoryInterfaces;
 
-use toubeelib\core\domain\entities\rdv\Rdv;
-use toubeelib\core\dto\PraticienDTO;
+use api_rdv\core\domain\entities\rdv\Rdv;
+use api_rdv\core\dto\PraticienDTO;
 
 interface RdvRepositoryInterface
 {

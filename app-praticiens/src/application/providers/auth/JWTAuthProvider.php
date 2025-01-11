@@ -1,26 +1,30 @@
 <?php
 
-namespace toubeelib\application\providers\auth;
+namespace api_praticien\application\providers\auth;
 
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\CredentialsDTO;
-use toubeelib\application\providers\auth\JWTManager;
-use toubeelib\core\services\auth\ServiceAuthInterface;
+use api_praticien\core\dto\AuthDTO;
+use api_praticien\core\dto\CredentialsDTO;
+use api_praticien\application\providers\auth\JWTManager;
+use api_praticien\core\services\auth\ServiceAuthInterface;
 
-class JWTAuthProvider implements AuthProviderInterface {
+class JWTAuthProvider implements AuthProviderInterface
+{
     private ServiceAuthInterface $authService;
     private JWTManager $jwtManager;
 
-    public function __construct(ServiceAuthInterface $authService, JWTManager $jwtManager) {
+    public function __construct(ServiceAuthInterface $authService, JWTManager $jwtManager)
+    {
         $this->$authService = $authService;
         $this->jwtManager = $jwtManager;
     }
 
-    public function register(CredentialsDTO $credentials, int $role): void {
+    public function register(CredentialsDTO $credentials, int $role): void
+    {
         $this->authService->createUser($credentials, $role);
     }
 
-    public function signin(CredentialsDTO $credentials): AuthDTO {
+    public function signin(CredentialsDTO $credentials): AuthDTO
+    {
         $user = $this->authService->byCredentials($credentials);
 
         if (!$user) {
@@ -33,7 +37,8 @@ class JWTAuthProvider implements AuthProviderInterface {
         return new AuthDTO($user->ID, $user->email, $user->role, $accessToken, $refreshToken);
     }
 
-    public function refresh(string $refreshToken): AuthDTO {
+    public function refresh(string $refreshToken): AuthDTO
+    {
         $payload = $this->jwtManager->decodeToken($refreshToken);
 
         if (!$payload) {
@@ -45,7 +50,8 @@ class JWTAuthProvider implements AuthProviderInterface {
         return new AuthDTO($payload['sub'], $payload['data']['email'], $payload['data']['role'], $newAccessToken, $newRefreshToken);
     }
 
-    public function getSignedInUser(string $token): AuthDTO {
+    public function getSignedInUser(string $token): AuthDTO
+    {
         $payload = $this->jwtManager->decodeToken($token);
 
         if (!$payload) {

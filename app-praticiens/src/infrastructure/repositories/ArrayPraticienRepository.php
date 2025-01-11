@@ -1,12 +1,12 @@
 <?php
 
-namespace toubeelib\infrastructure\repositories;
+namespace api_praticien\infrastructure\repositories;
 
 use Ramsey\Uuid\Uuid;
-use toubeelib\core\domain\entities\praticien\Praticien;
-use toubeelib\core\domain\entities\praticien\Specialite;
-use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
-use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
+use api_praticien\core\domain\entities\praticien\Praticien;
+use api_praticien\core\domain\entities\praticien\Specialite;
+use api_praticien\core\repositoryInterfaces\PraticienRepositoryInterface;
+use api_praticien\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 
 class ArrayPraticienRepository implements PraticienRepositoryInterface
 {
@@ -41,25 +41,25 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
 
     private array $praticiens = [];
 
-    public function __construct() {
-        $this->praticiens['p1'] = new Praticien( 'Dupont', 'Jean', 'nancy', '0123456789');
+    public function __construct()
+    {
+        $this->praticiens['p1'] = new Praticien('Dupont', 'Jean', 'nancy', '0123456789');
         $this->praticiens['p1']->setSpecialite(new Specialite('A', 'Dentiste', 'Spécialiste des dents'));
         $this->praticiens['p1']->setID('p1');
 
-        $this->praticiens['p2'] = new Praticien( 'Durand', 'Pierre', 'vandeuve', '0123456789');
+        $this->praticiens['p2'] = new Praticien('Durand', 'Pierre', 'vandeuve', '0123456789');
         $this->praticiens['p2']->setSpecialite(new Specialite('B', 'Ophtalmologue', 'Spécialiste des yeux'));
         $this->praticiens['p2']->setID('p2');
 
-        $this->praticiens['p3'] = new Praticien( 'Martin', 'Marie', '3lassou', '0123456789');
+        $this->praticiens['p3'] = new Praticien('Martin', 'Marie', '3lassou', '0123456789');
         $this->praticiens['p3']->setSpecialite(new Specialite('C', 'Généraliste', 'Médecin généraliste'));
         $this->praticiens['p3']->setID('p3');
-
     }
     public function getSpecialiteById(string $id): Specialite
     {
 
         $specialite = self::SPECIALITES[$id] ??
-            throw new RepositoryEntityNotFoundException("Specialite $id not found") ;
+            throw new RepositoryEntityNotFoundException("Specialite $id not found");
 
         return new Specialite($specialite['ID'], $specialite['label'], $specialite['description']);
     }
@@ -67,7 +67,7 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
     public function save(Praticien $praticien): string
     {
         // TODO : prévoir le cas d'une mise à jour - le praticient possède déjà un ID
-		$ID = Uuid::uuid4()->toString();
+        $ID = Uuid::uuid4()->toString();
         $praticien->setID($ID);
         $this->praticiens[$ID] = $praticien;
         return $ID;
@@ -85,5 +85,4 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
     {
         return $this->praticiens;
     }
-
 }

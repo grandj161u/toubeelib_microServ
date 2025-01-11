@@ -1,8 +1,5 @@
 <?php
 
-namespace toubeelib\core\repositoryInterfaces;
+namespace api_praticien\core\repositoryInterfaces;
 
-class RepositoryDatabaseErrorException extends \Exception
-{
-
-}
+class RepositoryDatabaseErrorException extends \Exception {}

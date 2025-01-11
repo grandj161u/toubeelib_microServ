@@ -1,11 +1,11 @@
 <?php
 
-namespace toubeelib\application\middlewares;
+namespace api_rdv\application\middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Psr7\Response;
-use toubeelib\application\providers\auth\AuthProviderInterface;
+use api_rdv\application\providers\auth\AuthProviderInterface;
 
 class AuthMiddleware
 {
@@ -16,10 +16,10 @@ class AuthMiddleware
         $this->authProvider = $authProvider;
     }
 
-    public function __invoke(Request $request, RequestHandler $handler) 
+    public function __invoke(Request $request, RequestHandler $handler)
     {
         $authHeader = $request->getHeaderLine('Authorization');
-        
+
         if (empty($authHeader) || !$this->isValidAuthHeader($authHeader)) {
             return new Response(401);
         }
@@ -37,7 +37,7 @@ class AuthMiddleware
             return new Response(401);
         }
     }
-    
+
     private function isValidAuthHeader(string $authHeader): bool
     {
         return str_starts_with($authHeader, 'Bearer ');

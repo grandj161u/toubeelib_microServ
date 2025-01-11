@@ -1,9 +1,9 @@
 <?php
 
-namespace api_praticien\core\domain\entities\praticien;
+namespace api_rdv\core\domain\entities\praticien;
 
-use api_praticien\core\domain\entities\Entity;
-use api_praticien\core\dto\PraticienDTO;
+use api_rdv\core\domain\entities\Entity;
+use api_rdv\core\dto\PraticienDTO;
 
 class Praticien extends Entity
 {

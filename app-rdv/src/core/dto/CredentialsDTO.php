@@ -1,9 +1,10 @@
-<?php 
+<?php
 
-namespace toubeelib\core\dto;
+namespace api_rdv\core\dto;
 
-class CredentialsDTO extends DTO {
-    
+class CredentialsDTO extends DTO
+{
+
     protected string $email;
     protected string $password;
 
@@ -13,7 +14,8 @@ class CredentialsDTO extends DTO {
         $this->password = $password;
     }
 
-    public function jsonSerialize(): array{
+    public function jsonSerialize(): array
+    {
         return [
             "email" => $this->email,
             "password" => $this->password

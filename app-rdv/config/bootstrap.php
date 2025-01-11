@@ -2,14 +2,14 @@
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
-use toubeelib\application\middlewares\AuthMiddleware;
-use toubeelib\application\middlewares\Cors;
+use api_rdv\application\middlewares\AuthMiddleware;
+use api_rdv\application\middlewares\Cors;
 
 $builder = new ContainerBuilder();
-$builder->addDefinitions(__DIR__ . '/settings.php' );
+$builder->addDefinitions(__DIR__ . '/settings.php');
 $builder->addDefinitions(__DIR__ . '/dependencies.php');
 
-$c=$builder->build();
+$c = $builder->build();
 $app = AppFactory::createFromContainer($c);
 
 $app->add(new Cors());

@@ -1,16 +1,18 @@
-<?php 
+<?php
 
-namespace toubeelib\core\dto;
+namespace api_praticien\core\dto;
 
-class AuthDTO extends DTO {
-    
+class AuthDTO extends DTO
+{
+
     protected string $ID;
     protected string $email;
     protected int $role;
     protected string $accessToken;
     protected string $refreshToken;
 
-    public function __construct($ID, $email, $role, $accessToken, $refreshToken) {
+    public function __construct($ID, $email, $role, $accessToken, $refreshToken)
+    {
         $this->ID = $ID;
         $this->email = $email;
         $this->role = $role;
@@ -18,7 +20,8 @@ class AuthDTO extends DTO {
         $this->refreshToken = $refreshToken;
     }
 
-    public function jsonSerialize(): array{
+    public function jsonSerialize(): array
+    {
         return [
             "ID" => $this->ID,
             "email" => $this->email,

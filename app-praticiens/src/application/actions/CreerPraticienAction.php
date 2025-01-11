@@ -1,13 +1,13 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace api_praticien\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\core\services\praticien\ServicePraticienInterface;
-use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\dto\InputPraticienDTO;
-use toubeelib\core\services\praticien\ServicePraticienInternalErrorException;
+use api_praticien\core\services\praticien\ServicePraticienInterface;
+use api_praticien\application\renderer\JsonRenderer;
+use api_praticien\core\dto\InputPraticienDTO;
+use api_praticien\core\services\praticien\ServicePraticienInternalErrorException;
 
 class CreerPraticienAction extends AbstractAction
 {

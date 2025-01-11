@@ -1,14 +1,14 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace api_rdv\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\core\services\rdv\ServiceRdvInterface;
-use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\dto\ModifyRdvDTO;
-use toubeelib\core\dto\GererCycleRdvDTO;
-use toubeelib\core\services\rdv\ServiceRdvInternalErrorException;
+use api_rdv\core\services\rdv\ServiceRdvInterface;
+use api_rdv\application\renderer\JsonRenderer;
+use api_rdv\core\dto\ModifyRdvDTO;
+use api_rdv\core\dto\GererCycleRdvDTO;
+use api_rdv\core\services\rdv\ServiceRdvInternalErrorException;
 
 class ModifierOuGererCycleRdvAction extends AbstractAction
 {

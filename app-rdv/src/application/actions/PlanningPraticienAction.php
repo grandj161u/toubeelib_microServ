@@ -1,12 +1,12 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace api_rdv\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\core\services\rdv\ServiceRdvInterface;
-use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\services\rdv\ServiceRdvNotFoundException;
+use api_rdv\core\services\rdv\ServiceRdvInterface;
+use api_rdv\application\renderer\JsonRenderer;
+use api_rdv\core\services\rdv\ServiceRdvNotFoundException;
 
 class PlanningPraticienAction extends AbstractAction
 {

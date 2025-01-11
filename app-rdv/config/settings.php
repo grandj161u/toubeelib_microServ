@@ -8,5 +8,7 @@ return  [
     'praditicen.db.config' => 'praticien.db.ini',
     'rdv.db.config' => 'rdv.db.ini',
     'patient.db.config' => 'patient.db.ini',
-    'auth.db.config' => 'auth.db.ini'
-    ] ;
+    'auth.db.config' => 'auth.db.ini',
+    // 'api.praticiens' => 'http://localhost:2080',
+    'praticien.api' => 'http://api.praticien/',
+];

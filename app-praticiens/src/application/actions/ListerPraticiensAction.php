@@ -1,12 +1,12 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace api_praticien\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\core\services\praticien\ServicePraticienInterface;
-use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\services\praticien\ServicePraticienNotFoundException;
+use api_praticien\core\services\praticien\ServicePraticienInterface;
+use api_praticien\application\renderer\JsonRenderer;
+use api_praticien\core\services\praticien\ServicePraticienNotFoundException;
 
 class ListerPraticiensAction extends AbstractAction
 {

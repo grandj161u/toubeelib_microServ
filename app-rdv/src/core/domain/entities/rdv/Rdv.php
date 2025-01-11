@@ -1,10 +1,10 @@
 <?php
 
-namespace toubeelib\core\domain\entities\rdv;
+namespace api_rdv\core\domain\entities\rdv;
 
 use DateTimeImmutable;
-use toubeelib\core\domain\entities\Entity;
-use toubeelib\core\dto\RdvDTO;
+use api_rdv\core\domain\entities\Entity;
+use api_rdv\core\dto\RdvDTO;
 
 class Rdv extends Entity
 {
@@ -25,7 +25,8 @@ class Rdv extends Entity
         $this->statut = $statut;
     }
 
-    public function toDTO() : RdvDTO {
+    public function toDTO(): RdvDTO
+    {
         return new RdvDTO($this->ID, $this->idPraticien, $this->idPatient, $this->horaire, $this->idSpecialite, $this->type, $this->statut);
     }
 }

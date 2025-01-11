@@ -1,8 +1,5 @@
 <?php
 
-namespace toubeelib\core\services\praticien;
+namespace api_praticien\core\services\praticien;
 
-class ServicePraticienInternalErrorException extends \Exception
-{
-
-}
+class ServicePraticienInternalErrorException extends \Exception {}

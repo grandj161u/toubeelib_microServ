@@ -1,8 +1,5 @@
 <?php
 
-namespace toubeelib\core\services\rdv;
+namespace api_rdv\core\services\rdv;
 
-class ServiceRdvNotFoundException extends \Exception
-{
-
-}
+class ServiceRdvNotFoundException extends \Exception {}

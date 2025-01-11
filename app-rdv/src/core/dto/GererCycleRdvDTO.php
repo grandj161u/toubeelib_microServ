@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\core\dto;
+namespace api_rdv\core\dto;
 
 use InvalidArgumentException;
 
@@ -8,7 +8,8 @@ class GererCycleRdvDTO extends DTO
 {
     protected string $statut;
 
-    public function __construct($statut) {
+    public function __construct($statut)
+    {
 
         if ($statut === "annuler") {
             throw new InvalidArgumentException("Le statut du RDV ne peut pas être annuler de cette manière.");

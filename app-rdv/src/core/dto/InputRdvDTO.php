@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\core\dto;
+namespace api_rdv\core\dto;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -14,7 +14,8 @@ class InputRdvDTO extends DTO
     protected string $type;
     protected string $statut;
 
-    public function __construct($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut) {
+    public function __construct($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut)
+    {
         if (!is_string($idPraticien) || !ctype_alnum($idPraticien)) {
             throw new InvalidArgumentException("L'idPraticien doit être une chaîne alphanumérique.");
         }
@@ -32,7 +33,7 @@ class InputRdvDTO extends DTO
             throw new InvalidArgumentException("L'idSpecialite doit être une chaîne alphanumérique.");
         }
 
-          $validTypes = ['presentiel', 'teleconsultation'];
+        $validTypes = ['presentiel', 'teleconsultation'];
         if (!in_array($type, $validTypes, true)) {
             throw new InvalidArgumentException("Le type de RDV n'est pas valide.");
         }

@@ -1,6 +1,7 @@
 <?php
 
-namespace toubeelib\core\dto;
+namespace api_praticien\core\dto;
+
 use InvalidArgumentException;
 
 class InputPraticienDTO extends DTO
@@ -12,7 +13,8 @@ class InputPraticienDTO extends DTO
     protected string $specialite;
 
 
-    public function __construct(string $nom, string $prenom, string $tel,string $adresse, string $specialite) {
+    public function __construct(string $nom, string $prenom, string $tel, string $adresse, string $specialite)
+    {
         if (!is_string($nom) || !ctype_alnum($nom)) {
             throw new InvalidArgumentException("Le nom doit être une chaîne alphanumérique.");
         }
@@ -41,5 +43,4 @@ class InputPraticienDTO extends DTO
         $this->tel = htmlspecialchars($tel, ENT_QUOTES, 'UTF-8');
         $this->specialite = htmlspecialchars($specialite, ENT_QUOTES, 'UTF-8');
     }
-
 }

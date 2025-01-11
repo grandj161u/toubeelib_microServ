@@ -1,11 +1,12 @@
-<?php 
+<?php
 
-namespace toubeelib\application\providers\auth;
+namespace api_praticien\application\providers\auth;
 
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\CredentialsDTO;
+use api_praticien\core\dto\AuthDTO;
+use api_praticien\core\dto\CredentialsDTO;
 
-interface AuthProviderInterface {
+interface AuthProviderInterface
+{
     public function register(CredentialsDTO $credentials, int $role): void;
     public function signin(CredentialsDTO $credentials): AuthDTO;
     public function refresh(string $token): AuthDTO;

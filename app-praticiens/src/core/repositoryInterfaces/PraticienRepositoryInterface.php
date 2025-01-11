@@ -1,9 +1,9 @@
 <?php
 
-namespace toubeelib\core\repositoryInterfaces;
+namespace api_praticien\core\repositoryInterfaces;
 
-use toubeelib\core\domain\entities\praticien\Praticien;
-use toubeelib\core\domain\entities\praticien\Specialite;
+use api_praticien\core\domain\entities\praticien\Praticien;
+use api_praticien\core\domain\entities\praticien\Specialite;
 
 interface PraticienRepositoryInterface
 {
@@ -13,5 +13,4 @@ interface PraticienRepositoryInterface
     public function getPraticienById(string $id): Praticien;
 
     public function getAllPraticien(): array;
-
 }

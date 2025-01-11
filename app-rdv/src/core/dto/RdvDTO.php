@@ -1,10 +1,10 @@
-<?php 
+<?php
 
-namespace toubeelib\core\dto;
+namespace api_rdv\core\dto;
 
 use DateTimeImmutable;
-use toubeelib\core\domain\entities\rdv\Rdv;
-use toubeelib\core\dto\DTO;
+use api_rdv\core\domain\entities\rdv\Rdv;
+use api_rdv\core\dto\DTO;
 
 class RdvDTO extends DTO
 {
@@ -27,7 +27,8 @@ class RdvDTO extends DTO
         $this->statut = $statut;
     }
 
-    public function jsonSerialize(): array{
+    public function jsonSerialize(): array
+    {
         return [
             "ID" => $this->ID,
             "idPraticien" => $this->idPraticien,

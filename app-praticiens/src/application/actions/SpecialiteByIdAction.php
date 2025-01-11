@@ -4,11 +4,12 @@ namespace api_praticien\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use api_praticien\core\services\praticien\ServicePraticienInterface;
+use api_praticien\application\actions\AbstractAction;
 use api_praticien\application\renderer\JsonRenderer;
+use api_praticien\core\services\praticien\ServicePraticienInterface;
 use api_praticien\core\services\praticien\ServicePraticienNotFoundException;
 
-class PraticienByIdAction extends AbstractAction
+class SpecialiteByIdAction extends AbstractAction
 {
 
     protected ServicePraticienInterface $servicePrat;
@@ -21,14 +22,14 @@ class PraticienByIdAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
 
-        if (isset($args['idPraticien'])) {
-            $idPraticien = $args['idPraticien'];
+        if (isset($args['idSpecialite'])) {
+            $idSpecialite = $args['idSpecialite'];
         } else {
-            $idPraticien = null;
+            $idSpecialite = null;
         }
 
         try {
-            $prat_DTO = $this->servicePrat->getPraticienById($idPraticien);
+            $specialite_DTO = $this->servicePrat->getSpecialiteById($idSpecialite);
         } catch (ServicePraticienNotFoundException $e) {
             $data = [
                 'message' => $e->getMessage(),
@@ -54,9 +55,9 @@ class PraticienByIdAction extends AbstractAction
         }
 
         $data = [
-            'praticien' => $prat_DTO,
+            'specialite' => $specialite_DTO,
             'links' => [
-                'self' => ['href' => '/praticiens/' . $idPraticien],
+                'self' => ['href' => '/specialites/' . $idSpecialite],
             ]
         ];
 

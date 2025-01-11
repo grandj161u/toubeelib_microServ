@@ -1,14 +1,15 @@
 <?php
 
-namespace toubeelib\core\services\rdv;
+namespace api_rdv\core\services\rdv;
 
 use DateTimeImmutable;
-use toubeelib\core\dto\InputRdvDTO;
-use toubeelib\core\dto\RdvDTO;
-use toubeelib\core\dto\ModifyRdvDTO;
-use toubeelib\core\dto\GererCycleRdvDTO;
+use api_rdv\core\dto\InputRdvDTO;
+use api_rdv\core\dto\RdvDTO;
+use api_rdv\core\dto\ModifyRdvDTO;
+use api_rdv\core\dto\GererCycleRdvDTO;
 
-interface ServiceRdvInterface{
+interface ServiceRdvInterface
+{
 
     public function getRdvs(): array;
     public function getRdvById(String $id): RdvDTO;

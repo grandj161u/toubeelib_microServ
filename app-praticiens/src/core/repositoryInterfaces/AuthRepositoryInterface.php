@@ -1,8 +1,8 @@
-<?php 
+<?php
 
-namespace toubeelib\core\repositoryInterfaces;
+namespace api_praticien\core\repositoryInterfaces;
 
-use toubeelib\core\domain\entities\authentification\User;
+use api_praticien\core\domain\entities\authentification\User;
 
 interface AuthRepositoryInterface
 {
@@ -12,5 +12,4 @@ interface AuthRepositoryInterface
     public function getUserById(string $id): User;
     public function getUserByRole(int $role): array;
     public function creerUser(string $email, string $password, int $role): User;
-
 }

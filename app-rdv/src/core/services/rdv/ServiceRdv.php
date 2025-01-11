@@ -1,28 +1,27 @@
 <?php
 
-namespace toubeelib\core\services\rdv;
+namespace api_rdv\core\services\rdv;
 
 use DateInterval;
-use toubeelib\core\dto\RdvDto;
-use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
-use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
-use toubeelib\core\services\praticien\ServicePraticien;
-use toubeelib\core\services\praticien\ServicePraticienInterface;
-use toubeelib\core\dto\InputRdvDTO;
-use toubeelib\core\dto\ModifyRdvDTO;
-use toubeelib\core\dto\GererCycleRdvDTO;
+use api_rdv\core\dto\RdvDto;
+use api_rdv\core\repositoryInterfaces\RepositoryEntityNotFoundException;
+use api_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
+use api_rdv\core\dto\InputRdvDTO;
+use api_rdv\core\dto\ModifyRdvDTO;
+use api_rdv\core\dto\GererCycleRdvDTO;
 use DateTimeImmutable;
+use api_rdv\core\services\praticien\PraticienServiceInterface;
 
 class ServiceRdv implements ServiceRdvInterface
 {
 
     private RdvRepositoryInterface $rdvRepository;
-    private ServicePraticienInterface $servicePraticien;
+    private PraticienServiceInterface $servicePraticien;
 
-    public function __construct(RdvRepositoryInterface $rdvRepository, ServicePraticienInterface $servicePraticien)
+    public function __construct(RdvRepositoryInterface $rdvRepository, PraticienServiceInterface $praticienService)
     {
         $this->rdvRepository = $rdvRepository;
-        $this->servicePraticien = $servicePraticien;
+        $this->servicePraticien = $praticienService;
     }
 
     public function getRdvs(): array

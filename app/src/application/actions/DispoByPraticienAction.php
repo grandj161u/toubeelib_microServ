@@ -22,12 +22,20 @@ class DispoByPraticienAction extends AbstractAction
     {
 
         $id = $args["idPraticien"];
-        $dateDebutParam = $rq->getQueryParams()["debut"] ?? null;
-        $dateFinParam = $rq->getQueryParams()["fin"] ?? (new \DateTimeImmutable('now'))->setTime(18, 0, 0);
+        $aujourdhui = new \DateTimeImmutable('now');
+
+        // Si l'heure d'aujourd'hui est supérieure ou égale à 18h, on prend la date de demain à 8h (inutile de chercher des dispos pour aujourd'hui)
+        if ($aujourdhui->format('H') >= 18) {
+            $dateDebutParam = $rq->getQueryParams()["debut"] ?? (new \DateTimeImmutable('tomorrow'))->setTime(8, 0, 0);
+        } else {
+            $dateDebutParam = $rq->getQueryParams()["debut"] ?? (new \DateTimeImmutable('now'))->setTime(8, 0, 0);
+        }
+
+        $dateFinParam = $rq->getQueryParams()["fin"] ?? null;
 
         try {
-            $dateDebut = $dateDebutParam ? new \DateTimeImmutable($dateDebutParam) : $dateFinParam->sub(new \DateInterval('P7D'));
-            $dateFin = $dateFinParam instanceof \DateTimeImmutable ? $dateFinParam : new \DateTimeImmutable($dateFinParam);
+            $dateDebut = $dateDebutParam instanceof \DateTimeImmutable ? $dateDebutParam : new \DateTimeImmutable($dateDebutParam);
+            $dateFin = $dateFinParam ? new \DateTimeImmutable($dateFinParam) : $dateDebut->add(new \DateInterval('P7D'));
             $tabDispo = $this->serviceRdv->getDisponibiliterPraticien($id, $dateDebut, $dateFin);
         } catch (ServiceRdvNotFoundException $e) {
             $data = [

@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace api_rdv\application\actions;
 
 
 use Psr\Container\ContainerInterface;
@@ -11,6 +11,5 @@ abstract class AbstractAction
 {
 
 
-    abstract public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface ;
-
+    abstract public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface;
 }

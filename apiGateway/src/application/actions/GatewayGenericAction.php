@@ -14,7 +14,9 @@ class GatewayGenericAction extends AbstractGatewayAction
 {
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
+        error_log("Debug: Entering GatewayGenericAction");
         $uri = $rq->getUri()->getPath();
+        error_log("Debug: URI = " . $uri);
         $method = $rq->getMethod();
         $options = [
             'headers' => $rq->getHeaders(),

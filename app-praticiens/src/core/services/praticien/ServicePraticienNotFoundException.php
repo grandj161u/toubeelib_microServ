@@ -1,5 +1,5 @@
 <?php
 
-namespace toubeelib\core\services\praticien;
+namespace api_praticien\core\services\praticien;
 
 class ServicePraticienNotFoundException extends \Exception {}

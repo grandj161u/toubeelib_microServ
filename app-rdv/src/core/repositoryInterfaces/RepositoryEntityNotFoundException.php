@@ -1,8 +1,5 @@
 <?php
 
-namespace toubeelib\core\repositoryInterfaces;
+namespace api_rdv\core\repositoryInterfaces;
 
-class RepositoryEntityNotFoundException extends \Exception
-{
-
-}
+class RepositoryEntityNotFoundException extends \Exception {}

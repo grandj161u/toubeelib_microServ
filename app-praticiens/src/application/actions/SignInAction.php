@@ -1,26 +1,29 @@
-<?php 
+<?php
 
-namespace toubeelib\application\actions;
+namespace api_praticien\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\application\providers\auth\AuthProviderInterface;
-use toubeelib\core\dto\CredentialsDTO;
-use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\application\exceptions\ServiceAuthInvalidDataException;
+use api_praticien\application\providers\auth\AuthProviderInterface;
+use api_praticien\core\dto\CredentialsDTO;
+use api_praticien\application\renderer\JsonRenderer;
+use api_praticien\core\services\auth\ServiceAuthInvalidDataException;
 
-class SignInAction extends AbstractAction {
+class SignInAction extends AbstractAction
+{
 
     protected AuthProviderInterface $authProvider;
 
-    public function __construct(AuthProviderInterface $authProvider) {
+    public function __construct(AuthProviderInterface $authProvider)
+    {
         $this->authProvider = $authProvider;
     }
-    
-    public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
+
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
+    {
         $data = $rq->getParsedBody();
         $credentials = new CredentialsDTO($data['email'], $data['password']);
-        
+
         try {
             $authDTO = $this->authProvider->signIn($credentials);
         } catch (ServiceAuthInvalidDataException $e) {
@@ -51,12 +54,12 @@ class SignInAction extends AbstractAction {
             'token' => $authDTO->token,
             'role' => $authDTO->role,
             'links' => [
-                'self' => [ 'href' => '/signin' ],
-                'refresh' => [ 'href' => '/refresh' ],
-                'signout' => [ 'href' => '/signout' ],
+                'self' => ['href' => '/signin'],
+                'refresh' => ['href' => '/refresh'],
+                'signout' => ['href' => '/signout'],
             ]
         ];
 
         return JsonRenderer::render($rs, 200, $data);
     }
-} 
+}

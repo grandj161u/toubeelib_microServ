@@ -1,24 +1,28 @@
-<?php 
+<?php
 
-namespace toubeelib\core\services\auth;
+namespace api_rdv\core\services\auth;
 
-use toubeelib\application\providers\auth\JWTManager;
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\CredentialsDTO;
-use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
-use toubeelib\core\services\auth\ServiceAuthInterface;
+use api_rdv\application\providers\auth\JWTManager;
+use api_rdv\core\dto\AuthDTO;
+use api_rdv\core\dto\CredentialsDTO;
+use api_rdv\core\repositoryInterfaces\AuthRepositoryInterface;
+use api_rdv\core\services\auth\ServiceAuthInterface;
+use api_rdv\application\exceptions\ServiceAuthInvalidDataException;
 
-class ServiceAuth implements ServiceAuthInterface {
+class ServiceAuth implements ServiceAuthInterface
+{
 
     private AuthRepositoryInterface $authRepository;
     private JWTManager $jwtManager;
 
-    public function __construct(AuthRepositoryInterface $authRepository, JWTManager $jwtManager) {
+    public function __construct(AuthRepositoryInterface $authRepository, JWTManager $jwtManager)
+    {
         $this->authRepository = $authRepository;
         $this->jwtManager = $jwtManager;
     }
 
-    public function createUser(CredentialsDTO $credentials, int $role): string {
+    public function createUser(CredentialsDTO $credentials, int $role): string
+    {
         $user = $this->authRepository->getUserByEmail($credentials->email);
         if (password_verify($credentials->password, $user->password)) {
             $payload = [
@@ -30,13 +34,14 @@ class ServiceAuth implements ServiceAuthInterface {
                     'email' => $user->email
                 ]
             ];
-            
+
             return $this->jwtManager->createAccessToken($payload);
         }
         throw new ServiceAuthInvalidDataException("Invalid credentials");
     }
 
-    public function byCredentials(CredentialsDTO $credentials): AuthDTO {
+    public function byCredentials(CredentialsDTO $credentials): AuthDTO
+    {
         $user = $this->authRepository->getUserByEmail($credentials->__get('email'));
         if (password_verify($credentials->__get('password'), $user->__get('password'))) {
             $payload = [
@@ -48,13 +53,14 @@ class ServiceAuth implements ServiceAuthInterface {
                     'email' => $user->__get('email')
                 ]
             ];
-            
-            return new AuthDTO($user->id, $user->email, $user->role,'', '');
+
+            return new AuthDTO($user->id, $user->email, $user->role, '', '');
         }
         throw new ServiceAuthInvalidDataException("Invalid credentials");
     }
 
-    public function getUserById(string $id): AuthDTO {
+    public function getUserById(string $id): AuthDTO
+    {
         $user = $this->authRepository->getUserById($id);
         if ($user) {
             return new AuthDTO($user->id, $user->email, $user->role, '', '');

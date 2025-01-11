@@ -1,22 +1,23 @@
 <?php
 
 use Psr\Container\ContainerInterface;
-use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
-use toubeelib\core\services\praticien\ServicePraticienInterface;
-use toubeelib\core\services\praticien\ServicePraticien;
-use toubeelib\infrastructure\repositories\PDOPraticienRepository;
-use toubeelib\application\actions\CreerPraticienAction;
-use toubeelib\application\actions\ListerPraticiensAction;
-use toubeelib\application\actions\PraticienByIdAction;
-use toubeelib\application\actions\SignInAction;
-use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
-use toubeelib\core\services\auth\ServiceAuthInterface;
-use toubeelib\infrastructure\repositories\PDOAuthRepository;
-use toubeelib\core\services\auth\ServiceAuth;
-use toubeelib\application\providers\auth\JWTManager;
-use toubeelib\application\providers\auth\JWTAuthProvider;
-use toubeelib\application\actions\RefreshAction;
-use toubeelib\application\middlewares\AuthMiddleware;
+use api_praticien\core\repositoryInterfaces\PraticienRepositoryInterface;
+use api_praticien\core\services\praticien\ServicePraticienInterface;
+use api_praticien\core\services\praticien\ServicePraticien;
+use api_praticien\infrastructure\repositories\PDOPraticienRepository;
+use api_praticien\application\actions\CreerPraticienAction;
+use api_praticien\application\actions\ListerPraticiensAction;
+use api_praticien\application\actions\PraticienByIdAction;
+use api_praticien\application\actions\SignInAction;
+use api_praticien\core\repositoryInterfaces\AuthRepositoryInterface;
+use api_praticien\core\services\auth\ServiceAuthInterface;
+use api_praticien\infrastructure\repositories\PDOAuthRepository;
+use api_praticien\core\services\auth\ServiceAuth;
+use api_praticien\application\providers\auth\JWTManager;
+use api_praticien\application\providers\auth\JWTAuthProvider;
+use api_praticien\application\actions\RefreshAction;
+use api_praticien\application\middlewares\AuthMiddleware;
+use api_praticien\application\actions\SpecialiteByIdAction;
 
 return [
 
@@ -93,5 +94,9 @@ return [
 
     AuthMiddleware::class => function (ContainerInterface $c) {
         return new AuthMiddleware($c->get(JWTAuthProvider::class));
+    },
+
+    SpecialiteByIdAction::class => function (ContainerInterface $c) {
+        return new SpecialiteByIdAction($c->get(ServicePraticienInterface::class));
     }
 ];

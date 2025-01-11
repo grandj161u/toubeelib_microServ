@@ -1,10 +1,10 @@
 <?php
 
-namespace toubeelib\core\services\praticien;
+namespace api_praticien\core\services\praticien;
 
-use toubeelib\core\dto\InputPraticienDTO;
-use toubeelib\core\dto\PraticienDTO;
-use toubeelib\core\dto\SpecialiteDTO;
+use api_praticien\core\dto\InputPraticienDTO;
+use api_praticien\core\dto\PraticienDTO;
+use api_praticien\core\dto\SpecialiteDTO;
 
 interface ServicePraticienInterface
 {
@@ -14,6 +14,4 @@ interface ServicePraticienInterface
     public function getSpecialiteById(string $id): SpecialiteDTO;
 
     public function getAllPraticien(): array;
-    
-
 }

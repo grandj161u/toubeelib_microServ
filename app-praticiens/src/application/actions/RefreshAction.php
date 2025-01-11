@@ -1,21 +1,24 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace api_praticien\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\application\providers\auth\AuthProviderInterface;
-use toubeelib\application\renderer\JsonRenderer;
+use api_praticien\application\providers\auth\AuthProviderInterface;
+use api_praticien\application\renderer\JsonRenderer;
 
-class RefreshAction extends AbstractAction {
+class RefreshAction extends AbstractAction
+{
 
     protected AuthProviderInterface $authProvider;
 
-    public function __construct(AuthProviderInterface $authProvider) {
+    public function __construct(AuthProviderInterface $authProvider)
+    {
         $this->authProvider = $authProvider;
     }
 
-    public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
+    {
         $data = $rq->getParsedBody();
         $token = $data['token'];
 
@@ -38,8 +41,8 @@ class RefreshAction extends AbstractAction {
             'token' => $authDTO->token,
             'role' => $authDTO->role,
             'links' => [
-                'self' => [ 'href' => '/refresh' ],
-                'signout' => [ 'href' => '/signout' ],
+                'self' => ['href' => '/refresh'],
+                'signout' => ['href' => '/signout'],
             ]
         ];
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace api_praticien\core\dto;
+namespace api_rdv\core\dto;
 
-use api_praticien\core\domain\entities\praticien\Praticien;
-use api_praticien\core\dto\DTO;
-use api_praticien\core\domain\entities\praticien\Specialite;
+use api_rdv\core\domain\entities\praticien\Praticien;
+use api_rdv\core\dto\DTO;
+use api_rdv\core\domain\entities\praticien\Specialite;
 
 class PraticienDTO extends DTO
 {
