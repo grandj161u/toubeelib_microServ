@@ -13,7 +13,6 @@ use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\infrastructure\repositories\PDOPraticienRepository;
 use toubeelib\infrastructure\repositories\PDORdvRepository;
-use toubeelib\application\actions\ListerOuRechercherPraticienAction;
 use toubeelib\application\actions\DispoByPraticienAction;
 use toubeelib\application\actions\AnnulerRdvAction;
 use toubeelib\application\actions\PlanningPraticienAction;
@@ -28,8 +27,8 @@ use toubeelib\core\services\auth\ServiceAuth;
 use toubeelib\application\providers\auth\JWTManager;
 use toubeelib\application\providers\auth\JWTAuthProvider;
 use toubeelib\application\actions\RefreshAction;
+use toubeelib\application\actions\RegisterAction;
 use toubeelib\application\middlewares\AuthMiddleware;
-use toubeelib\core\domain\entities\praticien\Praticien;
 
 return [
 
@@ -128,6 +127,10 @@ return [
         return new PDOAuthRepository($c->get('auth.pdo'));
     },
 
+    JWTManager::class => function (ContainerInterface $c) {
+        return new JWTManager(getenv('JWT_SECRET_KEY'), 'HS512');
+    },
+
     ServiceAuthInterface::class => function (ContainerInterface $c) {
         return new ServiceAuth(
             $c->get(AuthRepositoryInterface::class),
@@ -136,11 +139,7 @@ return [
     },
 
     JWTAuthProvider::class => function (ContainerInterface $c) {
-        return new JWTAuthProvider($c->get(ServiceAuth::class), $c->get(JWTManager::class));
-    },
-
-    JWTManager::class => function (ContainerInterface $c) {
-        return new JWTManager(getenv('JWT_SECRET_KEY'), 'HS512');
+        return new JWTAuthProvider($c->get(ServiceAuthInterface::class), $c->get(JWTManager::class));
     },
 
     SignInAction::class => function (ContainerInterface $c) {
@@ -153,5 +152,9 @@ return [
 
     AuthMiddleware::class => function (ContainerInterface $c) {
         return new AuthMiddleware($c->get(JWTAuthProvider::class));
+    },
+
+    RegisterAction::class => function (ContainerInterface $c) {
+        return new RegisterAction($c->get(JWTAuthProvider::class));
     }
 ];
