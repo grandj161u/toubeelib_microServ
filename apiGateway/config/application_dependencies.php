@@ -1,7 +1,7 @@
 <?php
 
 use gateway_tblb\application\actions\GatewayListePraticienAction;
-use gateway_tblb\application\actions\GatewayPlanningPraticienAction;
+use gateway_tblb\application\actions\GatewayPlanningOuDispoPraticienAction;
 use gateway_tblb\application\actions\GatewayPraticienByIdAction;
 use gateway_tblb\application\actions\GatewaySpecialiteByIdAction;
 use gateway_tblb\application\actions\HomeAction;
@@ -39,7 +39,7 @@ return
             return new GatewayPraticienByIdAction(($c->get('guzzle.client.praticien')));
         },
 
-        GatewayPlanningPraticienAction::class => function (ContainerInterface $c) {
-            return new GatewayPlanningPraticienAction($c->get('guzzle.client.rdv'));
+        GatewayPlanningOuDispoPraticienAction::class => function (ContainerInterface $c) {
+            return new GatewayPlanningOuDispoPraticienAction($c->get('guzzle.client.rdv'));
         },
     ];

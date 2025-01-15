@@ -11,6 +11,7 @@ use api_rdv\core\services\rdv\ServiceRdv;
 use api_rdv\infrastructure\repositories\PDORdvRepository;
 use api_rdv\application\actions\DispoByPraticienAction;
 use api_rdv\application\actions\AnnulerRdvAction;
+use api_rdv\application\actions\PlanningOuDispoPraticienAction;
 use api_rdv\application\actions\PlanningPraticienAction;
 use api_rdv\core\services\praticien\PraticienServiceInterface;
 use api_rdv\infrastructure\adaptaters\PraticienServiceAdapter;
@@ -76,16 +77,12 @@ return
             return new CreerRdvAction($c->get(ServiceRdvInterface::class));
         },
 
-        DispoByPraticienAction::class => function (ContainerInterface $c) {
-            return new DispoByPraticienAction($c->get(ServiceRdvInterface::class));
-        },
-
         AnnulerRdvAction::class => function (ContainerInterface $c) {
             return new AnnulerRdvAction($c->get(ServiceRdvInterface::class));
         },
 
-        PlanningPraticienAction::class => function (ContainerInterface $c) {
-            return new PlanningPraticienAction($c->get(ServiceRdvInterface::class));
+        PlanningOuDispoPraticienAction::class => function (ContainerInterface $c) {
+            return new PlanningOuDispoPraticienAction($c->get(ServiceRdvInterface::class));
         },
 
         ServiceRdvInterface::class => function (ContainerInterface $c) {
