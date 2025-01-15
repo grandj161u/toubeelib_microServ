@@ -19,11 +19,12 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->delete('/rdvs/{id}', \api_rdv\application\actions\AnnulerRdvAction::class);
 
-    // l'url s'utilise de cette manière : /praticiens/{idPraticien}/dispos?debut=2024-10-19&fin=2024-10-20
-    $app->get('/praticiens/{idPraticien}/dispos', \api_rdv\application\actions\DispoByPraticienAction::class);
+    // Soit on veut le planning du praticien
+    // l'url s'utilise de cette manière : /praticiens/{idPraticien}/rdvs?statut=planning&debut=2024-10-19&fin=2024-10-20
 
-    // l'url s'utilise de cette manière : /praticiens/{idPraticien}/rdvs?debut=2024-10-19&fin=2024-10-20
-    $app->get('/praticiens/{idPraticien}/rdvs', \api_rdv\application\actions\PlanningPraticienAction::class);
+    // Soit on veut les disponibilités du praticien
+    // l'url s'utilise de cette manière : /praticiens/{idPraticien}/rdvs?statut=dispo&debut=2024-10-19&fin=2024-10-20
+    $app->get('/praticiens/{idPraticien}/rdvs', \api_rdv\application\actions\PlanningOuDispoPraticienAction::class);
 
     return $app;
 };
