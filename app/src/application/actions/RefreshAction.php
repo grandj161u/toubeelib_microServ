@@ -16,8 +16,8 @@ class RefreshAction extends AbstractAction {
     }
 
     public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
-        $data = $rq->getParsedBody();
-        $token = $data['token'];
+        $data = $rq->getHeader('Authorization');
+        $token = substr($data[0], 7);
 
         try {
             $authDTO = $this->authProvider->refresh($token);
@@ -35,7 +35,7 @@ class RefreshAction extends AbstractAction {
         }
 
         $data = [
-            'token' => $authDTO->token,
+            'token' => $authDTO->accessToken,
             'role' => $authDTO->role,
             'links' => [
                 'self' => [ 'href' => '/refresh' ],
