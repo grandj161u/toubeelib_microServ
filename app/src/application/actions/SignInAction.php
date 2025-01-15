@@ -52,8 +52,7 @@ class SignInAction extends AbstractAction {
             'role' => $authDTO->role,
             'links' => [
                 'self' => [ 'href' => '/signin' ],
-                'refresh' => [ 'href' => '/refresh' ],
-                'signout' => [ 'href' => '/signout' ],
+                'refresh' => [ 'href' => '/refresh' ]
             ]
         ];
 
