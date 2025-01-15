@@ -48,7 +48,7 @@ class SignInAction extends AbstractAction {
         }
 
         $data = [
-            'token' => $authDTO->token,
+            'token' => $authDTO->accessToken,
             'role' => $authDTO->role,
             'links' => [
                 'self' => [ 'href' => '/signin' ],
