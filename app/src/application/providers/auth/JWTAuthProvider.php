@@ -12,7 +12,7 @@ class JWTAuthProvider implements AuthProviderInterface {
     private JWTManager $jwtManager;
 
     public function __construct(ServiceAuthInterface $authService, JWTManager $jwtManager) {
-        $this->$authService = $authService;
+        $this->authService = $authService;
         $this->jwtManager = $jwtManager;
     }
 
@@ -22,7 +22,7 @@ class JWTAuthProvider implements AuthProviderInterface {
 
     public function signin(CredentialsDTO $credentials): AuthDTO {
         $user = $this->authService->byCredentials($credentials);
-
+        
         if (!$user) {
             throw new \Exception('Invalid credentials');
         }

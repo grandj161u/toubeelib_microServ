@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\application\exceptions;
+namespace toubeelib\core\services\exceptions;
 
 class ServiceAuthInvalidDataException extends \Exception
 {

@@ -7,6 +7,7 @@ use toubeelib\core\dto\AuthDTO;
 use toubeelib\core\dto\CredentialsDTO;
 use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
 use toubeelib\core\services\auth\ServiceAuthInterface;
+use toubeelib\core\services\exceptions\ServiceAuthInvalidDataException;
 
 class ServiceAuth implements ServiceAuthInterface {
 
@@ -19,21 +20,8 @@ class ServiceAuth implements ServiceAuthInterface {
     }
 
     public function createUser(CredentialsDTO $credentials, int $role): string {
-        $user = $this->authRepository->getUserByEmail($credentials->email);
-        if (password_verify($credentials->password, $user->password)) {
-            $payload = [
-                'iat' => time(),
-                'exp' => time() + 3600,
-                'sub' => $user->id,
-                'data' => [
-                    'role' => $role,
-                    'email' => $user->email
-                ]
-            ];
-            
-            return $this->jwtManager->createAccessToken($payload);
-        }
-        throw new ServiceAuthInvalidDataException("Invalid credentials");
+        $user = $this->authRepository->creerUser($credentials->email, $credentials->password, $role);
+        return $user->getID();
     }
 
     public function byCredentials(CredentialsDTO $credentials): AuthDTO {

@@ -4,9 +4,9 @@ namespace toubeelib\infrastructure\repositories;
 
 use toubeelib\core\domain\entities\authentification\User;
 use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
-use toubeelib\core\dto\CredentialsDTO;
 use toubeelib\core\repositoryInterfaces\RepositoryDatabaseErrorException;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
+use Ramsey\Uuid\Uuid;
 
 class PDOAuthRepository implements AuthRepositoryInterface
 {
@@ -22,9 +22,9 @@ class PDOAuthRepository implements AuthRepositoryInterface
         try {
             $stmt = $this->pdoAuth->prepare($query);
             $stmt->bindValue(':id', $user->getID(), \PDO::PARAM_STR);
-            $stmt->bindValue(':email', $user->__get('email'), \PDO::PARAM_STR);
-            $stmt->bindValue(':pwd', $user->__get('password'), \PDO::PARAM_STR);
-            $stmt->bindValue(':role', $user->__get('role'), \PDO::PARAM_STR);
+            $stmt->bindValue(':email', $user->email, \PDO::PARAM_STR);
+            $stmt->bindValue(':pwd', password_hash($user->password, PASSWORD_DEFAULT), \PDO::PARAM_STR);
+            $stmt->bindValue(':role', $user->role, \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $e) {
             throw new RepositoryDatabaseErrorException('Error while saving rdv $rdv ' . $e->getMessage());
@@ -112,6 +112,7 @@ class PDOAuthRepository implements AuthRepositoryInterface
 
     public function creerUser(string $email, string $password, int $role): User {
         $user = new User($email, $password, $role);
+        $user->setID(Uuid::uuid4()->toString());
         $this->save($user);
         return $user;
     }

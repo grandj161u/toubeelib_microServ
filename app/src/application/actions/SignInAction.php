@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\application\providers\auth\AuthProviderInterface;
 use toubeelib\core\dto\CredentialsDTO;
 use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\application\exceptions\ServiceAuthInvalidDataException;
+use toubeelib\core\services\exceptions\ServiceAuthInvalidDataException;
 
 class SignInAction extends AbstractAction {
 
