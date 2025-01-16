@@ -4,9 +4,10 @@ namespace toubeelib\application\middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Psr7\Response;
 use toubeelib\application\providers\auth\AuthProviderInterface;
+use Slim\Exception\HttpUnauthorizedException;
 use Slim\Exception\HttpException;
+use toubeelib\core\dto\AuthDTO;
 
 class AuthMiddleware
 {
@@ -31,14 +32,14 @@ class AuthMiddleware
 
         $authHeader = $request->getHeader('Authorization');
         if (empty($authHeader) || !$this->isValidAuthHeader($authHeader[0])) {
-            return new HttpException($request, "header invalide", 401);
+            return new HttpUnauthorizedException($request, "header invalide");
         }
 
         $token = $this->extractToken($authHeader[0]);
 
         try {
             $authDTO = $this->authProvider->getSignedInUser($token);
-
+            
             $request = $request->withAttribute('email', $authDTO->email);
             $request = $request->withAttribute('role', $authDTO->role);
 

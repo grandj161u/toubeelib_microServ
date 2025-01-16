@@ -50,7 +50,7 @@ class ServiceAuth implements ServiceAuthInterface
     {
         $user = $this->authRepository->getUserById($id);
         if ($user) {
-            return new AuthDTO($user->id, $user->email, $user->role, '', '');
+            return new AuthDTO($user->getID(), $user->email, $user->role, '', '');
         }
         throw new ServiceAuthInvalidDataException("User not found");
     }
