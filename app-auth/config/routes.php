@@ -13,7 +13,7 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->post('/refresh', \api_auth\application\actions\RefreshAction::class);
 
-    $app->post('/register', \api_auth\application\actions\RegisterAction::class);
+    $app->post('/users/register', \api_auth\application\actions\RegisterAction::class);
 
     $app->post('/tokens/validate', \api_auth\application\actions\ValidateTokenAction::class);
 

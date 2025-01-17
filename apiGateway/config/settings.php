@@ -11,4 +11,6 @@ return  [
     // 'praticien.api' => 'http://localhost:2080/',
     'rdv.api' => 'http://api.rdv/',
     // 'rdv.api' => 'http://localhost:3080',
+    'auth.api' => 'http://api.auth/',
+    // 'auth.api' => 'http://localhost:4080',
 ];
