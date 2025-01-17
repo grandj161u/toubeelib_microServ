@@ -61,7 +61,7 @@ services:
 
   # service api.rdv : api pour la partie rdv de toubeelib
   #
-  api.securite:
+  api.auth:
     build:
       context: build
       dockerfile: Dockerfile_Principal
@@ -69,7 +69,7 @@ services:
     ports:
       - 4080:80
     volumes:
-      - ./app-secu:/var/php
+      - ./app-auth:/var/php
     working_dir: /var/php
     networks:
       - toubeelib.net
