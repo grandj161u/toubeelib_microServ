@@ -59,6 +59,24 @@ services:
       - toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+  # service api.rdv : api pour la partie rdv de toubeelib
+  #
+  api.securite:
+    build:
+      context: build
+      dockerfile: Dockerfile_Principal
+    env_file: ./toubeelib.env
+    ports:
+      - 4080:80
+    volumes:
+      - ./app-secu:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      - toubeelib.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
   # gateway.toubeelib : api gateway pour toubeelib
   #
   gateway.toubeelib:
