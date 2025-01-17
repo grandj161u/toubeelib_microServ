@@ -6,10 +6,10 @@ use toubeelib\application\middlewares\AuthMiddleware;
 use toubeelib\application\middlewares\Cors;
 
 $builder = new ContainerBuilder();
-$builder->addDefinitions(__DIR__ . '/settings.php' );
+$builder->addDefinitions(__DIR__ . '/settings.php');
 $builder->addDefinitions(__DIR__ . '/dependencies.php');
 
-$c=$builder->build();
+$c = $builder->build();
 $app = AppFactory::createFromContainer($c);
 
 $app->add(new Cors());
