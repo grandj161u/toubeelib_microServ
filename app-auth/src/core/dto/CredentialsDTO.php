@@ -1,6 +1,6 @@
 <?php 
 
-namespace toubeelib\core\dto;
+namespace api_auth\core\dto;
 
 class CredentialsDTO extends DTO {
     

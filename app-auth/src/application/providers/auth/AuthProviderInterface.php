@@ -1,9 +1,9 @@
 <?php 
 
-namespace toubeelib\application\providers\auth;
+namespace api_auth\application\providers\auth;
 
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\CredentialsDTO;
+use api_auth\core\dto\AuthDTO;
+use api_auth\core\dto\CredentialsDTO;
 
 interface AuthProviderInterface {
     public function register(CredentialsDTO $credentials, int $role): void;

@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\core\domain\entities;
+namespace api_auth\core\domain\entities;
 
 abstract class Entity
 {

@@ -1,8 +1,8 @@
 <?php 
 
-namespace toubeelib\core\domain\entities\authentification;
+namespace api_auth\core\domain\entities\authentification;
 
-use toubeelib\core\domain\entities\Entity;
+use api_auth\core\domain\entities\Entity;
 
 class User extends Entity {
 

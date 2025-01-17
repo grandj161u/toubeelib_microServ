@@ -1,13 +1,13 @@
 <?php
 
-namespace toubeelib\application\middlewares;
+namespace api_auth\application\middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use toubeelib\application\providers\auth\AuthProviderInterface;
+use api_auth\application\providers\auth\AuthProviderInterface;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Exception\HttpException;
-use toubeelib\core\dto\AuthDTO;
+use api_auth\core\dto\AuthDTO;
 
 class AuthMiddleware
 {

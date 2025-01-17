@@ -1,13 +1,13 @@
 <?php 
 
-namespace toubeelib\application\actions;
+namespace api_auth\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubeelib\application\providers\auth\AuthProviderInterface;
-use toubeelib\core\dto\CredentialsDTO;
-use toubeelib\application\renderer\JsonRenderer;
-use toubeelib\core\services\exceptions\ServiceAuthInvalidDataException;
+use api_auth\application\providers\auth\AuthProviderInterface;
+use api_auth\core\dto\CredentialsDTO;
+use api_auth\application\renderer\JsonRenderer;
+use api_auth\core\services\exceptions\ServiceAuthInvalidDataException;
 
 class SignInAction extends AbstractAction {
 

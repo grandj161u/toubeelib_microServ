@@ -1,9 +1,8 @@
 <?php
 
-namespace toubeelib\core\dto;
+namespace api_auth\core\dto;
 
 use Respect\Validation\Validatable;
-use Respect\Validation\Validator;
 
 abstract class DTO implements \JsonSerializable
 {

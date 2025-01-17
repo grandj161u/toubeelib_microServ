@@ -1,16 +1,17 @@
 <?php
 
 use Psr\Container\ContainerInterface;
-use toubeelib\application\actions\SignInAction;
-use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
-use toubeelib\core\services\auth\ServiceAuthInterface;
-use toubeelib\infrastructure\repositories\PDOAuthRepository;
-use toubeelib\core\services\auth\ServiceAuth;
-use toubeelib\application\providers\auth\JWTManager;
-use toubeelib\application\providers\auth\JWTAuthProvider;
-use toubeelib\application\actions\RefreshAction;
-use toubeelib\application\actions\RegisterAction;
-use toubeelib\application\middlewares\AuthMiddleware;
+use api_auth\application\actions\SignInAction;
+use api_auth\core\repositoryInterfaces\AuthRepositoryInterface;
+use api_auth\core\services\auth\ServiceAuthInterface;
+use api_auth\infrastructure\repositories\PDOAuthRepository;
+use api_auth\core\services\auth\ServiceAuth;
+use api_auth\application\providers\auth\JWTManager;
+use api_auth\application\providers\auth\JWTAuthProvider;
+use api_auth\application\actions\RefreshAction;
+use api_auth\application\actions\RegisterAction;
+use api_auth\application\actions\ValidateTokenAction;
+use api_auth\application\middlewares\AuthMiddleware;
 
 return [
 
@@ -55,5 +56,9 @@ return [
 
     RegisterAction::class => function (ContainerInterface $c) {
         return new RegisterAction($c->get(JWTAuthProvider::class));
+    },
+
+    ValidateTokenAction::class => function (ContainerInterface $c) {
+        return new ValidateTokenAction($c->get(JWTAuthProvider::class));
     }
 ];

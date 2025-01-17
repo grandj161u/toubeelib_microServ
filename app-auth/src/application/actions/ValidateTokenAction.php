@@ -1,31 +1,43 @@
-<?php 
+<?php
 
 namespace api_auth\application\actions;
 
+use api_praticien\application\providers\auth\AuthProviderInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use api_auth\application\providers\auth\AuthProviderInterface;
-use api_auth\core\dto\CredentialsDTO;
+use api_auth\application\actions\AbstractAction;
 use api_auth\application\renderer\JsonRenderer;
 use api_auth\core\services\exceptions\ServiceAuthInvalidDataException;
 
-class RegisterAction extends AbstractAction 
+class ValidateTokenAction extends AbstractAction
 {
 
     protected AuthProviderInterface $authProvider;
 
-    public function __construct(AuthProviderInterface $authProvider) 
+    public function __construct(AuthProviderInterface $authProvider)
     {
         $this->authProvider = $authProvider;
     }
 
-    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
+    public function __invoke(RequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $data = $rq->getParsedBody();
-        $credentials = new CredentialsDTO($data['email'], $data['password']);
-        
+        $token = $rq->getHeader('Authorization')[0];
+
+        if(!$token) {
+            $data = [
+                'message' => 'Token not found in request header',
+                'exception' => [
+                    'type' => 'TokenNotFoundException',
+                    'code' => 404,
+                    'file' => __FILE__,
+                    'line' => __LINE__
+                ]
+            ];
+            return JsonRenderer::render($rs, 404, $data);
+        }
+
         try {
-            $this->authProvider->register($credentials,0);
+            $authDTO = $this->authProvider->getSignedInUser($token);
         } catch (ServiceAuthInvalidDataException $e) {
             $data = [
                 'message' => $e->getMessage(),
@@ -51,11 +63,10 @@ class RegisterAction extends AbstractAction
         }
 
         $data = [
-            'message' => 'User registered successfully',
+            'message' => 'Token is valid',
+            'token' => $authDTO->accessToken,
             'links' => [
-                'self' => [ 'href' => '/register' ],
-                'refresh' => [ 'href' => '/refresh' ],
-                'signin' => [ 'href' => '/signin' ],
+                'self' => [ 'href' => '/tokens/validate' ],
             ]
         ];
 

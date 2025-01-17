@@ -1,11 +1,11 @@
 <?php
 
-namespace toubeelib\application\providers\auth;
+namespace api_auth\application\providers\auth;
 
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\CredentialsDTO;
-use toubeelib\application\providers\auth\JWTManager;
-use toubeelib\core\services\auth\ServiceAuthInterface;
+use api_auth\core\dto\AuthDTO;
+use api_auth\core\dto\CredentialsDTO;
+use api_auth\application\providers\auth\JWTManager;
+use api_auth\core\services\auth\ServiceAuthInterface;
 
 class JWTAuthProvider implements AuthProviderInterface {
     private ServiceAuthInterface $authService;

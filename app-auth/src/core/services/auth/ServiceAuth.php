@@ -1,13 +1,13 @@
 <?php
 
-namespace toubeelib\core\services\auth;
+namespace api_auth\core\services\auth;
 
-use toubeelib\application\providers\auth\JWTManager;
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\CredentialsDTO;
-use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
-use toubeelib\core\services\auth\ServiceAuthInterface;
-use toubeelib\core\services\exceptions\ServiceAuthInvalidDataException;
+use api_auth\application\providers\auth\JWTManager;
+use api_auth\core\dto\AuthDTO;
+use api_auth\core\dto\CredentialsDTO;
+use api_auth\core\repositoryInterfaces\AuthRepositoryInterface;
+use api_auth\core\services\auth\ServiceAuthInterface;
+use api_auth\core\services\exceptions\ServiceAuthInvalidDataException;
 
 class ServiceAuth implements ServiceAuthInterface
 {
