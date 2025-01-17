@@ -11,7 +11,7 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->post('/users/signin', \api_auth\application\actions\SignInAction::class);
 
-    $app->post('/refresh', \api_auth\application\actions\RefreshAction::class);
+    $app->post('/users/refresh', \api_auth\application\actions\RefreshAction::class);
 
     $app->post('/users/register', \api_auth\application\actions\RegisterAction::class);
 
