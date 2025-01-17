@@ -11,9 +11,9 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->post('/users/signin', \toubeelib\application\actions\SignInAction::class);
 
-    $app->post('/refresh', \toubeelib\application\actions\RefreshAction::class);
+    $app->post('/users/refresh', \toubeelib\application\actions\RefreshAction::class);
 
-    $app->post('/register', \toubeelib\application\actions\RegisterAction::class);
+    $app->post('/users/register', \toubeelib\application\actions\RegisterAction::class);
 
     return $app;
 };
