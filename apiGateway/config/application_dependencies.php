@@ -6,8 +6,7 @@ use gateway_tblb\application\actions\GatewayPraticienByIdAction;
 use gateway_tblb\application\actions\GatewayRefreshAction;
 use gateway_tblb\application\actions\GatewayRegisterAction;
 use gateway_tblb\application\actions\GatewaySignInAction;
-use gateway_tblb\application\actions\GatewaySpecialiteByIdAction;
-use gateway_tblb\application\actions\HomeAction;
+use gateway_tblb\application\actions\GatewayValidateTokenAction;
 use Psr\Container\ContainerInterface;
 
 $settings = require __DIR__ . '/settings.php';
@@ -62,5 +61,9 @@ return
 
         GatewayRegisterAction::class => function (ContainerInterface $c) {
             return new GatewayRegisterAction($c->get('guzzle.client.auth'));
+        },
+
+        GatewayValidateTokenAction::class => function (ContainerInterface $c) {
+            return new GatewayValidateTokenAction($c->get('guzzle.client.auth'));
         },
     ];
