@@ -9,20 +9,23 @@ use toubeelib\core\dto\CredentialsDTO;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\services\exceptions\ServiceAuthInvalidDataException;
 
-class SignInAction extends AbstractAction {
+class RegisterAction extends AbstractAction 
+{
 
     protected AuthProviderInterface $authProvider;
 
-    public function __construct(AuthProviderInterface $authProvider) {
+    public function __construct(AuthProviderInterface $authProvider) 
+    {
         $this->authProvider = $authProvider;
     }
-    
-    public function __invoke (ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
+
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
+    {
         $data = $rq->getParsedBody();
         $credentials = new CredentialsDTO($data['email'], $data['password']);
         
         try {
-            $authDTO = $this->authProvider->signIn($credentials);
+            $this->authProvider->register($credentials,0);
         } catch (ServiceAuthInvalidDataException $e) {
             $data = [
                 'message' => $e->getMessage(),
@@ -48,14 +51,14 @@ class SignInAction extends AbstractAction {
         }
 
         $data = [
-            'token' => $authDTO->accessToken,
-            'role' => $authDTO->role,
+            'message' => 'User registered successfully',
             'links' => [
-                'self' => [ 'href' => '/signin' ],
-                'refresh' => [ 'href' => '/refresh' ]
+                'self' => [ 'href' => '/register' ],
+                'refresh' => [ 'href' => '/refresh' ],
+                'signin' => [ 'href' => '/signin' ],
             ]
         ];
 
         return JsonRenderer::render($rs, 200, $data);
     }
-} 
+}

@@ -12,7 +12,7 @@ class JWTAuthProvider implements AuthProviderInterface {
     private JWTManager $jwtManager;
 
     public function __construct(ServiceAuthInterface $authService, JWTManager $jwtManager) {
-        $this->$authService = $authService;
+        $this->authService = $authService;
         $this->jwtManager = $jwtManager;
     }
 
@@ -22,7 +22,7 @@ class JWTAuthProvider implements AuthProviderInterface {
 
     public function signin(CredentialsDTO $credentials): AuthDTO {
         $user = $this->authService->byCredentials($credentials);
-
+        
         if (!$user) {
             throw new \Exception('Invalid credentials');
         }
@@ -34,15 +34,20 @@ class JWTAuthProvider implements AuthProviderInterface {
     }
 
     public function refresh(string $refreshToken): AuthDTO {
-        $payload = $this->jwtManager->decodeToken($refreshToken);
+        $id = $this->jwtManager->decodeToken($refreshToken);
+        $payload = $this->authService->getUserById($id['id']); 
 
         if (!$payload) {
             throw new \Exception('Invalid refresh token');
         }
 
-        $newAccessToken = $this->jwtManager->createAccessToken($payload);
-        $newRefreshToken = $this->jwtManager->createRefreshToken($payload);
-        return new AuthDTO($payload['sub'], $payload['data']['email'], $payload['data']['role'], $newAccessToken, $newRefreshToken);
+        $newAccessToken = $this->jwtManager->createAccessToken((array) $id['id']);
+        $newRefreshToken = $this->jwtManager->createRefreshToken((array) $id['id']);
+
+        $payload->accessToken = $newAccessToken;
+        $payload->refreshToken = $newRefreshToken;
+
+        return $payload;
     }
 
     public function getSignedInUser(string $token): AuthDTO {
@@ -58,6 +63,6 @@ class JWTAuthProvider implements AuthProviderInterface {
             throw new \Exception('User not found');
         }
 
-        return new AuthDTO($user->id, $user->email, $user->role, $token, $payload['exp']);
+        return new AuthDTO($user->ID, $user->email, $user->role, $token, '');
     }
 }

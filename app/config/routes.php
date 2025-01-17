@@ -35,5 +35,7 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->post('/refresh', \toubeelib\application\actions\RefreshAction::class);
 
+    $app->post('/register', \toubeelib\application\actions\RegisterAction::class);
+
     return $app;
 };

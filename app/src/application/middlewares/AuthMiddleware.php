@@ -4,8 +4,10 @@ namespace toubeelib\application\middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Psr7\Response;
 use toubeelib\application\providers\auth\AuthProviderInterface;
+use Slim\Exception\HttpUnauthorizedException;
+use Slim\Exception\HttpException;
+use toubeelib\core\dto\AuthDTO;
 
 class AuthMiddleware
 {
@@ -18,23 +20,32 @@ class AuthMiddleware
 
     public function __invoke(Request $request, RequestHandler $handler) 
     {
-        $authHeader = $request->getHeaderLine('Authorization');
-        
-        if (empty($authHeader) || !$this->isValidAuthHeader($authHeader)) {
-            return new Response(401);
+        $route = $request->getUri()->getPath();
+        $method = $request->getMethod();
+
+        $publicRoutes = ['/users/signin', '/register'];
+        $isPublicRoute = in_array($route, $publicRoutes) || $method === 'OPTIONS';
+
+        if ($isPublicRoute) {
+            return $handler->handle($request);
         }
 
-        $token = $this->extractToken($authHeader);
+        $authHeader = $request->getHeader('Authorization');
+        if (empty($authHeader) || !$this->isValidAuthHeader($authHeader[0])) {
+            return new HttpUnauthorizedException($request, "header invalide");
+        }
+
+        $token = $this->extractToken($authHeader[0]);
 
         try {
             $authDTO = $this->authProvider->getSignedInUser($token);
-
+            
             $request = $request->withAttribute('email', $authDTO->email);
             $request = $request->withAttribute('role', $authDTO->role);
 
             return $handler->handle($request);
         } catch (\Exception $e) {
-            return new Response(401);
+            return new HttpException($request, $e->getMessage() ,401);
         }
     }
     
