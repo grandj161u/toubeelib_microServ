@@ -53,9 +53,9 @@ class RegisterAction extends AbstractAction
         $data = [
             'message' => 'User registered successfully',
             'links' => [
-                'self' => [ 'href' => '/register' ],
-                'refresh' => [ 'href' => '/refresh' ],
-                'signin' => [ 'href' => '/signin' ],
+                'self' => [ 'href' => '/users/register' ],
+                'refresh' => [ 'href' => '/users/refresh' ],
+                'signin' => [ 'href' => '/users/signin' ],
             ]
         ];
 

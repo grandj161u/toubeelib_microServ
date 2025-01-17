@@ -38,8 +38,7 @@ class RefreshAction extends AbstractAction {
             'token' => $authDTO->accessToken,
             'role' => $authDTO->role,
             'links' => [
-                'self' => [ 'href' => '/refresh' ],
-                'signout' => [ 'href' => '/signout' ],
+                'self' => [ 'href' => '/users/refresh' ],
             ]
         ];
 
