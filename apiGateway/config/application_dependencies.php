@@ -7,6 +7,7 @@ use gateway_tblb\application\actions\GatewayRefreshAction;
 use gateway_tblb\application\actions\GatewayRegisterAction;
 use gateway_tblb\application\actions\GatewaySignInAction;
 use gateway_tblb\application\actions\GatewayValidateTokenAction;
+use gateway_tblb\application\middlewares\GatewayAuthMiddleware;
 use Psr\Container\ContainerInterface;
 
 $settings = require __DIR__ . '/settings.php';
@@ -66,4 +67,8 @@ return
         GatewayValidateTokenAction::class => function (ContainerInterface $c) {
             return new GatewayValidateTokenAction($c->get('guzzle.client.auth'));
         },
+
+        // GatewayAuthMiddleware::class => function (ContainerInterface $c) {
+        //     return new GatewayAuthMiddleware($c->get('auth.provider'));
+        // }
     ];
