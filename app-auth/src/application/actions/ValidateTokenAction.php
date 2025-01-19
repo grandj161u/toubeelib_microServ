@@ -28,12 +28,12 @@ class ValidateTokenAction extends AbstractAction
                 'message' => 'Token not found in request header',
                 'exception' => [
                     'type' => 'TokenNotFoundException',
-                    'code' => 404,
+                    'code' => 401,
                     'file' => __FILE__,
                     'line' => __LINE__
                 ]
             ];
-            return JsonRenderer::render($rs, 404, $data);
+            return JsonRenderer::render($rs, 401, $data);
         }
 
         try {
@@ -48,7 +48,7 @@ class ValidateTokenAction extends AbstractAction
                     'line' => $e->getLine()
                 ]
             ];
-            return JsonRenderer::render($rs, 400, $data);
+            return JsonRenderer::render($rs, 401, $data);
         } catch (\Exception  $e) {
             $data = [
                 'message' => $e->getMessage(),
