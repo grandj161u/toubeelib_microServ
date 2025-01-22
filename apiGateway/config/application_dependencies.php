@@ -68,7 +68,7 @@ return
             return new GatewayValidateTokenAction($c->get('guzzle.client.auth'));
         },
 
-        // GatewayAuthMiddleware::class => function (ContainerInterface $c) {
-        //     return new GatewayAuthMiddleware($c->get('auth.provider'));
-        // }
+        GatewayAuthMiddleware::class => function (ContainerInterface $c) {
+            return new GatewayAuthMiddleware($c->get('guzzle.client.auth'));
+        }
     ];
