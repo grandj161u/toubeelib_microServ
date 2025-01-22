@@ -2,7 +2,7 @@
 
 namespace api_auth\application\actions;
 
-use api_praticien\application\providers\auth\AuthProviderInterface;
+use api_auth\application\providers\auth\AuthProviderInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use api_auth\application\actions\AbstractAction;
@@ -21,7 +21,7 @@ class ValidateTokenAction extends AbstractAction
 
     public function __invoke(RequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $token = $rq->getHeader('Authorization')[0];
+        $token = substr($rq->getHeader('Authorization')[0], 7);
 
         if(!$token) {
             $data = [
