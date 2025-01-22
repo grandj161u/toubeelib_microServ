@@ -5,7 +5,6 @@ namespace gateway_tblb\application\middlewares;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Exception\HttpUnauthorizedException;
-use gateway_tblb\core\services\auth\AuthServiceInterface;
 use GuzzleHttp\Client;
 use Slim\Exception\HttpException;
 
