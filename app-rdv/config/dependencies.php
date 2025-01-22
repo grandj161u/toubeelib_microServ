@@ -47,14 +47,6 @@ return
             return new PDO($dsn, $user, $password);
         },
 
-        'auth.pdo' => function (ContainerInterface $c) {
-            $config = parse_ini_file(__DIR__ . '/auth.db.ini');
-            $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
-            $user = $config['username'];
-            $password = $config['password'];
-            return new PDO($dsn, $user, $password);
-        },
-
         'guzzle.client.praticien' => function (ContainerInterface $c) {
             return new \GuzzleHttp\Client([
                 'base_uri' => $c->get('settings')['praticien.api']

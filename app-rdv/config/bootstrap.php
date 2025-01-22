@@ -12,7 +12,7 @@ $builder->addDefinitions(__DIR__ . '/dependencies.php');
 $c = $builder->build();
 $app = AppFactory::createFromContainer($c);
 
-$app->add(new Cors());
+// $app->add(new Cors());
 //$app->add(AuthMiddleware::class);
 
 $app->addBodyParsingMiddleware();
