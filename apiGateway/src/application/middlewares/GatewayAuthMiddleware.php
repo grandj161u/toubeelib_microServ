@@ -6,6 +6,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Exception\HttpUnauthorizedException;
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Exception\HttpException;
 
 class GatewayAuthMiddleware
@@ -17,7 +18,7 @@ class GatewayAuthMiddleware
         $this->client = $authRemote;
     }
 
-    public function __invoke(Request $request, RequestHandler $handler)
+    public function __invoke(Request $request, RequestHandler $handler): ResponseInterface
     {
         $route = $request->getUri()->getPath();
         $method = $request->getMethod();
@@ -34,16 +35,24 @@ class GatewayAuthMiddleware
             return new HttpUnauthorizedException($request, "header invalide");
         }
 
-        $token = $this->extractToken($authHeader[0]);
-        
         try {
-            $token = $this->client->request('POST', '/tokens/validate')->getBody();
+            $response = $this->client->request('POST', '/tokens/validate', [
+                'headers' => [
+                    'Authorization' => $authHeader[0]
+                ]
+            ]);
 
-            $request = $request->withAttribute('token', $token);
+            if ($response->getStatusCode() !== 200) {
+                throw new HttpUnauthorizedException($request, "Token invalide");
+            }
 
             return $handler->handle($request);
+        } catch (\GuzzleHttp\Exception\ClientException | \GuzzleHttp\Exception\ServerException $e) {
+            $responseBody = json_decode($e->getResponse()->getBody()->getContents(), true);
+            $errorMessage = $responseBody['message'] ?? "Token invalide";
+            throw new HttpUnauthorizedException($request, $errorMessage);
         } catch (\Exception $e) {
-            return new HttpException($request, $e->getMessage(), 401);
+            throw new HttpUnauthorizedException($request, "Token invalide");
         }
     }
 
