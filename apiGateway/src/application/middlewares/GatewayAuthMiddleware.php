@@ -36,11 +36,9 @@ class GatewayAuthMiddleware
         }
 
         $token = $this->extractToken($authHeader[0]);
-
+        
         try {
-            $token = $this->client->request('POST', '/tokens/validate', [
-                'json' => ['token' => $token]
-            ])->getBody();
+            $token = $this->client->request('POST', '/tokens/validate')->getBody();
 
             $request = $request->withAttribute('token', $token);
 
