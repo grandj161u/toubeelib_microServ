@@ -9,10 +9,8 @@ use api_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 use api_rdv\core\services\rdv\ServiceRdvInterface;
 use api_rdv\core\services\rdv\ServiceRdv;
 use api_rdv\infrastructure\repositories\PDORdvRepository;
-use api_rdv\application\actions\DispoByPraticienAction;
 use api_rdv\application\actions\AnnulerRdvAction;
 use api_rdv\application\actions\PlanningOuDispoPraticienAction;
-use api_rdv\application\actions\PlanningPraticienAction;
 use api_rdv\core\services\praticien\PraticienServiceInterface;
 use api_rdv\infrastructure\adaptaters\PraticienServiceAdapter;
 
