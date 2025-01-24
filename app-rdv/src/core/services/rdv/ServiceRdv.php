@@ -11,17 +11,20 @@ use api_rdv\core\dto\ModifyRdvDTO;
 use api_rdv\core\dto\GererCycleRdvDTO;
 use DateTimeImmutable;
 use api_rdv\core\services\praticien\PraticienServiceInterface;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 class ServiceRdv implements ServiceRdvInterface
 {
 
     private RdvRepositoryInterface $rdvRepository;
     private PraticienServiceInterface $servicePraticien;
+    private AMQPStreamConnection $connection;
 
-    public function __construct(RdvRepositoryInterface $rdvRepository, PraticienServiceInterface $praticienService)
+    public function __construct(RdvRepositoryInterface $rdvRepository, PraticienServiceInterface $praticienService, AMQPStreamConnection $connection)
     {
         $this->rdvRepository = $rdvRepository;
         $this->servicePraticien = $praticienService;
+        $this->connection = $connection;
     }
 
     public function getRdvs(): array
@@ -222,5 +225,14 @@ class ServiceRdv implements ServiceRdvInterface
         }
 
         return $planning;
+    }
+
+    public function sendMessageRdv($message)
+    {
+        $channel = $this->connection->channel();
+        $msg = new \PhpAmqpLib\Message\AMQPMessage($message);
+        $channel->basic_publish($msg, 'rdv.exchange', 'rdv.key');
+        $channel->close();
+        $this->connection->close();
     }
 }

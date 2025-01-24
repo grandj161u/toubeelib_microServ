@@ -15,6 +15,7 @@ use api_rdv\application\actions\PlanningOuDispoPraticienAction;
 use api_rdv\application\actions\PlanningPraticienAction;
 use api_rdv\core\services\praticien\PraticienServiceInterface;
 use api_rdv\infrastructure\adaptaters\PraticienServiceAdapter;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 
 $settings = require __DIR__ . '/settings.php';
@@ -53,6 +54,36 @@ return
             ]);
         },
 
+        'rabbitmq.connection.rdv' => function (ContainerInterface $c) {
+            $connection = new AMQPStreamConnection(
+                $c->get('settings')['rabbitmq.host'],
+                $c->get('settings')['rabbitmq.port'],
+                $c->get('settings')['rabbitmq.user'],
+                $c->get('settings')['rabbitmq.password']
+            );
+            $channel = $connection->channel();
+            $channel->exchange_declare(
+                $c->get('settings')['rdv.event.exchange'],
+                $c->get('settings')['rdv.type.exchange'],
+                false,
+                true,
+                false
+            );
+            $channel->queue_declare(
+                $c->get('settings')['rdv.queue'],
+                false,
+                true,
+                false,
+                false
+            );
+            $channel->queue_bind(
+                $c->get('settings')['rdv.queue'],
+                $c->get('settings')['rdv.event.exchange'],
+                $c->get('settings')['rdv.routing.key']
+            );
+            return $connection;
+        },
+
         ConsulterRdvByPatientAction::class => function (ContainerInterface $c) {
             return new ConsulterRdvByPatientAction($c->get(ServiceRdvInterface::class));
         },
@@ -80,7 +111,8 @@ return
         ServiceRdvInterface::class => function (ContainerInterface $c) {
             return new ServiceRdv(
                 $c->get(RdvRepositoryInterface::class),
-                $c->get(PraticienServiceInterface::class)
+                $c->get(PraticienServiceInterface::class),
+                $c->get('rabbitmq.connection.rdv')
             );
         },
 
