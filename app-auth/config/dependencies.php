@@ -11,7 +11,6 @@ use api_auth\application\providers\auth\JWTAuthProvider;
 use api_auth\application\actions\RefreshAction;
 use api_auth\application\actions\RegisterAction;
 use api_auth\application\actions\ValidateTokenAction;
-use api_auth\application\middlewares\AuthMiddleware;
 
 return [
 
@@ -32,10 +31,7 @@ return [
     },
 
     ServiceAuthInterface::class => function (ContainerInterface $c) {
-        return new ServiceAuth(
-            $c->get(AuthRepositoryInterface::class),
-            $c->get(JWTManager::class)
-        );
+        return new ServiceAuth($c->get(AuthRepositoryInterface::class));
     },
 
     JWTAuthProvider::class => function (ContainerInterface $c) {
@@ -48,10 +44,6 @@ return [
 
     RefreshAction::class => function (ContainerInterface $c) {
         return new RefreshAction($c->get(JWTAuthProvider::class));
-    },
-
-    AuthMiddleware::class => function (ContainerInterface $c) {
-        return new AuthMiddleware($c->get(JWTAuthProvider::class));
     },
 
     RegisterAction::class => function (ContainerInterface $c) {
