@@ -27,42 +27,63 @@ class JWTAuthProvider implements AuthProviderInterface {
             throw new \Exception('Invalid credentials');
         }
 
-        $accessToken = $this->jwtManager->createAccessToken(['id' => $user->ID]);
-        $refreshToken = $this->jwtManager->createRefreshToken(['id' => $user->ID]);
+        $payload = [
+            'iat' => time(),
+            'exp' => time() + 3600,
+            'sub' => $user->ID,
+            'data' => [
+                'user' => $user->email,
+                'role' => $user->role
+            ]
+        ];
+
+        $accessToken = $this->jwtManager->createAccessToken($payload);
+        $refreshToken = $this->jwtManager->createRefreshToken($payload);
 
         return new AuthDTO($user->ID, $user->email, $user->role, $accessToken, $refreshToken);
     }
 
     public function refresh(string $refreshToken): AuthDTO {
-        $id = $this->jwtManager->decodeToken($refreshToken);
-        $payload = $this->authService->getUserById($id['id']); 
+        $decodedToken = $this->jwtManager->decodeToken($refreshToken);
+        $userId = $decodedToken['sub'];
 
-        if (!$payload) {
+        $user = $this->authService->getUserById($userId); 
+
+        if (!$user) {
             throw new \Exception('Invalid refresh token');
         }
 
-        $newAccessToken = $this->jwtManager->createAccessToken((array) $id['id']);
-        $newRefreshToken = $this->jwtManager->createRefreshToken((array) $id['id']);
+        $payload = [
+            'iat' => time(),
+            'exp' => time() + 3600,
+            'sub' => $user->ID,
+            'data' => [
+                'user' => $user->email,
+                'role' => $user->role
+            ]
+        ];
 
-        $payload->accessToken = $newAccessToken;
-        $payload->refreshToken = $newRefreshToken;
+        $newAccessToken = $this->jwtManager->createAccessToken($payload);
+        $newRefreshToken = $this->jwtManager->createRefreshToken($payload);
 
-        return $payload;
+        return new AuthDTO($user->ID, $user->email, $user->role, $newAccessToken, $newRefreshToken);
     }
 
     public function getSignedInUser(string $token): AuthDTO {
-        $payload = $this->jwtManager->decodeToken($token);
+        $decodedToken = $this->jwtManager->decodeToken($token);
 
-        if (!$payload) {
+        if (!$decodedToken) {
             throw new \Exception('Invalid token');
         }
 
-        $user = $this->authService->getUserById($payload['id']);
+        $user = $this->authService->getUserById($decodedToken['sub']);
+        
+        $refreshToken = $this->jwtManager->createRefreshToken($decodedToken);
 
         if (!$user) {
             throw new \Exception('User not found');
         }
 
-        return new AuthDTO($user->ID, $user->email, $user->role, $token, '');
+        return new AuthDTO($user->ID, $user->email, $user->role, $token, $refreshToken);
     }
 }
