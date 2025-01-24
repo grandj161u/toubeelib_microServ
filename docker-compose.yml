@@ -56,7 +56,7 @@ services:
     networks:
       - toubeelib.net
     depends_on:
-      - toubeelib.db
+      - toubeelib.db     
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   # service api.rdv : api pour la partie rdv de toubeelib
@@ -113,6 +113,29 @@ services:
       - 8080:8080
     networks:
       - toubeelib.net
+
+  #######################################
+  ### RabbitMQ Service
+  ###
+  #######################################
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./rabbitmq_dir:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=root
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 8s
+      timeout: 30s
+      retries: 3
+    
     
     
 
