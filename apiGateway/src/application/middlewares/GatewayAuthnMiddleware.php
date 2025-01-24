@@ -7,9 +7,8 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Exception\HttpUnauthorizedException;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Exception\HttpException;
 
-class GatewayAuthMiddleware
+class GatewayAuthnMiddleware
 {
     private Client $client;
 
@@ -23,7 +22,7 @@ class GatewayAuthMiddleware
         $route = $request->getUri()->getPath();
         $method = $request->getMethod();
 
-        $publicRoutes = ['/users/signin', '/register'];
+        $publicRoutes = ['/users/signin', '/users/register'];
         $isPublicRoute = in_array($route, $publicRoutes) || $method === 'OPTIONS';
 
         if ($isPublicRoute) {
@@ -32,7 +31,7 @@ class GatewayAuthMiddleware
 
         $authHeader = $request->getHeader('Authorization');
         if (empty($authHeader) || !$this->isValidAuthHeader($authHeader[0])) {
-            return new HttpUnauthorizedException($request, "header invalide");
+            throw new HttpUnauthorizedException($request, "header invalide");
         }
 
         try {
@@ -59,10 +58,5 @@ class GatewayAuthMiddleware
     private function isValidAuthHeader(string $authHeader): bool
     {
         return str_starts_with($authHeader, 'Bearer ');
-    }
-
-    private function extractToken(string $authHeader): string
-    {
-        return substr($authHeader, 7);
     }
 }

@@ -3,7 +3,7 @@
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use gateway_tblb\application\middlewares\Cors;
-use gateway_tblb\application\middlewares\GatewayAuthMiddleware;
+use gateway_tblb\application\middlewares\GatewayAuthnMiddleware;
 
 $builder = new ContainerBuilder();
 $builder->addDefinitions(__DIR__ . '/settings.php');
@@ -13,7 +13,7 @@ $c = $builder->build();
 $app = AppFactory::createFromContainer($c);
 
 $app->add(new Cors());
-$app->add(GatewayAuthMiddleware::class);
+$app->add(GatewayAuthnMiddleware::class);
 
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
