@@ -2,6 +2,7 @@ app/vendor
 apiGateway/vendor
 app-praticiens/vendor
 app-rdv/vendor
+app-rdv/rabbitmq_dir
 app-auth/vendor
 *.log
 *.ini
