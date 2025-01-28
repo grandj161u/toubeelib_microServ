@@ -135,7 +135,22 @@ services:
       interval: 8s
       timeout: 30s
       retries: 3
-    
+
+  app.consumer:
+    build:
+      context: build
+      dockerfile: Dockerfile_Principal
+    ports:
+      - 10080:80
+    volumes:
+      - ./app-consumer:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    command: php -S 0.0.0.0:80 -t /var/php/public
     
     
 

@@ -227,10 +227,23 @@ class ServiceRdv implements ServiceRdvInterface
         return $planning;
     }
 
-    public function sendMessageRdv($message)
+    public function sendMessageRdv($message, $idRdv)
     {
         $channel = $this->connection->channel();
-        $msg = new \PhpAmqpLib\Message\AMQPMessage($message);
+
+        $rdv = $this->getRdvById($idRdv);
+
+        $message = [
+            'message' => $message,
+            'IdRdv' => $rdv->ID,
+            'IdPraticien' => $rdv->idPraticien,
+            'IdPatient' => $rdv->idPatient,
+        ];
+
+        $jsonMessage = json_encode($message, JSON_THROW_ON_ERROR);
+
+        $msg = new \PhpAmqpLib\Message\AMQPMessage($jsonMessage);
+
         $channel->basic_publish($msg, 'rdv.exchange', 'rdv.key');
         $channel->close();
         $this->connection->close();

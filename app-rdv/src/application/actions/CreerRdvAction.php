@@ -34,6 +34,8 @@ class CreerRdvAction extends AbstractAction
 
             $inputRdvDTO = new InputRdvDTO($idPraticien, $idPatient, $horaire, $idSpecialite, $type, $statut);
             $rdv_DTO = $this->serviceRdv->creerRdv($inputRdvDTO);
+
+            $this->serviceRdv->sendMessageRdv("CREATE", $rdv_DTO->ID);
         } catch (ServiceRdvInternalErrorException $e) {
             $data = [
                 'message' => $e->getMessage(),
