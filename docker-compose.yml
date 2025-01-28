@@ -3,7 +3,6 @@ networks:
     driver: bridge
 
 services:
-
   # service api.toubeelib : api pour la prise de rdv
   #
   api.toubeelib:
@@ -21,7 +20,6 @@ services:
     depends_on:
       - toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
-
 
   # service api.praticien : api pour la partie praticien de toubeelib
   #
@@ -56,7 +54,7 @@ services:
     networks:
       - toubeelib.net
     depends_on:
-      - toubeelib.db     
+      - toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   # service api.rdv : api pour la partie rdv de toubeelib
@@ -96,7 +94,7 @@ services:
 
   # service toubeelib.db : base de données postgresql
   toubeelib.db:
-    image: 'postgres:latest'
+    image: "postgres:latest"
     env_file: ./toubeelibdb.env
     ports:
       - 5432:5432
@@ -121,8 +119,8 @@ services:
   rabbitmq:
     image: rabbitmq:4-management
     ports:
-      - '15672:15672'
-      - '5672:5672'
+      - "15672:15672"
+      - "5672:5672"
     networks:
       - toubeelib.net
     volumes:
@@ -141,7 +139,7 @@ services:
       context: build
       dockerfile: Dockerfile_Principal
     ports:
-      - 10080:80
+      - 1001:80
     volumes:
       - ./app-consumer:/var/php
     working_dir: /var/php
@@ -151,6 +149,3 @@ services:
       rabbitmq:
         condition: service_healthy
     command: php -S 0.0.0.0:80 -t /var/php/public
-    
-    
-

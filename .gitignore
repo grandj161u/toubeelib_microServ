@@ -3,6 +3,7 @@ apiGateway/vendor
 app-praticiens/vendor
 app-rdv/vendor
 app-auth/vendor
+app-consumer/vendor
 rabbitmq_dir/
 *.log
 *.ini

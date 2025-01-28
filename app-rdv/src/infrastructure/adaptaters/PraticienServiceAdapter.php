@@ -27,6 +27,7 @@ class PraticienServiceAdapter implements PraticienServiceInterface
 
         $specialite = new Specialite($data['praticien']['specialite']['ID'], $data['praticien']['specialite']['label'], $data['praticien']['specialite']['description']);
         $prat->setSpecialite($specialite);
+
         return new PraticienDTO($prat);
     }
 
