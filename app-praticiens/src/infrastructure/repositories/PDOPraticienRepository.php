@@ -86,7 +86,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
             throw new RepositoryDatabaseErrorException('Error while fetching praticien');
         }
         $specialite = $this->getSpecialiteById($praticien['specialite_id']);
-        $p = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel']);
+        $p = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['tel'], $praticien['adresse']);
         $p->setSpecialite($specialite);
         $p->setID($praticien['id']);
         return $p;
@@ -108,7 +108,7 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
         $praticiensArray = [];
         foreach ($praticiens as $praticien) {
             $specialite = $this->getSpecialiteById($praticien['specialite_id']);
-            $p = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel']);
+            $p = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['tel'], $praticien['adresse']);
             $p->setSpecialite($specialite);
             $p->setID($praticien['id']);
             $praticiensArray[] = $p;
