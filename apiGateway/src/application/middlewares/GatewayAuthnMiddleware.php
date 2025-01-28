@@ -7,6 +7,7 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Exception\HttpUnauthorizedException;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Exception\HttpException;
 
 class GatewayAuthnMiddleware
 {
@@ -48,10 +49,9 @@ class GatewayAuthnMiddleware
             return $handler->handle($request);
         } catch (\GuzzleHttp\Exception\ClientException | \GuzzleHttp\Exception\ServerException $e) {
             $responseBody = json_decode($e->getResponse()->getBody()->getContents(), true);
-            $errorMessage = $responseBody['message'] ?? "Token invalide";
-            throw new HttpUnauthorizedException($request, $errorMessage);
+            throw new HttpUnauthorizedException($request, $e->getMessage());
         } catch (\Exception $e) {
-            throw new HttpUnauthorizedException($request, "Token invalide");
+            throw $e;
         }
     }
 
