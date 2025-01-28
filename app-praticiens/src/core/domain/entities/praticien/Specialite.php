@@ -20,6 +20,6 @@ class Specialite extends Entity
 
     public function toDTO(): SpecialiteDTO
     {
-        return new SpecialiteDTO($this->ID, $this->label, $this->description);
+        return new SpecialiteDTO($this);
     }
 }
