@@ -238,6 +238,7 @@ class ServiceRdv implements ServiceRdvInterface
             'IdRdv' => $rdv->ID,
             'IdPraticien' => $rdv->idPraticien,
             'IdPatient' => $rdv->idPatient,
+            'Horaire' => $rdv->horaire,
         ];
 
         $jsonMessage = json_encode($message, JSON_THROW_ON_ERROR);
