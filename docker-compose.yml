@@ -149,3 +149,15 @@ services:
       rabbitmq:
         condition: service_healthy
     command: php -S 0.0.0.0:80 -t /var/php/public
+
+  app.mailcatcher:
+    build:
+      context: build
+      dockerfile: Dockerfile_mailCatcher
+    ports:
+      - 1080:1080
+      - 1025:1025
+    networks:
+      - toubeelib.net
+    depends_on:
+      - app.consumer
