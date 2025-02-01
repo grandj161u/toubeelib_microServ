@@ -17,9 +17,5 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/specialites/{idSpecialite}', \api_praticien\application\actions\SpecialiteByIdAction::class);
 
-    $app->post('/users/signin', \api_praticien\application\actions\SignInAction::class);
-
-    $app->post('/refresh', \api_praticien\application\actions\RefreshAction::class);
-
     return $app;
 };

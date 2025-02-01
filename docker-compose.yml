@@ -3,7 +3,6 @@ networks:
     driver: bridge
 
 services:
-
   # service api.toubeelib : api pour la prise de rdv
   #
   api.toubeelib:
@@ -21,7 +20,6 @@ services:
     depends_on:
       - toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
-
 
   # service api.praticien : api pour la partie praticien de toubeelib
   #
@@ -96,7 +94,7 @@ services:
 
   # service toubeelib.db : base de données postgresql
   toubeelib.db:
-    image: 'postgres:latest'
+    image: "postgres:latest"
     env_file: ./toubeelibdb.env
     ports:
       - 5432:5432
@@ -113,6 +111,53 @@ services:
       - 8080:8080
     networks:
       - toubeelib.net
-    
-    
 
+  #######################################
+  ### RabbitMQ Service
+  ###
+  #######################################
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./rabbitmq_dir:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=root
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 8s
+      timeout: 30s
+      retries: 3
+
+  app.consumer:
+    build:
+      context: build
+      dockerfile: Dockerfile_Principal
+    ports:
+      - 1001:80
+    volumes:
+      - ./app-consumer:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  app.mailcatcher:
+    build:
+      context: build
+      dockerfile: Dockerfile_mailCatcher
+    ports:
+      - 1080:1080
+      - 1025:1025
+    networks:
+      - toubeelib.net
+    depends_on:
+      - app.consumer
