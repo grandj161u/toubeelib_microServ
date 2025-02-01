@@ -24,4 +24,17 @@ class PraticienDTO extends DTO
         $this->tel = $p->tel;
         $this->specialite = $p->specialite;
     }
+
+    public function jsonSerialize(): array
+    {
+        $specialiteDTO = $this->specialite->toDTO();
+        return [
+            'ID' => $this->ID,
+            'nom' => $this->nom,
+            'prenom' => $this->prenom,
+            'adresse' => $this->adresse,
+            'tel' => $this->tel,
+            'specialite' => $specialiteDTO
+        ];
+    }
 }

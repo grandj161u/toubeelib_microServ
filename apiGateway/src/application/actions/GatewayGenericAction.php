@@ -14,9 +14,7 @@ class GatewayGenericAction extends AbstractGatewayAction
 {
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        error_log("Debug: Entering GatewayGenericAction");
         $uri = $rq->getUri()->getPath();
-        error_log("Debug: URI = " . $uri);
         $method = $rq->getMethod();
         $options = [
             'headers' => $rq->getHeaders(),
@@ -28,10 +26,10 @@ class GatewayGenericAction extends AbstractGatewayAction
             $response = $this->remote->request($method, $uri, $options);
         } catch (RequestException $e) {
             match ($e->getCode()) {
-                404 => throw new HttpNotFoundException($rq, "Resource not found"),
-                403 => throw new HttpForbiddenException($rq, "Access forbidden"),
-                400 => throw new HttpBadRequestException($rq, "Bad request"),
-                default => throw new HttpInternalServerErrorException($rq, "Internal server error"),
+                404 => throw new HttpNotFoundException($rq, "Not found: " . $e->getMessage()),
+                403 => throw new HttpForbiddenException($rq, "Access forbidden: " . $e->getMessage()),
+                400 => throw new HttpBadRequestException($rq, "Bad request: " . $e->getMessage()),
+                default => throw new HttpInternalServerErrorException($rq, "Internal server error: " . $e->getMessage()),
             };
         }
         return $response;
