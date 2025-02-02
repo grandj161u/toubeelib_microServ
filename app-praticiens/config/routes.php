@@ -13,13 +13,9 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/praticiens', \api_praticien\application\actions\ListerPraticiensAction::class);
 
-    $app->get('/praticiens/{idPraticien}', \api_praticien\application\actions\PraticienByIdAction::class);
+    $app->get('/praticiens/{idPraticien}', \api_praticien\application\actions\PraticienByIdAction::class)->add(\api_praticien\application\middlewares\AuthzPraticienMiddleware::class);
 
     $app->get('/specialites/{idSpecialite}', \api_praticien\application\actions\SpecialiteByIdAction::class);
-
-    $app->post('/users/signin', \api_praticien\application\actions\SignInAction::class);
-
-    $app->post('/refresh', \api_praticien\application\actions\RefreshAction::class);
 
     return $app;
 };
