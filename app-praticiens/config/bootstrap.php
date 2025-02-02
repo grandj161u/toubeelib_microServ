@@ -14,7 +14,6 @@ $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
 $app->addErrorMiddleware($c->get('displayErrorDetails'), false, false);
 
-
 //    ->getDefaultErrorHandler()
 //    ->forceContentType('application/json')
 
