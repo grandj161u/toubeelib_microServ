@@ -12,7 +12,7 @@ CREATE TABLE "public"."praticien" (
 ) WITH (oids = false);
 
 INSERT INTO "praticien" ("id", "nom", "prenom", "tel", "adresse", "specialite_id") VALUES
-('p1',	'Dupont',	'Jean',	'0123456789',	'nancy',	'A'),
+('1016324e - 7a32 - 3fca -9844 - 6ed51debaefb',	'Dupont',	'Jean',	'0123456789',	'nancy',	'A'),
 ('p2',	'Durand',	'Pierre',	'0123456789',	'vandeuve',	'B'),
 ('p3',	'Martin',	'Marie',	'0123456789',	'3lassou',	'C'),
 ('p4',	'Boulanger',	'Paul',	'0123456789',	'mazeville',	'D'),

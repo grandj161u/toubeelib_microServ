@@ -160,4 +160,4 @@ INSERT INTO "users" ("id", "email", "password", "role") VALUES
 ('679eaab9-c6a8-3a51-9ebb-8f5a073709d1',	'simone.jacquet@blot.com',	'$2y$10$uA5TwXkF.tKEZEVrgVOZx.0LWG.L4yTAVv0nYDVCz9GDk0pf0p2Ja',	5),
 ('0a6c75ca-4d2a-3786-92c9-1d5629cc23e2',	'aime92@leclerc.com',	'$2y$10$DkXd5n8ow07ZMQkbCdVS.e76KW8jJefhaFeThsASljLGh702rBbDy',	5),
 ('a115c355-fc49-3f16-93a9-275ea42ed489',	'bweiss@yahoo.fr',	'$2y$10$6PlgoWDGd2IUdsLxrAObheiTtQyhSIKaDEqapmb/9X1/a1uEiFTfm',	5),
-('1016324e-7a32-3fca-9844-6ed51debaefb',	'guillaume.costa@dbmail.com',	'$2y$10$UwhIEYM7.W8YfnmA.R8yHuJIFg1OhRmQldh/XRLIB9oJ865dLP3ly',	5);
+('1016324e-7a32-3fca-9844-6ed51debaefb',	'guillaume.costa@dbmail.com',	'$2y$10$LRtk6aCBsS2IcgNYGWT1KOLV2qn3K.pQwFYZb0vBUE/B2Q4vTKsXG',	5);
