@@ -7,4 +7,6 @@ return  [
 
     'praticien.db.config' => 'praticien.db.ini',
     'patient.db.config' => 'patient.db.ini',
+
+    'auth.api' => 'http://api.auth/',
     ] ;
