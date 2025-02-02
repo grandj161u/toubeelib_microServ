@@ -64,7 +64,14 @@ class ValidateTokenAction extends AbstractAction
 
         $data = [
             'message' => 'Token is valid',
-            'token' => $authDTO->accessToken,
+            'token' => $token,
+            'payload' => [
+                'sub' => $authDTO->ID,
+                'data' => [
+                    'user' => $authDTO->email,
+                    'role' => $authDTO->role
+                ]
+            ],
             'links' => [
                 'self' => [ 'href' => '/tokens/validate' ],
             ]
