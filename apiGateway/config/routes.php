@@ -12,6 +12,10 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/praticiens/{idPraticien}/rdvs', \gateway_tblb\application\actions\GatewayPlanningOuDispoPraticienAction::class);
 
+    $app->post('/rdvs', \gateway_tblb\application\actions\GatewayCreerRdvAction::class);
+
+    $app->delete('/rdvs/{idRdv}', \gateway_tblb\application\actions\GatewayAnnulerRdvAction::class);
+
     $app->post('/users/signin', \gateway_tblb\application\actions\GatewaySignInAction::class);
 
     $app->post('/users/register', \gateway_tblb\application\actions\GatewayRegisterAction::class);

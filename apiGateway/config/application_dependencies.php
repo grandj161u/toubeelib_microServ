@@ -1,5 +1,7 @@
 <?php
 
+use gateway_tblb\application\actions\GatewayAnnulerRdvAction;
+use gateway_tblb\application\actions\GatewayCreerRdvAction;
 use gateway_tblb\application\actions\GatewayListePraticienAction;
 use gateway_tblb\application\actions\GatewayPlanningOuDispoPraticienAction;
 use gateway_tblb\application\actions\GatewayPraticienByIdAction;
@@ -50,6 +52,14 @@ return
 
         GatewayPlanningOuDispoPraticienAction::class => function (ContainerInterface $c) {
             return new GatewayPlanningOuDispoPraticienAction($c->get('guzzle.client.rdv'));
+        },
+
+        GatewayCreerRdvAction::class => function (ContainerInterface $c) {
+            return new GatewayCreerRdvAction($c->get('guzzle.client.rdv'));
+        },
+
+        GatewayAnnulerRdvAction::class => function (ContainerInterface $c) {
+            return new GatewayAnnulerRdvAction($c->get('guzzle.client.rdv'));
         },
 
         GatewaySignInAction::class => function (ContainerInterface $c) {

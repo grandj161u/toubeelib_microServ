@@ -24,6 +24,7 @@ class AnnulerRdvAction extends AbstractAction
 
         try {
             $rdv_DTO = $this->serviceRdv->annulerRdv($id);
+            $this->serviceRdv->sendMessageRdv("CANCEL", $id);
         } catch (ServiceRdvInternalErrorException $e) {
             $data = [
                 'message' => $e->getMessage(),
